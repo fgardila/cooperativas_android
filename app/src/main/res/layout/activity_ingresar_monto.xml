@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.IngresarMontoActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/toolbar" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/tvNomTrans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgCoop"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Nombre Transaccion"
+            android:textAppearance="?attr/textAppearanceHeadline5" />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/tvNomTrans"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:background="#270949" />
+
+        <RelativeLayout
+            android:id="@+id/linearMonto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view1"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginTop="55dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilMonto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/grey_40"
+                app:startIconDrawable="@drawable/ic_money"
+                app:endIconMode="clear_text"
+                app:endIconTint="@android:color/black"
+                android:layout_toStartOf="@+id/floatingActionButton"
+                android:layout_marginEnd="10dp"
+                android:hint="Monto"
+                app:errorTextAppearance="@style/Error">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etMonto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:onClick="enviarMonto"
+                android:src="@drawable/ic_done_grey5"
+                android:tint="@color/grey_5"/>
+        </RelativeLayout>
+
+
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/linearMonto"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="55dp"
+            android:layout_marginEnd="50dp"
+            android:background="#270949" />
+
+        <TextView
+            android:id="@+id/tvSubitulo"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view2"
+            android:layout_centerHorizontal="true"
+            android:text="Toca el cuadro de texto y digite el monto."
+            android:gravity="center"
+            android:textAppearance="?attr/textAppearanceSubtitle1" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

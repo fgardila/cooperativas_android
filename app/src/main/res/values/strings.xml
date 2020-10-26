@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Link-Coop</string>
+
+    <string name="correo">Correo</string>
+    <string name="pass">Contraseña</string>
+    <string name="iniciar_sesion">Iniciar sesión</string>
+    <string name="guardar_datos_de_inicio_de_sesion">Guardar datos de inicio de sesión</string>
+    <string name="olvido_su_contrasena">¿Olvido su contraseña?</string>
+
+    <string name="no_data">No data</string>
+</resources>
