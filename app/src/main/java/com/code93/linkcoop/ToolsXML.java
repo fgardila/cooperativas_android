@@ -3,6 +3,7 @@ package com.code93.linkcoop;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
 import android.util.Xml;
 
 import org.w3c.dom.Document;
@@ -16,150 +17,32 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 public class ToolsXML extends Activity {
 
-    static XmlSerializer serializer;
-    static FileOutputStream fileos = null;
-    public static String gReverse,gSettle,gUpdate;
-
-    public static void createXML(String name) {
-
-        serializer = Xml.newSerializer();
-        File newxmlfile;
-        if(Build.MODEL.equals("NEW9220")) {
-            newxmlfile = new File(Environment.getExternalStorageDirectory().getPath() + "/" + name + ".xml");
-        }
-        else {
-            newxmlfile = new File(Environment.getExternalStorageDirectory().getAbsoluteFile()  , name + ".xml");
-        }
-
+    public static String createXML(String startTag, List<DataElements> listElements) {
+        XmlSerializer serializer = Xml.newSerializer();
+        StringWriter writer = new StringWriter();
         try {
-            newxmlfile.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-
-            fileos = new FileOutputStream(newxmlfile);
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-
-            serializer.setOutput(fileos, "UTF-8");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void packXML(String reversal, String settle, String update) {
-
-        createXML("ConfigDF");
-
-        try {
-            serializer.startTag(null, "Configuration");
-            serializer.startTag(null, "MdmInstall");
-
-            setTag("isReversal", reversal);
-            setTag("isSettle", settle);
-            setTag("initAuto", update);
-
-            serializer.endTag(null, "MdmInstall");
-            serializer.endTag(null, "Configuration");
-
+            serializer.setOutput(writer);
+            serializer.startDocument("utf-8", null);
+            serializer.startTag("", startTag);
+            for (DataElements dataField : listElements) {
+                serializer.startTag("", dataField.getNameField());
+                serializer.text(dataField.getDataField());
+                serializer.endTag("", dataField.getNameField());
+            }
+            serializer.endTag("", startTag);
             serializer.endDocument();
-            serializer.flush();
-            fileos.close();
-
-            read();
-        } catch (IOException e1) {
-            e1.printStackTrace();
+            Log.e("XML DATA: ", writer.toString());
+            return writer.toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-    }
-
-    public static void setTag(String tag, String value) {
-        if (value != null) {
-            try {
-                serializer.startTag(null, tag);
-                serializer.text(value);
-                serializer.endTag(null, tag);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static void read() {
-
-        File ruta_sd = Environment.getExternalStorageDirectory();
-        String reverse = null,
-                settle = null,
-                udpate = null;
-
-        File file = new File(ruta_sd.getAbsolutePath(), "/ConfigDF.xml");
-
-        if (file.exists()) {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            try {
-
-                DocumentBuilder builder = factory.newDocumentBuilder();
-                Document document = builder.parse(file);
-                Element documentElement = document.getDocumentElement();
-                NodeList sList = documentElement.getElementsByTagName("MdmInstall");
-
-                if (sList != null && sList.getLength() > 0) {
-                    for (int i = 0; i < sList.getLength(); i++) {
-                        Node node = sList.item(i);
-                        if (node.getNodeType() == Node.ELEMENT_NODE) {
-
-                            node.getAttributes();
-                            Element e = (Element) node;
-                            NodeList listElements = e.getElementsByTagNameNS(node.getNamespaceURI(), node.getLocalName());
-
-                            //lee cada elemento del state
-                            for (int b = 0; b < listElements.getLength(); b++) {
-
-                                String nameEl = listElements.item(b).getNodeName();
-                                try {
-                                    if (nameEl.equals("isReversal")) {
-                                        reverse = listElements.item(b).getTextContent();
-                                    }
-                                    if (nameEl.equals("isSettle")) {
-                                        settle = listElements.item(b).getTextContent();
-                                    }
-                                    if (nameEl.equals("initAuto")) {
-                                        udpate = listElements.item(b).getTextContent();
-                                    }
-                                } catch (Exception e1) {
-                                    e1.printStackTrace();
-
-                                }
-
-                            }
-                            if (reverse != null && settle != null && udpate != null) {
-                                gReverse=reverse;
-                                gSettle=settle;
-                                gUpdate = udpate;
-                            } else {
-                                packXML("0", "0","0");
-                            }
-
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                createXML("ConfigDF");
-            }
-        } else {
-            packXML("0", "0","0");
-        }
-
     }
 }

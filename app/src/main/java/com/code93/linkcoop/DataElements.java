@@ -26,7 +26,9 @@ public class DataElements {
     }
 }
 
+/*
 enum NameField {
+    bitmap,
     message_code,
     transaction_code,
     reference,
@@ -92,3 +94,4 @@ enum NameField {
     emv_data,
     validator_data
 }
+*/

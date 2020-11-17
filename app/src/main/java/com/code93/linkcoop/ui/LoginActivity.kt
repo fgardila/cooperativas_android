@@ -1,48 +1,37 @@
 package com.code93.linkcoop.ui
 
 import android.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.textfield.TextInputLayout
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.checkbox.MaterialCheckBox
-import android.widget.TextView
-import com.google.firebase.FirebaseApp
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.DatabaseReference
-import android.os.Bundle
-import com.code93.linkcoop.R
-import dmax.dialog.SpotsDialog
+import android.os.AsyncTask
 import android.os.Build
-import android.content.SharedPreferences
-import com.code93.linkcoop.models.Usuario
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import android.widget.Toast
-import android.content.Intent
-import com.code93.linkcoop.ui.MainActivity
-import android.text.Editable
+import android.os.Bundle
 import android.util.Log
 import android.view.View
-import com.android.volley.toolbox.JsonObjectRequest
-import org.json.JSONObject
-import com.google.gson.Gson
-import com.code93.linkcoop.models.DataUsuarios
-import com.code93.linkcoop.Tools
-import com.android.volley.VolleyError
-import kotlin.Throws
-import com.android.volley.AuthFailureError
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Response
-import com.code93.linkcoop.volley.VolleyApplication
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.code93.linkcoop.DataElements
+import com.code93.linkcoop.R
+import com.code93.linkcoop.Tools
+import com.code93.linkcoop.ToolsXML
+import com.code93.linkcoop.models.Usuario
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.activity_login.*
+import org.ksoap2.SoapEnvelope
+import org.ksoap2.serialization.SoapObject
+import org.ksoap2.serialization.SoapPrimitive
+import org.ksoap2.serialization.SoapSerializationEnvelope
+import org.ksoap2.transport.HttpTransportSE
 import java.util.*
 
 class LoginActivity : AppCompatActivity() {
 
     var dialog: AlertDialog? = null
     private lateinit var auth: FirebaseAuth
+    lateinit var resultString : SoapPrimitive
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
                 "PRODUCT = " + product + "\n" +
                 "id = " + uniqueID + "\n" +
                 "MANUFACTURER = " + manufacturer
-        Tools.showDialogError(this, msg);
+        //Tools.showDialogError(this, msg);
     }
 
     private val sharedPreferences: Array<String?>
@@ -104,13 +93,10 @@ class LoginActivity : AppCompatActivity() {
                         }
                     }
         } else {
+            Log.w("TAG", "LOGIN REALIZADO")
             Toast.makeText(baseContext, "Authentication success. ${user.uid}",
                     Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun inicarSesion(email: String, password: String) {
-
     }
 
     private fun validarUsuario(usuarios: ArrayList<Usuario?>, email: String, password: String) {
@@ -118,7 +104,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun iniciarSesion(view: View?) {
-        if (view != null) {
+        /*if (view != null) {
             var ret = true
             val email = Objects.requireNonNull(etEmail!!.text).toString()
             val password = Objects.requireNonNull(etPassword!!.text).toString()
@@ -130,33 +116,92 @@ class LoginActivity : AppCompatActivity() {
                 ret = false
                 tilPassword!!.error = "Complete la informacion de este campo"
             }
-            if (ret) inicarSesion(email, password)
+            createXML()
+        }*/
+        //createXML()
+
+        sendRequest()
+
+
+    }
+    private fun sendRequest() {
+        val SOAP_ACTION = "http://tempuri.org/iServiceAsynchronous/Get_Status_Service"
+        val METHOD_NAME = "Get_Status_Service"
+        val NAMESPACE = "http://tempuri.org/"
+        val URL = "http://190.216.106.14:1992/AsynchronousService.svc"
+
+        try {
+            val Request : SoapObject = SoapObject(NAMESPACE, METHOD_NAME)
+            Request.addProperty("Code", "0")
+            val soapEnvelope = SoapSerializationEnvelope(SoapEnvelope.VER11)
+            soapEnvelope.dotNet = true
+            soapEnvelope.setOutputSoapObject(Request)
+            val transport = HttpTransportSE(URL)
+            transport.call(SOAP_ACTION, soapEnvelope)
+            resultString = soapEnvelope.response as SoapPrimitive
+        }catch (e: Exception) {
+
         }
     }
 
-    private fun eliminarDatos() {
-        val editor = applicationContext.getSharedPreferences("acceso", MODE_PRIVATE).edit()
-        editor.putString("email", null)
-        editor.putString("pwd", null)
-        editor.apply()
+    private fun createXML() {
+        val listFields = mutableListOf<DataElements>()
+        listFields.add(DataElements(Tools.NameFields.bitmap.toString(), "C000010810A0004C"))
+        listFields.add(DataElements(Tools.NameFields.message_code.toString(), "0800"))
+        listFields.add(DataElements(Tools.NameFields.transaction_code.toString(), "930002"))
+        listFields.add(DataElements(Tools.NameFields.adquirer_date_time.toString(), "2020-11-03 19:10:14"))
+        listFields.add(DataElements(Tools.NameFields.adquirer_sequence.toString(), "1"))
+        listFields.add(DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"))
+        listFields.add(DataElements(Tools.NameFields.channel_id.toString(), "2"))
+        listFields.add(DataElements(Tools.NameFields.service_code.toString(), "0030011001"))
+        listFields.add(DataElements(Tools.NameFields.product_id.toString(), "012000"))
+        listFields.add(DataElements(Tools.NameFields.user_id.toString(), "Fc2fQTnf8eHbo/tfCfLvKHJpwaFx21TnUEo/1SEgqbE="))
+        listFields.add(DataElements(Tools.NameFields.password.toString(), "8iIKhUs7zGEptJJ31ZK91A=="))
+        val xmlRequestLogon = ToolsXML.createXML("request_logon", listFields)
+        sendTrx(xmlRequestLogon)
     }
 
-    private fun guardarSharedPreferences(email: String, pwd: String) {
-        val editor = applicationContext.getSharedPreferences("acceso", MODE_PRIVATE).edit()
-        editor.putString("email", email)
-        editor.putString("pwd", pwd)
-        editor.apply()
+    private fun sendTrx(xmlRequestLogon: String) {
+        val queue = Volley.newRequestQueue(this)
+        val url = "http://190.216.106.14:1992/AsynchronousService.svc?wsdl"
+
+        val stringRequest = object : StringRequest(Method.POST, url,
+                Response.Listener { response ->
+                    Log.e(
+                            "HttpClient", "success! response: $response"
+                    )
+                },
+                Response.ErrorListener { error ->
+                    Log.e(
+                            "HttpClient", "error: $error"
+                    )
+                }) {
+            override fun getBodyContentType(): String {
+                return xmlRequestLogon
+            }
+        }
+        queue.add(stringRequest)
     }
 
-    override fun onBackPressed() {
-        moveTaskToBack(true)
-    }
+private fun eliminarDatos() {
+    val editor = applicationContext.getSharedPreferences("acceso", MODE_PRIVATE).edit()
+    editor.putString("email", null)
+    editor.putString("pwd", null)
+    editor.apply()
+}
 
-    private fun onLoginFailed(error: String) {
-        Toast.makeText(this, "" + error, Toast.LENGTH_SHORT).show()
-    }
+private fun guardarSharedPreferences(email: String, pwd: String) {
+    val editor = applicationContext.getSharedPreferences("acceso", MODE_PRIVATE).edit()
+    editor.putString("email", email)
+    editor.putString("pwd", pwd)
+    editor.apply()
+}
 
-    fun writeXmlFile() {
+override fun onBackPressed() {
+    moveTaskToBack(true)
+}
 
-    }
+private fun onLoginFailed(error: String) {
+    Toast.makeText(this, "" + error, Toast.LENGTH_SHORT).show()
+}
 }
