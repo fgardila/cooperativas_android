@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.code93.linkcoop.AesBase64Wrapper;
 import com.code93.linkcoop.DataElements;
@@ -22,6 +24,9 @@ import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.ToolsXML;
 import com.code93.linkcoop.cache.SP2;
+import com.code93.linkcoop.models.Cooperativa;
+import com.code93.linkcoop.models.LoginCooperativas;
+import com.code93.linkcoop.viewmodel.CooperativaViewModel;
 import com.code93.linkcoop.xmlParsers.XmlParser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,6 +36,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -60,10 +66,14 @@ public class Login extends AppCompatActivity {
     private FirebaseAuth auth;
     private SoapPrimitive resultString;
 
+    CooperativaViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        viewModel = new ViewModelProvider(this).get(CooperativaViewModel.class);
 
         auth = FirebaseAuth.getInstance();
         spotDialog = new SpotsDialog.Builder()
@@ -83,13 +93,6 @@ public class Login extends AppCompatActivity {
             etEmail.setText(datos.get(0));
             etPassword.setText(datos.get(1));
             checkbox.setChecked(true);
-        }
-
-        SP2 sp2 = SP2.Companion.getInstance(this);
-        boolean loginStatus = sp2.getBoolean(SP2.Companion.getSP_LOGIN(), false);
-        if (loginStatus) {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
         }
 
         ImageView imgConnectCoop = findViewById(R.id.imgConnectCoop);
@@ -139,12 +142,24 @@ public class Login extends AppCompatActivity {
 
             String encrypUser = aes.encryptAndEncode(user);
             String encrypPwd = aes.encryptAndEncode(pwd);
-            //createXML(encrypUser, encrypPwd);
-            logoff(encrypUser, encrypPwd);
+            createXML(encrypUser, encrypPwd);
+            //logoff(encrypUser, encrypPwd);
         } else {
             spotDialog.dismiss();
             Tools.showDialogError(this, "Complete todos los campos requeridos");
         }
+
+        /*String json = "{\"cooperativas\":[{\"_id\":\"5000\",\"_namec\":\"COOPERATIVA MIFEX\",\"_transaction\":[{\"_code\":\"301000\",\"_namet\":\"CONSULTA DE SALDOS\",\"_cost\":\"0.50\"},{\"_code\":\"306000\",\"_namet\":\"GENERACION OTP\",\"_cost\":\"0.00\"},{\"_code\":\"501020\",\"_namet\":\"RETIRO DE AHORROS\",\"_cost\":\"0.53\"}]},{\"_id\":\"5001\",\"_namec\":\"COOPERATIVA DE LOS MAESTROS\",\"_transaction\":[{\"_code\":\"301000\",\"_namet\":\"CONSULTA DE SALDOS\",\"_cost\":\"0.50\"},{\"_code\":\"306000\",\"_namet\":\"GENERACION OTP\",\"_cost\":\"0.00\"},{\"_code\":\"501020\",\"_namet\":\"RETIRO DE AHORROS\",\"_cost\":\"0.53\"},{\"_code\":\"001000\",\"_namet\":\"DEPOSITO DE AHORROS\",\"_cost\":\"0.45\"}]}]}";
+        Gson gson = new Gson();
+        LoginCooperativas logCoop = gson.fromJson(json, LoginCooperativas.class);
+        Cooperativa coop1 = logCoop.getCooperativas().get(0);
+        Log.d("COOP", coop1.get_namec());
+
+
+        for (Cooperativa coop : logCoop.getCooperativas()) {
+            viewModel.addCooperativa(coop);
+            viewModel.updateCooperativa(coop);
+        }*/
 
         //MyApp.sp2.incTraceNo();
 
@@ -164,6 +179,13 @@ public class Login extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = auth.getCurrentUser();
         updateUI(currentUser);
+
+        SP2 sp2 = SP2.Companion.getInstance(this);
+        boolean loginStatus = sp2.getBoolean(SP2.Companion.getSP_LOGIN(), false);
+        if (loginStatus) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
     }
 
     private void updateUI(FirebaseUser user) {

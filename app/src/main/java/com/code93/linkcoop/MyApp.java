@@ -3,8 +3,11 @@ package com.code93.linkcoop;
 import android.app.Application;
 import android.os.Build;
 
+import androidx.lifecycle.ViewModelProvider;
+
 import com.code93.linkcoop.cache.SP;
 import com.code93.linkcoop.cache.SP2;
+import com.code93.linkcoop.viewmodel.CooperativaViewModel;
 import com.zcs.sdk.DriverManager;
 import com.zcs.sdk.card.CardInfoEntity;
 

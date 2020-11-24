@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class CooperativaViewModel(application: Application): AndroidViewModel(application) {
 
-    val readAllData: List<Cooperativa>
+    val readAllData: LiveData<List<Cooperativa>>
     private val repository: CooperativaRepository
 
     init {
@@ -31,6 +31,12 @@ class CooperativaViewModel(application: Application): AndroidViewModel(applicati
     fun deleteAllUser() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAllCooperativas()
+        }
+    }
+
+    fun updateCooperativa(cooperativa: Cooperativa) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateCooperativa(cooperativa)
         }
     }
 }

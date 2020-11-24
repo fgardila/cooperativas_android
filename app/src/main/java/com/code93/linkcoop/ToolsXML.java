@@ -25,6 +25,36 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class ToolsXML extends Activity {
 
+    public static String requestLogon(String user, String pwd) {
+        ArrayList<DataElements> listFields = new ArrayList<>();
+        listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "C000010810A0004C"));
+        listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0800"));
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), "930002"));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
+        listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "2"));
+        listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
+        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012000"));
+        listFields.add(new DataElements(Tools.NameFields.user_id.toString(), user));
+        listFields.add(new DataElements(Tools.NameFields.password.toString(), pwd));
+        return ToolsXML.createXML("request_logon", listFields);
+    }
+
+    public static String requestLogoff(String user) {
+        ArrayList<DataElements> listFields = new ArrayList<>();
+        listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "C000010800A00048"));
+        listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0800"));
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), "930003"));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "2"));
+        listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
+        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012000"));
+        listFields.add(new DataElements(Tools.NameFields.user_id.toString(), user));
+        return ToolsXML.createXML("request_logoff", listFields);
+    }
+
     public static String createXML(String startTag, List<DataElements> listElements) {
         XmlSerializer serializer = Xml.newSerializer();
         StringWriter writer = new StringWriter();
