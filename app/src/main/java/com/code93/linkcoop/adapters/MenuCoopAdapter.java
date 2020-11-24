@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.models.Cooperativa;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +49,12 @@ public class MenuCoopAdapter extends RecyclerView.Adapter<MenuCoopAdapter.MenuCo
 
     @Override
     public void onBindViewHolder(@NonNull MenuCoopHolder holder, int position) {
-        Cooperativa coop = cooperativas.get(position);
+        /*Cooperativa coop = cooperativas.get(position);
         if (coop.getUrlImgCoop() != null ) {
             if (!coop.getUrlImgCoop().trim().isEmpty()) {
-                Picasso.get().load(coop.getUrlImgCoop()).into(holder.imgLogoCoop);
+                //Picasso.get().load(coop.getUrlImgCoop()).into(holder.imgLogoCoop);
+                Glide.with(context).load(coop.getUrlImgCoop())
+                        .into(holder.imgLogoCoop);
                 //holder.imgLogoCoop.setImageDrawable(context.getResources().getDrawable(R.drawable.logo_alianza));
             } else {
                 if (coop.getIdDrawable() != 0) {
@@ -63,7 +65,7 @@ public class MenuCoopAdapter extends RecyclerView.Adapter<MenuCoopAdapter.MenuCo
             if (coop.getIdDrawable() != 0) {
                 holder.imgLogoCoop.setImageDrawable(context.getResources().getDrawable(coop.getIdDrawable()));
             }
-        }
+        }*/
     }
 
     @Override

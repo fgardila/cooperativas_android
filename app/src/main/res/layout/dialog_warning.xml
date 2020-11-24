@@ -19,7 +19,7 @@
             android:id="@+id/icon"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:tint="@android:color/white"
+            app:tint="@android:color/white"
             app:srcCompat="@drawable/ic_close" />
 
         <TextView
@@ -60,11 +60,10 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/bt_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button.Borderless"
             android:backgroundTint="@color/red_300"
             android:paddingLeft="@dimen/spacing_mlarge"
             android:paddingRight="@dimen/spacing_mlarge"

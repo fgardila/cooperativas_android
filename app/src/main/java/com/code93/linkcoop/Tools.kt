@@ -2,12 +2,15 @@ package com.code93.linkcoop
 
 import android.app.Dialog
 import android.content.Context
+import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.TextView
-import com.google.android.material.button.MaterialButton
+import java.text.SimpleDateFormat
+import java.util.*
 
 object Tools {
 
@@ -83,6 +86,7 @@ object Tools {
         return !email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
+    @JvmStatic
     fun showDialogError(context: Context?, messaje: String?) {
         val dialog = Dialog(context!!)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE) // before
@@ -94,10 +98,31 @@ object Tools {
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
         val content = dialog.findViewById<TextView>(R.id.content)
         content.text = messaje
-        (dialog.findViewById<View>(R.id.bt_close) as MaterialButton).setOnClickListener {
+        (dialog.findViewById<View>(R.id.bt_close) as Button).setOnClickListener {
             dialog.dismiss()
         }
         dialog.show()
         dialog.window!!.attributes = lp
+    }
+
+    @JvmStatic
+    fun getLocalTime(): String? {
+        return DateToStr(Date(), "HHmmss")
+    }
+
+    @JvmStatic
+    fun getLocalDateTime(): String? {
+        return DateToStr(Date(), "yyyy-MM-dd HH:mm:ss")
+    }
+
+    fun DateToStr(date: Date?, formatString: String?): String? {
+        var str: String? = null
+        try {
+            val format = SimpleDateFormat(formatString)
+            str = format.format(date)
+        } catch (e: Exception) {
+            Log.e("Error", e.toString())
+        }
+        return str
     }
 }

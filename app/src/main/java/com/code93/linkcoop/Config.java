@@ -98,4 +98,6 @@ public class Config {
         throw new NullPointerException("u should init first");
     }
 
+
+
 }

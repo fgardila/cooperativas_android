@@ -39,14 +39,6 @@ public class TransaccionesActivity extends AppCompatActivity {
         tvNomCoop = findViewById(R.id.tvNomCoop);
         imgCoop = findViewById(R.id.imgCoop);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            cooperativa = (Cooperativa)getIntent().getSerializableExtra("Cooperativa");
-            if (cooperativa != null) {
-                tvNomCoop.setText(cooperativa.getNombreCoop());
-            }
-        }
-
         transacciones = new ArrayList<>();
         cargarArrayList();
         MenuTransAdapter adapter = new MenuTransAdapter(transacciones, this);

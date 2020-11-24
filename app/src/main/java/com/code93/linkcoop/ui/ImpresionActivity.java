@@ -12,11 +12,9 @@ import android.widget.ImageView;
 import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.Tools;
-import com.code93.linkcoop.Toolsss;
 import com.code93.linkcoop.models.Cooperativa;
 import com.code93.linkcoop.models.DataTransaccion;
 import com.code93.linkcoop.models.Transaccion;
-import com.squareup.picasso.Picasso;
 import com.zcs.sdk.DriverManager;
 import com.zcs.sdk.Printer;
 import com.zcs.sdk.SdkResult;
@@ -47,29 +45,7 @@ public class ImpresionActivity extends AppCompatActivity {
 
         ImageView imgLogoCoop = findViewById(R.id.imgLogoCoop);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            cooperativa = (Cooperativa)getIntent().getSerializableExtra("Cooperativa");
-            transaccion = (Transaccion)getIntent().getSerializableExtra("Transaccion");
-            if (transaccion != null) {
-                elementos = transaccion.getDataTrans();
-            }
-            if (cooperativa != null) {
-                if (cooperativa.getUrlImgCoop() != null ) {
-                    if (!cooperativa.getUrlImgCoop().trim().isEmpty()) {
-                        Picasso.get().load(cooperativa.getUrlImgCoop()).into(imgLogoCoop);
-                    } else {
-                        if (cooperativa.getIdDrawable() != 0) {
-                            imgLogoCoop.setImageDrawable(getResources().getDrawable(cooperativa.getIdDrawable()));
-                        }
-                    }
-                } else {
-                    if (cooperativa.getIdDrawable() != 0) {
-                        imgLogoCoop.setImageDrawable(getResources().getDrawable(cooperativa.getIdDrawable()));
-                    }
-                }
-            }
-        }
+
 
         if (Build.MODEL.equals("Z90")) {
             printMatrixText();
@@ -92,7 +68,7 @@ public class ImpresionActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toolsss.showDialogError(ImpresionActivity.this, "No hay papel");
+                            Tools.showDialogError(ImpresionActivity.this, "No hay papel");
 
                         }
                     });
@@ -140,7 +116,7 @@ public class ImpresionActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toolsss.showDialogError(ImpresionActivity.this, "No hay papel");
+                                Tools.showDialogError(ImpresionActivity.this, "No hay papel");
                             }
                         });
                     } else {

@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.models.Cooperativa;
 import com.code93.linkcoop.models.Transaccion;
-import com.squareup.picasso.Picasso;
 
 public class FinishActivity extends AppCompatActivity {
 
@@ -24,13 +23,13 @@ public class FinishActivity extends AppCompatActivity {
 
         ImageView imgToolLogoCoop = findViewById(R.id.imgToolLogoCoop);
 
-        Bundle extras = getIntent().getExtras();
+        /*Bundle extras = getIntent().getExtras();
         if (extras != null) {
             cooperativa = (Cooperativa)getIntent().getSerializableExtra("Cooperativa");
             if (cooperativa != null) {
                 if (cooperativa.getUrlImgCoop() != null ) {
                     if (!cooperativa.getUrlImgCoop().trim().isEmpty()) {
-                        Picasso.get().load(cooperativa.getUrlImgCoop()).into(imgToolLogoCoop);
+                        //Picasso.get().load(cooperativa.getUrlImgCoop()).into(imgToolLogoCoop);
                     } else {
                         if (cooperativa.getIdDrawable() != 0) {
                             imgToolLogoCoop.setImageDrawable(getResources().getDrawable(cooperativa.getIdDrawable()));
@@ -42,7 +41,7 @@ public class FinishActivity extends AppCompatActivity {
                     }
                 }
             }
-        }
+        }*/
 
 
         final Handler handler = new Handler();

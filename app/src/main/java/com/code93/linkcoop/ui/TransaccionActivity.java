@@ -16,7 +16,6 @@ import com.code93.linkcoop.adapters.MenuElementosAdapter;
 import com.code93.linkcoop.models.Cooperativa;
 import com.code93.linkcoop.models.DataTransaccion;
 import com.code93.linkcoop.models.Transaccion;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -41,30 +40,30 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
         tvTransaccion = findViewById(R.id.tvTransaccion);
         ImageView imgToolLogoCoop = findViewById(R.id.imgToolLogoCoop);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            cooperativa = (Cooperativa)getIntent().getSerializableExtra("Cooperativa");
-            transaccion = (Transaccion)getIntent().getSerializableExtra("Transaccion");
-            if (transaccion != null) {
-                tvTransaccion.setText(transaccion.getNameTrans());
-                elementos = transaccion.getDataTrans();
-            }
-            if (cooperativa != null) {
-                if (cooperativa.getUrlImgCoop() != null ) {
-                    if (!cooperativa.getUrlImgCoop().trim().isEmpty()) {
-                        Picasso.get().load(cooperativa.getUrlImgCoop()).into(imgToolLogoCoop);
-                    } else {
-                        if (cooperativa.getIdDrawable() != 0) {
-                            imgToolLogoCoop.setImageDrawable(getResources().getDrawable(cooperativa.getIdDrawable()));
-                        }
-                    }
-                } else {
-                    if (cooperativa.getIdDrawable() != 0) {
-                        imgToolLogoCoop.setImageDrawable(getResources().getDrawable(cooperativa.getIdDrawable()));
-                    }
-                }
-            }
-        }
+//        Bundle extras = getIntent().getExtras();
+//        if (extras != null) {
+//            cooperativa = (Cooperativa)getIntent().getSerializableExtra("Cooperativa");
+//            transaccion = (Transaccion)getIntent().getSerializableExtra("Transaccion");
+//            if (transaccion != null) {
+//                tvTransaccion.setText(transaccion.getNameTrans());
+//                elementos = transaccion.getDataTrans();
+//            }
+//            if (cooperativa != null) {
+//                if (cooperativa.getUrlImgCoop() != null ) {
+//                    if (!cooperativa.getUrlImgCoop().trim().isEmpty()) {
+//                        //Picasso.get().load(cooperativa.getUrlImgCoop()).into(imgToolLogoCoop);
+//                    } else {
+//                        if (cooperativa.getIdDrawable() != 0) {
+//                            imgToolLogoCoop.setImageDrawable(getResources().getDrawable(cooperativa.getIdDrawable()));
+//                        }
+//                    }
+//                } else {
+//                    if (cooperativa.getIdDrawable() != 0) {
+//                        imgToolLogoCoop.setImageDrawable(getResources().getDrawable(cooperativa.getIdDrawable()));
+//                    }
+//                }
+//            }
+//        }
 
         rvElementos = findViewById(R.id.rvElementos);
 
@@ -96,10 +95,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
 
     public void tarjetaActivity(View view) {
         if (view != null) {
-            Intent intent = new Intent(this, TarjetaActivity.class);
-            intent.putExtra("Cooperativa", cooperativa);
-            intent.putExtra("Transaccion", transaccion);
-            startActivity(intent);
+
         }
     }
 

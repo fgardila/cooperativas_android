@@ -22,11 +22,9 @@ public class AesBase64Wrapper {
         try {
             Cipher c = getCipher(Cipher.ENCRYPT_MODE);
             byte[] encryptedVal = c.doFinal(getBytes(raw));
-            //Enconde
-            //String s = getString(Base64.encodeBase64(encryptedVal));
-            String s = Base64.encodeToString(encryptedVal, Base64.DEFAULT);
-            return s;
-        } catch (Throwable t) {
+
+            return Base64.encodeToString(encryptedVal, Base64.DEFAULT);
+        } catch (Exception t) {
             throw new RuntimeException(t);
         }
     }

@@ -3,6 +3,7 @@ package com.code93.linkcoop.ui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 
@@ -21,6 +22,24 @@ public class IngresarMontoActivity extends AppCompatActivity {
 
         etMonto = findViewById(R.id.etMonto);
 
+    }
+
+    private class SegundoPlano extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
+        }
     }
 
     public void enviarMonto(View view) {
