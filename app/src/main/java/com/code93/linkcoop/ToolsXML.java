@@ -25,6 +25,39 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class ToolsXML extends Activity {
 
+    public static String requestGenerate(String user) {
+        ArrayList<DataElements> listFields = new ArrayList<>();
+        listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "E000010800A00040"));
+        listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), "306000"));
+        listFields.add(new DataElements(Tools.NameFields.reference.toString(), "0100018104"));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "2"));
+        listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
+        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012000"));
+        return ToolsXML.createXML("request_logoff", listFields);
+    }
+
+    public static String requestInquiry(String user, String pwd) {
+        ArrayList<DataElements> listFields = new ArrayList<>();
+        listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "E200010810A050C0"));
+        listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), "30100"));
+        listFields.add(new DataElements(Tools.NameFields.reference.toString(), "0100018104"));
+        listFields.add(new DataElements(Tools.NameFields.transaction_amount.toString(), "0"));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
+        listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "2"));
+        listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
+        listFields.add(new DataElements(Tools.NameFields.source_names.toString(), "LIDER LAUTARO NAVARRETE ORMAZA"));
+        listFields.add(new DataElements(Tools.NameFields.phone_number.toString(), "2222222222222"));
+        listFields.add(new DataElements(Tools.NameFields.token_data.toString(), "X40131111111111111"));
+        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012001"));
+        return ToolsXML.createXML("request_logon", listFields);
+    }
+
     public static String requestLogon(String user, String pwd) {
         ArrayList<DataElements> listFields = new ArrayList<>();
         listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "C000010810A0004C"));
@@ -52,7 +85,7 @@ public class ToolsXML extends Activity {
         listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
         listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012000"));
         listFields.add(new DataElements(Tools.NameFields.user_id.toString(), user));
-        return ToolsXML.createXML("request_logoff", listFields);
+        return createXML("request_logoff", listFields);
     }
 
     public static String createXML(String startTag, List<DataElements> listElements) {
@@ -75,4 +108,6 @@ public class ToolsXML extends Activity {
             throw new RuntimeException(e);
         }
     }
+
+
 }

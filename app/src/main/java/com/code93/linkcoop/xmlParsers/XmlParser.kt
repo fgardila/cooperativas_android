@@ -2,17 +2,19 @@ package com.code93.linkcoop.xmlParsers
 
 import android.util.Xml
 import com.code93.linkcoop.FieldsTrx
-import com.code93.linkcoop.Tools
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
+import java.io.ByteArrayInputStream
 import java.io.IOException
 import java.io.InputStream
 
 object XmlParser {
 
+    @JvmStatic
     @Throws(XmlPullParserException::class, IOException::class)
-    fun parse(inputStream: InputStream, replyTag: String): FieldsTrx {
-        inputStream.use { inputStream ->
+    fun parse(response: String, replyTag: String): FieldsTrx {
+        val input: InputStream = ByteArrayInputStream(response.toByteArray())
+        input.use { inputStream ->
             val parser: XmlPullParser = Xml.newPullParser()
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
             parser.setInput(inputStream, null)

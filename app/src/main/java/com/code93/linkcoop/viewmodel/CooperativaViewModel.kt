@@ -28,7 +28,7 @@ class CooperativaViewModel(application: Application): AndroidViewModel(applicati
     }
 
 
-    fun deleteAllUser() {
+    fun deleteAllCooperativas() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAllCooperativas()
         }

@@ -1,10 +1,12 @@
 package com.code93.linkcoop.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,12 +20,16 @@ import java.util.List;
 
 public class MenuCoopAdapter extends RecyclerView.Adapter<MenuCoopAdapter.MenuCoopHolder>{
 
-    ArrayList<Cooperativa> cooperativas;
+    List<Cooperativa> cooperativas = new ArrayList<>();
     Context context;
 
-    public MenuCoopAdapter(ArrayList<Cooperativa> cooperativas, Context context) {
-        this.cooperativas = cooperativas;
+    public MenuCoopAdapter(Context context) {
         this.context = context;
+    }
+
+    public void setDatas(List<Cooperativa> cooperativas) {
+        this.cooperativas = cooperativas;
+        notifyDataSetChanged();
     }
 
     private OnClickCoop listener;
@@ -49,27 +55,13 @@ public class MenuCoopAdapter extends RecyclerView.Adapter<MenuCoopAdapter.MenuCo
 
     @Override
     public void onBindViewHolder(@NonNull MenuCoopHolder holder, int position) {
-        /*Cooperativa coop = cooperativas.get(position);
-        if (coop.getUrlImgCoop() != null ) {
-            if (!coop.getUrlImgCoop().trim().isEmpty()) {
-                //Picasso.get().load(coop.getUrlImgCoop()).into(holder.imgLogoCoop);
-                Glide.with(context).load(coop.getUrlImgCoop())
-                        .into(holder.imgLogoCoop);
-                //holder.imgLogoCoop.setImageDrawable(context.getResources().getDrawable(R.drawable.logo_alianza));
-            } else {
-                if (coop.getIdDrawable() != 0) {
-                    holder.imgLogoCoop.setImageDrawable(context.getResources().getDrawable(coop.getIdDrawable()));
-                }
-            }
-        } else {
-            if (coop.getIdDrawable() != 0) {
-                holder.imgLogoCoop.setImageDrawable(context.getResources().getDrawable(coop.getIdDrawable()));
-            }
-        }*/
+        Cooperativa coop = cooperativas.get(position);
+        holder.tvNameCoop.setText(coop.get_namec().trim());
     }
 
     @Override
     public int getItemCount() {
+        Log.d("SIZE LIST", ""+cooperativas.size());
         return cooperativas.size();
     }
 
@@ -78,12 +70,14 @@ public class MenuCoopAdapter extends RecyclerView.Adapter<MenuCoopAdapter.MenuCo
         List<Cooperativa> coops;
         MenuCoopAdapter adapter;
         public ImageView imgLogoCoop;
+        public TextView tvNameCoop;
 
         public MenuCoopHolder(@NonNull View itemView, List<Cooperativa> coops, MenuCoopAdapter adapter) {
             super(itemView);
             this.coops = coops;
             this.adapter = adapter;
             imgLogoCoop = itemView.findViewById(R.id.imgLogoCoop);
+            tvNameCoop = itemView.findViewById(R.id.tvNameCoop);
             itemView.setOnClickListener(this);
 
         }

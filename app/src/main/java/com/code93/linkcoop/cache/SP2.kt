@@ -85,6 +85,9 @@ class SP2 private constructor(context: Context) : ICache {
 
     companion object {
 
+        val user = "user"
+        val pwd = "pwd"
+        val saveLogin = "saveLogin"
         val SP_LOGIN = "login"
         val SP_TRACE = "trace"
 

@@ -1,6 +1,7 @@
 package com.code93.linkcoop.network
 
 import android.os.AsyncTask
+import android.util.Log
 import com.code93.linkcoop.MyApp
 import org.ksoap2.SoapEnvelope
 import org.ksoap2.serialization.SoapObject
@@ -22,7 +23,8 @@ class DownloadXmlTask(var xmlSend: String, var callback: DownloadCallback) : Asy
     }
 
     override fun onPostExecute(result: String?) {
-        callback.onDownloadCallback(result!!)
+        Log.d("XML RECIVE", result!!)
+        callback.onDownloadCallback(result)
     }
 
     @Throws(IOException::class)
@@ -42,18 +44,5 @@ class DownloadXmlTask(var xmlSend: String, var callback: DownloadCallback) : Asy
         transport.call(SOAP_ACTION, soapEnvelope)
         val resultString = soapEnvelope.response as SoapPrimitive
         return resultString.toString()
-
-        /*try {
-            val Request = SoapObject(NAMESPACE, METHOD_NAME)
-            Request.addProperty("XmlRequest", xmlSend)
-            val soapEnvelope = SoapSerializationEnvelope(SoapEnvelope.VER11)
-            soapEnvelope.dotNet = true
-            soapEnvelope.setOutputSoapObject(Request)
-            val transport = HttpTransportSE(URL)
-            transport.call(SOAP_ACTION, soapEnvelope)
-            val resultString = soapEnvelope.response as SoapPrimitive
-            return resultString.toString()
-        } catch (e: Exception) {
-        }*/
     }
 }

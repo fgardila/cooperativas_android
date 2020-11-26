@@ -17,15 +17,19 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.code93.linkcoop.AesBase64Wrapper;
 import com.code93.linkcoop.DataElements;
+import com.code93.linkcoop.DialogCallback;
 import com.code93.linkcoop.FieldsTrx;
 import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.ToolsXML;
+import com.code93.linkcoop.cache.SP;
 import com.code93.linkcoop.cache.SP2;
 import com.code93.linkcoop.models.Cooperativa;
 import com.code93.linkcoop.models.LoginCooperativas;
+import com.code93.linkcoop.network.DownloadCallback;
+import com.code93.linkcoop.network.DownloadXmlTask;
 import com.code93.linkcoop.viewmodel.CooperativaViewModel;
 import com.code93.linkcoop.xmlParsers.XmlParser;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +42,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
+import org.jetbrains.annotations.NotNull;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
@@ -66,7 +71,8 @@ public class Login extends AppCompatActivity {
     private FirebaseAuth auth;
     private SoapPrimitive resultString;
 
-    CooperativaViewModel viewModel;
+    private CooperativaViewModel viewModel;
+    private SP2 sp2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +80,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         viewModel = new ViewModelProvider(this).get(CooperativaViewModel.class);
+        sp2 = SP2.Companion.getInstance(this);
 
         auth = FirebaseAuth.getInstance();
         spotDialog = new SpotsDialog.Builder()
@@ -89,19 +96,16 @@ public class Login extends AppCompatActivity {
         tilPassword = findViewById(R.id.tilPassword);
 
         ArrayList<String> datos = sharedPreferences();
-        if (datos.get(0) != null) {
+        if (datos.get(1) != null) {
             etEmail.setText(datos.get(0));
             etPassword.setText(datos.get(1));
             checkbox.setChecked(true);
         }
 
         ImageView imgConnectCoop = findViewById(R.id.imgConnectCoop);
-        imgConnectCoop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Login.this, MainActivity.class));
-                //Tools.showDialogError(Login.this, sp2.getString(SP2.Companion.getSP_LOGIN(), "NULL"));
-            }
+        imgConnectCoop.setOnClickListener(v -> {
+            startActivity(new Intent(Login.this, MainActivity.class));
+            //Tools.showDialogError(Login.this, sp2.getString(SP2.Companion.getSP_LOGIN(), "NULL"));
         });
     }
 
@@ -142,36 +146,37 @@ public class Login extends AppCompatActivity {
 
             String encrypUser = aes.encryptAndEncode(user);
             String encrypPwd = aes.encryptAndEncode(pwd);
-            createXML(encrypUser, encrypPwd);
-            //logoff(encrypUser, encrypPwd);
+            sendLogin(encrypUser, encrypPwd);
         } else {
             spotDialog.dismiss();
             Tools.showDialogError(this, "Complete todos los campos requeridos");
         }
+    }
 
-        /*String json = "{\"cooperativas\":[{\"_id\":\"5000\",\"_namec\":\"COOPERATIVA MIFEX\",\"_transaction\":[{\"_code\":\"301000\",\"_namet\":\"CONSULTA DE SALDOS\",\"_cost\":\"0.50\"},{\"_code\":\"306000\",\"_namet\":\"GENERACION OTP\",\"_cost\":\"0.00\"},{\"_code\":\"501020\",\"_namet\":\"RETIRO DE AHORROS\",\"_cost\":\"0.53\"}]},{\"_id\":\"5001\",\"_namec\":\"COOPERATIVA DE LOS MAESTROS\",\"_transaction\":[{\"_code\":\"301000\",\"_namet\":\"CONSULTA DE SALDOS\",\"_cost\":\"0.50\"},{\"_code\":\"306000\",\"_namet\":\"GENERACION OTP\",\"_cost\":\"0.00\"},{\"_code\":\"501020\",\"_namet\":\"RETIRO DE AHORROS\",\"_cost\":\"0.53\"},{\"_code\":\"001000\",\"_namet\":\"DEPOSITO DE AHORROS\",\"_cost\":\"0.45\"}]}]}";
-        Gson gson = new Gson();
-        LoginCooperativas logCoop = gson.fromJson(json, LoginCooperativas.class);
-        Cooperativa coop1 = logCoop.getCooperativas().get(0);
-        Log.d("COOP", coop1.get_namec());
+    private void sendLogin(String encrypUser, String encrypPwd) {
+        String xmlLogOff = ToolsXML.requestLogon(encrypUser, encrypPwd);
 
-
-        for (Cooperativa coop : logCoop.getCooperativas()) {
-            viewModel.addCooperativa(coop);
-            viewModel.updateCooperativa(coop);
-        }*/
-
-        //MyApp.sp2.incTraceNo();
-
-        //encryp();
+        DownloadXmlTask task = new DownloadXmlTask(xmlLogOff, response -> {
+            procesarRespuesta(response);
+        });
+        task.execute(xmlLogOff);
     }
 
     private ArrayList<String> sharedPreferences() {
         ArrayList<String> data = new ArrayList<>();
-        SharedPreferences preferences = this.getSharedPreferences("acceso", MODE_PRIVATE);
-        data.add(0, preferences.getString("email", null));
-        data.add(1, preferences.getString("pwd", null));
+        data.add(0, sp2.getString(SP2.Companion.getUser(), ""));
+        data.add(1, sp2.getString(SP2.Companion.getPwd(), ""));
         return data;
+    }
+
+    private void eliminarDatosAcceso() {
+        sp2.putString(SP2.Companion.getPwd(), null);
+    }
+
+    private void guardarDatosAcceso(String email, String pwd) {
+        sp2.putBoolean(SP2.Companion.getSaveLogin(), true);
+        sp2.putString(SP2.Companion.getUser(), email);
+        sp2.putString(SP2.Companion.getPwd(), pwd);
     }
 
     @Override
@@ -180,7 +185,6 @@ public class Login extends AppCompatActivity {
         FirebaseUser currentUser = auth.getCurrentUser();
         updateUI(currentUser);
 
-        SP2 sp2 = SP2.Companion.getInstance(this);
         boolean loginStatus = sp2.getBoolean(SP2.Companion.getSP_LOGIN(), false);
         if (loginStatus) {
             startActivity(new Intent(this, MainActivity.class));
@@ -210,139 +214,39 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    private void eliminarDatosAcceso() {
-        SharedPreferences.Editor editor = this.getSharedPreferences("acceso", MODE_PRIVATE).edit();
-        editor.putString("email", null);
-        editor.putString("pwd", null);
-        editor.apply();
-    }
-
-    private void guardarDatosAcceso(String email, String pwd) {
-        SharedPreferences.Editor editor = this.getSharedPreferences("acceso", MODE_PRIVATE).edit();
-        editor.putString("email", email);
-        editor.putString("pwd", pwd);
-        editor.apply();
-    }
-
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
     }
 
-    private void encryp() {
-        AesBase64Wrapper aes = new AesBase64Wrapper();
-        Log.d("Mensaje Encriptado", aes.encryptAndEncode("9999"));
-    }
-
-    private void createXML(String user, String pwd) {
-        ArrayList<DataElements> listFields = new ArrayList<>();
-        listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "C000010810A0004C"));
-        listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0800"));
-        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), "930002"));
-        listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
-        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
-        listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
-        listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "2"));
-        listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
-        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012000"));
-        listFields.add(new DataElements(Tools.NameFields.user_id.toString(), user));
-        listFields.add(new DataElements(Tools.NameFields.password.toString(), pwd));
-        String xmlRequestLogon = ToolsXML.createXML("request_logon", listFields);
-        sendTrx(xmlRequestLogon);
-    }
-
-    private void logoff(String user, String pwd) {
-        ArrayList<DataElements> listFields = new ArrayList<>();
-        listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "C000010800A00048"));
-        listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0800"));
-        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), "930003"));
-        listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
-        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
-        listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "2"));
-        listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
-        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012000"));
-        listFields.add(new DataElements(Tools.NameFields.user_id.toString(), user));
-        String xmlRequestLogon = ToolsXML.createXML("request_logoff", listFields);
-        sendTrx(xmlRequestLogon);
-    }
-
-    private void sendTrx(String xmlRequestLogon) {
-        SegundoPlano tarea = new SegundoPlano(xmlRequestLogon);
-        tarea.execute();
-    }
-
-    private class SegundoPlano extends AsyncTask<Void, Void, Void> {
-
-        String xmlSend;
-
-        public SegundoPlano(String xml) {
-            this.xmlSend = xml;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            sendRequest(xmlSend);
-            MyApp.sp2.incTraceNo();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            Log.d("RESPUESTA",  resultString.toString());
-            procesarRespuesta(resultString.toString());
-        }
-    }
-
     public void procesarRespuesta(String response) {
-        XmlParser logon = XmlParser.INSTANCE;
-        InputStream inputStream = new ByteArrayInputStream(response.getBytes());
         try {
-            FieldsTrx fieldsTrx = logon.parse(inputStream, "reply_logoff");
+            FieldsTrx fieldsTrx = XmlParser.parse(response, "reply_logon");
             Log.d("FieldTRX", Objects.requireNonNull(fieldsTrx.getToken_data()));
             TokenData tokenData = new TokenData();
-            List<TokenData> listTokens =  tokenData.getTokens(Objects.requireNonNull(fieldsTrx.getToken_data()));
-            Log.d("ListToken", listTokens.get(0).getIdToken());
+            tokenData.getTokens(Objects.requireNonNull(fieldsTrx.getToken_data()));
             if (fieldsTrx.getResponse_code().equals("00")) {
+                spotDialog.dismiss();
                 MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), true);
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
+                Gson gson = new Gson();
+                LoginCooperativas logCoop = gson.fromJson(fieldsTrx.getBuffer_data(), LoginCooperativas.class);
+                viewModel.deleteAllCooperativas();
+                for (Cooperativa coop : logCoop.getCooperativas()) {
+
+                    viewModel.addCooperativa(coop);
+                    viewModel.updateCooperativa(coop);
+                }
+
+                Tools.showDialogPositive(this, tokenData.getB1(), value -> {
+                    startActivity(new Intent(Login.this, MainActivity.class));
+                    finish();
+                });
             } else {
-                showMensaje(listTokens);
+                spotDialog.dismiss();
+                Tools.showDialogError(this, tokenData.getB1());
             }
-        } catch (XmlPullParserException e) {
+        } catch (XmlPullParserException | IOException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void showMensaje(List<TokenData> listTokens) {
-        spotDialog.dismiss();
-        for (TokenData tokenData : listTokens) {
-            if (tokenData.getIdToken().equals("B1")){
-                Tools.showDialogError(this, tokenData.getDataToken());
-                break;
-            }
-        }
-    }
-
-    private void sendRequest(String xmlSend) {
-        String SOAP_ACTION = "http://tempuri.org/iServiceAsynchronous/Invoque_Async_Service";
-        String METHOD_NAME = "Invoque_Async_Service";
-        String NAMESPACE = "http://tempuri.org/";
-        String URL = "http://190.216.106.14:1992/AsynchronousService.svc";
-
-        try {
-            SoapObject Request = new SoapObject(NAMESPACE, METHOD_NAME);
-            Request.addProperty("XmlRequest", xmlSend);
-            SoapSerializationEnvelope soapEnvelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-            soapEnvelope.dotNet = true;
-            soapEnvelope.setOutputSoapObject(Request);
-            HttpTransportSE transport = new HttpTransportSE(URL);
-            transport.call(SOAP_ACTION, soapEnvelope);
-            resultString = (SoapPrimitive) soapEnvelope.getResponse();
-        } catch (Exception e) {
-
         }
     }
 }

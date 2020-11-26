@@ -2,6 +2,7 @@ package com.code93.linkcoop
 
 import android.app.Dialog
 import android.content.Context
+import android.os.CountDownTimer
 import android.util.Log
 import android.util.Patterns
 import android.view.View
@@ -91,7 +92,7 @@ object Tools {
         val dialog = Dialog(context!!)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE) // before
         dialog.setContentView(R.layout.dialog_warning)
-        dialog.setCancelable(true)
+        dialog.setCancelable(false)
         val lp = WindowManager.LayoutParams()
         lp.copyFrom(dialog.window!!.attributes)
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT
@@ -103,6 +104,39 @@ object Tools {
         }
         dialog.show()
         dialog.window!!.attributes = lp
+    }
+
+    @JvmStatic
+    fun showDialogPositive(context: Context?, messaje: String?, dialogCallback: DialogCallback) {
+        val dialog = Dialog(context!!)
+        val timer = object: CountDownTimer(5000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                Log.d("TIMER", "" + millisUntilFinished)
+            }
+
+            override fun onFinish() {
+                dialogCallback.onDialogCallback(0)
+                dialog.dismiss()
+            }
+        }
+        timer.start()
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE) // before
+        dialog.setContentView(R.layout.dialog_positve)
+        dialog.setCancelable(false)
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window!!.attributes)
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+        val content = dialog.findViewById<TextView>(R.id.content)
+        content.text = messaje
+        (dialog.findViewById<View>(R.id.bt_close) as Button).setOnClickListener {
+            timer.cancel()
+            dialogCallback.onDialogCallback(0)
+            dialog.dismiss()
+        }
+        dialog.show()
+        dialog.window!!.attributes = lp
+
     }
 
     @JvmStatic
