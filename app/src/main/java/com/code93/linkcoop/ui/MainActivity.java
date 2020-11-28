@@ -82,20 +82,6 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
     }
 
     public void clickCerrarSesion(View view) {
-        /*String userLogin = SP2.Companion.getInstance(this).getString("userLogin", "");
-        if (!userLogin.equals("")) {
-            String xmlLogOff = ToolsXML.requestLogoff(userLogin);
-
-            DownloadXmlTask task = new DownloadXmlTask(xmlLogOff, this);
-            task.execute(xmlLogOff);
-
-
-
-            *//*SegundoPlano tarea = new SegundoPlano(xmlLogOff);
-            tarea.execute();*//*
-        } else {
-               
-        }*/
         AesBase64Wrapper aes = new AesBase64Wrapper();
 
         String xmlLogOff = ToolsXML.requestLogoff(aes.encryptAndEncode("lnavarrete"));

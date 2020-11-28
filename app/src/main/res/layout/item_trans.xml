@@ -31,6 +31,7 @@
                 android:gravity="center"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textSize="18sp"
+                android:padding="@dimen/spacing_medium"
                 android:text="Ejemplo"
                 android:textColor="@android:color/white"/>
 

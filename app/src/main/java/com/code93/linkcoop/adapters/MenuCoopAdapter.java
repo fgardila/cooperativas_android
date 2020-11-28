@@ -18,13 +18,14 @@ import com.code93.linkcoop.models.Cooperativa;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuCoopAdapter extends RecyclerView.Adapter<MenuCoopAdapter.MenuCoopHolder>{
+public class MenuCoopAdapter extends RecyclerView.Adapter<MenuCoopAdapter.MenuCoopHolder> {
 
     List<Cooperativa> cooperativas = new ArrayList<>();
     Context context;
 
-    public MenuCoopAdapter(Context context) {
+    public MenuCoopAdapter(Context context, OnClickCoop listener) {
         this.context = context;
+        setOnClickCoop(listener);
     }
 
     public void setDatas(List<Cooperativa> cooperativas) {
@@ -35,14 +36,14 @@ public class MenuCoopAdapter extends RecyclerView.Adapter<MenuCoopAdapter.MenuCo
     private OnClickCoop listener;
 
     public interface OnClickCoop {
-        void onItemClick(RecyclerView.ViewHolder item, int position, int id);
+        void onItemClick(Cooperativa cooperativa);
     }
 
     public void setOnClickCoop(OnClickCoop listener) {
         this.listener = listener;
     }
 
-    public OnClickCoop getOnClickCoop(){
+    public OnClickCoop getOnClickCoop() {
         return listener;
     }
 
@@ -50,45 +51,36 @@ public class MenuCoopAdapter extends RecyclerView.Adapter<MenuCoopAdapter.MenuCo
     @Override
     public MenuCoopHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_coop, parent, false);
-        return new MenuCoopHolder(view, cooperativas, this);
+        return new MenuCoopHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MenuCoopHolder holder, int position) {
         Cooperativa coop = cooperativas.get(position);
         holder.tvNameCoop.setText(coop.get_namec().trim());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClick(coop);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        Log.d("SIZE LIST", ""+cooperativas.size());
+        Log.d("SIZE LIST", "" + cooperativas.size());
         return cooperativas.size();
     }
 
-    public static class MenuCoopHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class MenuCoopHolder extends RecyclerView.ViewHolder {
 
-        List<Cooperativa> coops;
-        MenuCoopAdapter adapter;
         public ImageView imgLogoCoop;
         public TextView tvNameCoop;
 
-        public MenuCoopHolder(@NonNull View itemView, List<Cooperativa> coops, MenuCoopAdapter adapter) {
+        public MenuCoopHolder(@NonNull View itemView) {
             super(itemView);
-            this.coops = coops;
-            this.adapter = adapter;
             imgLogoCoop = itemView.findViewById(R.id.imgLogoCoop);
             tvNameCoop = itemView.findViewById(R.id.tvNameCoop);
-            itemView.setOnClickListener(this);
-
-        }
-
-        @Override
-        public void onClick(View v) {
-            final OnClickCoop listener = adapter.getOnClickCoop();
-            int id = v.getId();
-            if (listener != null) {
-                listener.onItemClick(this, getAdapterPosition(), id);
-            }
         }
     }
 }

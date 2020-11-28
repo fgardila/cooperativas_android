@@ -19,7 +19,7 @@ import com.code93.linkcoop.models.Transaccion;
 
 import java.util.List;
 
-public class TransaccionActivity extends AppCompatActivity implements MenuElementosAdapter.OnClickElemetos{
+public class TransaccionActivity extends AppCompatActivity implements MenuElementosAdapter.OnClickElemetos {
 
     private static final int RTA_ELEMENTO = 101;
     RecyclerView rvElementos;
@@ -38,7 +38,6 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
         setContentView(R.layout.activity_transaccion);
 
         tvTransaccion = findViewById(R.id.tvTransaccion);
-        ImageView imgToolLogoCoop = findViewById(R.id.imgToolLogoCoop);
 
 //        Bundle extras = getIntent().getExtras();
 //        if (extras != null) {
@@ -67,14 +66,12 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
 
         rvElementos = findViewById(R.id.rvElementos);
 
-        adapter = new MenuElementosAdapter(elementos, this);
+        /*adapter = new MenuElementosAdapter(elementos, this);
         adapter.setOnClickElemento(this);
         rvElementos.setLayoutManager(new LinearLayoutManager(this));
-        rvElementos.setAdapter(adapter);
+        rvElementos.setAdapter(adapter);*/
 
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -90,12 +87,6 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
 
         } else {
             super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    public void tarjetaActivity(View view) {
-        if (view != null) {
-
         }
     }
 

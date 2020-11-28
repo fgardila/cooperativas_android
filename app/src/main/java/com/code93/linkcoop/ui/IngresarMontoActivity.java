@@ -24,24 +24,6 @@ public class IngresarMontoActivity extends AppCompatActivity {
 
     }
 
-    private class SegundoPlano extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-
-        }
-    }
-
     public void enviarMonto(View view) {
         if (view != null) {
             Intent data = new Intent();

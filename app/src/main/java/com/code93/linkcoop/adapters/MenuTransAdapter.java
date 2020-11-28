@@ -11,23 +11,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.models.Transaccion;
+import com.code93.linkcoop.models.Transaction;
 
 import java.util.List;
 
 public class MenuTransAdapter extends RecyclerView.Adapter<MenuTransAdapter.MenuTransHolder>{
 
-    List<Transaccion> transacciones;
+    List<Transaction> transacciones;
     Context context;
 
-    public MenuTransAdapter(List<Transaccion> transacciones, Context context) {
+    public MenuTransAdapter(List<Transaction> transacciones, OnClickTrans onClickTrans) {
         this.transacciones = transacciones;
-        this.context = context;
+        setOnClickTrans(onClickTrans);
     }
 
     private OnClickTrans listener;
 
     public interface OnClickTrans {
-        void onItemClick(RecyclerView.ViewHolder item, int position, int id);
+        void onItemClick(Transaction transaction);
     }
 
     public void setOnClickTrans(OnClickTrans listener) {
@@ -42,13 +43,14 @@ public class MenuTransAdapter extends RecyclerView.Adapter<MenuTransAdapter.Menu
     @Override
     public MenuTransHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_trans, parent, false);
-        return new MenuTransHolder(view, transacciones, this);
+        return new MenuTransHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MenuTransHolder holder, int position) {
-        Transaccion trans = transacciones.get(position);
-        holder.tvNameTrans.setText(trans.getNameTrans());
+        Transaction trans = transacciones.get(position);
+        holder.tvNameTrans.setText(trans.get_namet().trim());
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(trans));
     }
 
     @Override
@@ -56,28 +58,14 @@ public class MenuTransAdapter extends RecyclerView.Adapter<MenuTransAdapter.Menu
         return transacciones.size();
     }
 
-    public static class MenuTransHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class MenuTransHolder extends RecyclerView.ViewHolder {
 
-        List<Transaccion> trans;
-        MenuTransAdapter adapter;
         public TextView tvNameTrans;
 
-        public MenuTransHolder(@NonNull View itemView, List<Transaccion> trans, MenuTransAdapter adapter) {
+        public MenuTransHolder(@NonNull View itemView) {
             super(itemView);
-            this.trans = trans;
-            this.adapter = adapter;
             tvNameTrans = itemView.findViewById(R.id.tvNameTrans);
-            itemView.setOnClickListener(this);
 
-        }
-
-        @Override
-        public void onClick(View v) {
-            final OnClickTrans listener = adapter.getOnClickTrans();
-            int id = v.getId();
-            if (listener != null) {
-                listener.onItemClick(this, getAdapterPosition(), id);
-            }
         }
     }
 }
