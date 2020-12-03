@@ -20,9 +20,6 @@ public class FinishActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finish);
 
-
-        ImageView imgToolLogoCoop = findViewById(R.id.imgToolLogoCoop);
-
         /*Bundle extras = getIntent().getExtras();
         if (extras != null) {
             cooperativa = (Cooperativa)getIntent().getSerializableExtra("Cooperativa");

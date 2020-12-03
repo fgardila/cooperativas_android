@@ -12,5 +12,6 @@ data class Cooperativa(
         @PrimaryKey
         var _id: String = "",
         var _namec: String = "",
+        var url_imagen: String = "",
         var _transaction : List<Transaction>
 ) : Parcelable {}

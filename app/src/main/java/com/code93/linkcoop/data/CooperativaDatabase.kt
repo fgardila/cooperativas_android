@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import com.code93.juliopaprika_menuvirtual.data.Converters
 import com.code93.linkcoop.models.Cooperativa
 
-@Database(entities = [Cooperativa::class], version = 1, exportSchema = false)
+@Database(entities = [Cooperativa::class], version = 2, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class CooperativaDatabase : RoomDatabase() {
 

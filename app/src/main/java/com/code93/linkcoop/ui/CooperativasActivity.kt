@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.code93.linkcoop.R
 import com.code93.linkcoop.adapters.MenuCoopAdapter
@@ -27,7 +28,8 @@ class CooperativasActivity : FragmentActivity(), MenuCoopAdapter.OnClickCoop {
         val adapter = MenuCoopAdapter(this, this)
         val recyclerView = rvCooperativas
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        //recyclerView.layoutManager = LinearLayoutManager(this)
 
         cooperativaViewModel.readAllData.observe(this, Observer { coops ->
             adapter.setDatas(coops)

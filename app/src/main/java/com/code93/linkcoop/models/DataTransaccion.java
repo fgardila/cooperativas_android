@@ -8,16 +8,18 @@ public class DataTransaccion implements Serializable {
     int inputType;
     int maxLength;
     String subTitulo;
+    int drawable;
     String value;
 
     public DataTransaccion() {
     }
 
-    public DataTransaccion(String name, int inputType, int maxLength, String subTitulo) {
+    public DataTransaccion(String name, int inputType, int maxLength, String subTitulo, int drawable) {
         this.name = name;
         this.inputType = inputType;
         this.maxLength = maxLength;
         this.subTitulo = subTitulo;
+        this.drawable = drawable;
     }
 
     public DataTransaccion (DataTransaccion dataTransaccion, String value) {
@@ -57,6 +59,14 @@ public class DataTransaccion implements Serializable {
 
     public void setSubTitulo(String subTitulo) {
         this.subTitulo = subTitulo;
+    }
+
+    public int getDrawable() {
+        return drawable;
+    }
+
+    public void setDrawable(int drawable) {
+        this.drawable = drawable;
     }
 
     public String getValue() {

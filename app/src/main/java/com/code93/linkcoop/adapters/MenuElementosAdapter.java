@@ -20,9 +20,12 @@ public class MenuElementosAdapter extends RecyclerView.Adapter<MenuElementosAdap
     List<DataTransaccion> elementos;
     Context context;
 
-    public MenuElementosAdapter(List<DataTransaccion> elementos, Context context) {
-        this.elementos = elementos;
+    public MenuElementosAdapter(Context context) {
         this.context = context;
+    }
+
+    public void setElementos(List<DataTransaccion> elementos) {
+        this.elementos = elementos;
     }
 
     private OnClickElemetos listener;

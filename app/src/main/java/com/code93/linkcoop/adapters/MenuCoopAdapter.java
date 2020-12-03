@@ -57,7 +57,13 @@ public class MenuCoopAdapter extends RecyclerView.Adapter<MenuCoopAdapter.MenuCo
     @Override
     public void onBindViewHolder(@NonNull MenuCoopHolder holder, int position) {
         Cooperativa coop = cooperativas.get(position);
-        holder.tvNameCoop.setText(coop.get_namec().trim());
+        if (coop.getUrl_imagen().equals("")){
+            holder.tvNameCoop.setText(coop.get_namec().trim());
+        } else {
+            Glide.with(holder.view)
+                    .load(coop.getUrl_imagen())
+                    .into(holder.imgLogoCoop);
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,9 +82,11 @@ public class MenuCoopAdapter extends RecyclerView.Adapter<MenuCoopAdapter.MenuCo
 
         public ImageView imgLogoCoop;
         public TextView tvNameCoop;
+        public View view;
 
         public MenuCoopHolder(@NonNull View itemView) {
             super(itemView);
+            view = itemView;
             imgLogoCoop = itemView.findViewById(R.id.imgLogoCoop);
             tvNameCoop = itemView.findViewById(R.id.tvNameCoop);
         }

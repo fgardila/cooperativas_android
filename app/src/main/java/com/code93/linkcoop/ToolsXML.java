@@ -39,19 +39,19 @@ public class ToolsXML extends Activity {
         return ToolsXML.createXML("request_logoff", listFields);
     }
 
-    public static String requestInquiry(String user, String pwd) {
+    public static String requestInquiry(String reference, String cedula) {
         ArrayList<DataElements> listFields = new ArrayList<>();
         listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "E200010810A050C0"));
         listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
         listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), "30100"));
-        listFields.add(new DataElements(Tools.NameFields.reference.toString(), "0100018104"));
+        listFields.add(new DataElements(Tools.NameFields.reference.toString(), reference));
         listFields.add(new DataElements(Tools.NameFields.transaction_amount.toString(), "0"));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
         listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
         listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
         listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "2"));
         listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
-        listFields.add(new DataElements(Tools.NameFields.source_names.toString(), "LIDER LAUTARO NAVARRETE ORMAZA"));
+        listFields.add(new DataElements(Tools.NameFields.source_names.toString(), "XXXXXX XXXXXXX"));
         listFields.add(new DataElements(Tools.NameFields.phone_number.toString(), "2222222222222"));
         listFields.add(new DataElements(Tools.NameFields.token_data.toString(), "X40131111111111111"));
         listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012001"));
@@ -102,7 +102,7 @@ public class ToolsXML extends Activity {
             }
             serializer.endTag("", startTag);
             serializer.endDocument();
-            Log.e("XML DATA: ", writer.toString());
+            Log.d("XML DATA: ", writer.toString());
             return writer.toString();
         } catch (Exception e) {
             throw new RuntimeException(e);
