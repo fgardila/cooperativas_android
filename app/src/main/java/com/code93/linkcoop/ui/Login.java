@@ -232,9 +232,8 @@ public class Login extends AppCompatActivity {
                 LoginCooperativas logCoop = gson.fromJson(fieldsTrx.getBuffer_data(), LoginCooperativas.class);
                 viewModel.deleteAllCooperativas();
                 for (Cooperativa coop : logCoop.getCooperativas()) {
-
                     viewModel.addCooperativa(coop);
-                    viewModel.updateCooperativa(coop);
+                    //viewModel.updateCooperativa(coop);
                 }
 
                 Tools.showDialogPositive(this, tokenData.getB1(), value -> {

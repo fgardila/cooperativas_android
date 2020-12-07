@@ -53,6 +53,11 @@ class TokenData (var idToken: String? = null,
 
     var indice: Int = 0
 
+    fun setToken(tokenId : String, tokenData : String) : String {
+        val mLenToken = StringTools.padleft(tokenData.length.toString(), 3, '0')
+        return tokenId + mLenToken + tokenData
+    }
+
     fun getTokens(tokenData: String) {
         indice = 0
         var i = 0

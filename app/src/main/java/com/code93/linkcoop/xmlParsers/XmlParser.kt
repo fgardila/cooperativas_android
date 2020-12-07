@@ -83,7 +83,7 @@ object XmlParser {
                 "adquirer_institution_number" -> fieldsTrx.adquirer_institution_number = readData(parser, "adquirer_institution_number")
                 "record_names" -> fieldsTrx.record_names = readData(parser, "record_names")
                 "source_names" -> fieldsTrx.source_names = readData(parser, "source_names")
-                "target_names" -> fieldsTrx.target_names = readData(parser, "bitmatarget_namesp")
+                "target_names" -> fieldsTrx.target_names = readData(parser, "target_names")
                 "phone_number" -> fieldsTrx.phone_number = readData(parser, "phone_number")
                 "card_info" -> fieldsTrx.card_info = readData(parser, "card_info")
                 "original_data" -> fieldsTrx.original_data = readData(parser, "original_data")
