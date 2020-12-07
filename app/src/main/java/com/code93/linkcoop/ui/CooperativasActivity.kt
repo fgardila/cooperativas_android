@@ -15,6 +15,7 @@ import com.code93.linkcoop.viewmodel.CooperativaViewModel
 import com.google.android.gms.common.api.CommonStatusCodes
 import kotlinx.android.synthetic.main.activity_cooperativas.*
 
+
 class CooperativasActivity : FragmentActivity(), MenuCoopAdapter.OnClickCoop {
 
     private lateinit var cooperativaViewModel: CooperativaViewModel

@@ -7,12 +7,14 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.code93.juliopaprika_menuvirtual.data.Converters
 import com.code93.linkcoop.models.Cooperativa
+import com.code93.linkcoop.models.FieldsTrx
 
-@Database(entities = [Cooperativa::class], version = 2, exportSchema = false)
+@Database(entities = [Cooperativa::class, FieldsTrx::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class CooperativaDatabase : RoomDatabase() {
 
     abstract fun cooperativaDao() : CooperativaDao
+    abstract fun fieldsTrxDao() : FieldsTrxDao
 
     companion object {
 
@@ -28,7 +30,7 @@ abstract class CooperativaDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                         context.applicationContext,
                         CooperativaDatabase::class.java,
-                        "cooperativa_database"
+                        "linkcoop_database"
                 ).build()
                 INSTANCE = instance
                 return instance

@@ -7,26 +7,26 @@ import java.util.*
 object StringTools {
 
     fun padleft(s: String, len: Int, c: Char): String? {
-        var s = s
-        s = s.trim { it <= ' ' }
-        if (s.length > len) {
+        var data = s
+        data = data.trim { it <= ' ' }
+        if (data.length > len) {
             return null
         }
         val d = StringBuilder(len)
-        var fill = len - s.length
+        var fill = len - data.length
         while (fill-- > 0) {
             d.append(c)
         }
-        d.append(s)
+        d.append(data)
         return d.toString()
     }
 
     fun padright(s: String, len: Int, c: Char): String? {
-        var s = s
-        s = s.trim { it <= ' ' }
+        var data = s
+        data = data.trim { it <= ' ' }
         val d = java.lang.StringBuilder(len)
-        var fill = len - s.length
-        d.append(s)
+        var fill = len - data.length
+        d.append(data)
         while (fill-- > 0) d.append(c)
         return d.toString()
     }

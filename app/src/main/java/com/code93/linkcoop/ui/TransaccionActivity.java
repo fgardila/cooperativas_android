@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.code93.linkcoop.DialogCallback;
-import com.code93.linkcoop.FieldsTrx;
+import com.code93.linkcoop.models.FieldsTrx;
 import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.TokenData;

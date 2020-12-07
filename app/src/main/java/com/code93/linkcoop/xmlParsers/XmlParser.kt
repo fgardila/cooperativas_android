@@ -1,7 +1,7 @@
 package com.code93.linkcoop.xmlParsers
 
 import android.util.Xml
-import com.code93.linkcoop.FieldsTrx
+import com.code93.linkcoop.models.FieldsTrx
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.ByteArrayInputStream
@@ -103,7 +103,7 @@ object XmlParser {
         return fieldsTrx
     }
 
-    private fun readData(parser: XmlPullParser, tag: String): String? {
+    private fun readData(parser: XmlPullParser, tag: String): String {
         parser.require(XmlPullParser.START_TAG, null, tag)
         val title = readText(parser)
         parser.require(XmlPullParser.END_TAG, null, tag)

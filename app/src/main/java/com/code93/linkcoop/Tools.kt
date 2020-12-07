@@ -173,7 +173,7 @@ object Tools {
         var str: String? = null
         try {
             val format = SimpleDateFormat(formatString)
-            str = format.format(date)
+            str = format.format(date!!)
         } catch (e: Exception) {
             Log.e("Error", e.toString())
         }
