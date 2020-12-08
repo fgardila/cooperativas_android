@@ -9,12 +9,16 @@ import android.os.Handler;
 import android.text.Layout;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
+import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.models.Cooperativa;
 import com.code93.linkcoop.models.DataTransaccion;
+import com.code93.linkcoop.models.FieldsTrx;
 import com.code93.linkcoop.models.Transaccion;
+import com.code93.linkcoop.models.Transaction;
 import com.zcs.sdk.DriverManager;
 import com.zcs.sdk.Printer;
 import com.zcs.sdk.SdkResult;
@@ -30,8 +34,9 @@ public class ImpresionActivity extends AppCompatActivity {
     private DriverManager mDriverManager = MyApp.sDriverManager;
 
     Cooperativa cooperativa;
-    Transaccion transaccion;
-    List<DataTransaccion> elementos;
+    Transaction transaccion;
+    FieldsTrx fieldsTrx;
+    TokenData tokenData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +48,23 @@ public class ImpresionActivity extends AppCompatActivity {
             mPrinter = mDriverManager.getPrinter();
         }
 
-        ImageView imgLogoCoop = findViewById(R.id.imgLogoCoop);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            transaccion = (Transaction) getIntent().getParcelableExtra("transaction");
+            cooperativa = (Cooperativa) getIntent().getParcelableExtra("cooperativa");
+            fieldsTrx = (FieldsTrx) getIntent().getParcelableExtra("fieldsTrx");
+            tokenData = (TokenData) getIntent().getParcelableExtra("tokenData");
 
-
-
-        if (Build.MODEL.equals("Z90")) {
-            printMatrixText();
+            if (Build.MODEL.equals("Z90")) {
+                printMatrixText();
+            } else {
+                final Handler handler = new Handler();
+                handler.postDelayed(() -> {
+                    startActivity(new Intent(ImpresionActivity.this, FinishActivity.class));
+                }, 2000);
+            }
         } else {
-            final Handler handler = new Handler();
-            handler.postDelayed(() -> {
-                startActivity(new Intent(ImpresionActivity.this, FinishActivity.class));
-            }, 2000);
+
         }
 
     }

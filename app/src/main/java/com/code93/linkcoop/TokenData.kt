@@ -1,10 +1,12 @@
 package com.code93.linkcoop
 
-import com.code93.linkcoop.xmlParsers.XmlParser
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
-class TokenData (var idToken: String? = null,
+@Parcelize
+data class TokenData (var idToken: String? = null,
                  var lenToken: String? = null,
-                 var dataToken: String? = null) {
+                 var dataToken: String? = null) : Parcelable {
 
     var A0: String = ""
     var A1: String = ""

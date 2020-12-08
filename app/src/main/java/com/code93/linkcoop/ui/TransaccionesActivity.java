@@ -69,6 +69,7 @@ public class TransaccionesActivity extends AppCompatActivity implements MenuTran
                     dialog.dismiss();
                     Intent intent = new Intent(TransaccionesActivity.this, TransaccionActivity.class);
                     intent.putExtra("transaction", transaction);
+                    intent.putExtra("cooperativa", cooperativa);
                     startActivity(intent);
                     finish();
                 }

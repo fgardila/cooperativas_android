@@ -25,6 +25,29 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class ToolsXML extends Activity {
 
+    public static String requestDeposit(String proCode, String numeroCuenta, String monto, String montoComision, String documento) {
+        TokenData tokenData = new TokenData();
+        String tokenX4 = tokenData.setToken("X4", documento);
+
+        ArrayList<DataElements> listFields = new ArrayList<>();
+        listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "E210010810A050C0"));
+        listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), proCode));
+        listFields.add(new DataElements(Tools.NameFields.reference.toString(), numeroCuenta));
+        listFields.add(new DataElements(Tools.NameFields.transaction_amount.toString(), monto));
+        listFields.add(new DataElements(Tools.NameFields.commision_amount.toString(), montoComision));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
+        listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "2"));
+        listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
+        listFields.add(new DataElements(Tools.NameFields.source_names.toString(), "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"));
+        listFields.add(new DataElements(Tools.NameFields.phone_number.toString(), "0000000000"));
+        listFields.add(new DataElements(Tools.NameFields.token_data.toString(), tokenX4));
+        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012000"));
+        return ToolsXML.createXML("request_deposit", listFields);
+    }
+
     public static String requestWithdrawal(String proCode, String numeroCuenta, String monto, String otp, String documento) {
         TokenData tokenData = new TokenData();
         String tokenX4 = tokenData.setToken("X4", documento);
@@ -51,7 +74,7 @@ public class ToolsXML extends Activity {
 
     public static String requestGenerate(String proCode, String reference) {
         ArrayList<DataElements> listFields = new ArrayList<>();
-        listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "E000010800A00040"));
+        listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "E000010810A00040"));
         listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
         listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), proCode));
         listFields.add(new DataElements(Tools.NameFields.reference.toString(), reference));
@@ -59,8 +82,9 @@ public class ToolsXML extends Activity {
         listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
         listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "2"));
         listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
+        listFields.add(new DataElements(Tools.NameFields.authorization_code.toString(), "845583"));
         listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012000"));
-        return ToolsXML.createXML("request_logoff", listFields);
+        return ToolsXML.createXML("request_generate", listFields);
     }
 
     public static String requestInquiry(String proCode, String reference, String documento) {

@@ -2,6 +2,7 @@ package com.code93.linkcoop.ui;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,20 +16,18 @@ import android.widget.Toast;
 
 import com.code93.linkcoop.DialogCallback;
 import com.code93.linkcoop.models.FieldsTrx;
-import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.ToolsXML;
 import com.code93.linkcoop.adapters.MenuElementosAdapter;
-import com.code93.linkcoop.cache.SP2;
 import com.code93.linkcoop.models.Cooperativa;
 import com.code93.linkcoop.models.DataTransaccion;
-import com.code93.linkcoop.models.LoginCooperativas;
 import com.code93.linkcoop.models.Transaction;
 import com.code93.linkcoop.network.DownloadXmlTask;
+import com.code93.linkcoop.viewmodel.CooperativaViewModel;
+import com.code93.linkcoop.viewmodel.FieldsTrxViewModel;
 import com.code93.linkcoop.xmlParsers.XmlParser;
-import com.google.gson.Gson;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -50,16 +49,21 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
 
     MenuElementosAdapter adapter;
 
+    private FieldsTrxViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaccion);
+
+        viewModel = new ViewModelProvider(this).get(FieldsTrxViewModel.class);
 
         tvTransaccion = findViewById(R.id.tvTransaccion);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             transaccion = (Transaction) getIntent().getParcelableExtra("transaction");
+            cooperativa = (Cooperativa) getIntent().getParcelableExtra("cooperativa");
             elementos = getElementos(transaccion.get_namet().trim());
             tvTransaccion.setText(transaccion.get_namet().trim());
         } else {
@@ -158,7 +162,8 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
         boolean camposOk = true;
         for (DataTransaccion data : elementos) {
             if (data.getValue() == null || data.getValue().equals("")) {
-                Toast.makeText(this, "El " + data.getName().trim() + " no se ha completado.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "El " + data.getName().trim() + " no se ha completado.",
+                        Toast.LENGTH_SHORT).show();
                 camposOk = false;
                 break;
             }
@@ -207,7 +212,8 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
             }
         }
 
-        String xmlLogOff = ToolsXML.requestWithdrawal(transaccion.get_code().trim(), numeroDeCuenta, monto, otp, documento);
+        String xmlLogOff = ToolsXML.requestWithdrawal(transaccion.get_code().trim(), numeroDeCuenta,
+                monto, otp, documento);
 
         DownloadXmlTask task = new DownloadXmlTask(xmlLogOff, response -> {
             procesarRespuesta("reply_withdrawal", response);
@@ -248,36 +254,130 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
         String xml = ToolsXML.requestGenerate(transaccion.get_code().trim(), numeroDeCuenta);
 
         DownloadXmlTask task = new DownloadXmlTask(xml, response -> {
-            procesarRespuesta("reply_withdrawal", response);
+            procesarRespuesta("reply_generate", response);
         });
         task.execute(xml);
 
     }
 
     private void depositoAhorros() {
+        String monto = "";
+        String numeroDeCuenta = "";
+        String documento = "";
+        for (DataTransaccion data : elementos) {
+            if (data.getName().equals("Monto")) {
+                monto = data.getValue();
+                continue;
+            }
+            if (data.getName().equals("Numero de cuenta")) {
+                numeroDeCuenta = data.getValue();
+                continue;
+            }
+            if (data.getName().equals("Documento de identidad")) {
+                documento = data.getValue();
+            }
+        }
 
+        String xmlLogOff = ToolsXML.requestDeposit(transaccion.get_code().trim(), numeroDeCuenta,
+                monto, transaccion.get_cost().trim(), documento);
+
+        DownloadXmlTask task = new DownloadXmlTask(xmlLogOff, response -> {
+            procesarRespuesta("reply_deposit", response);
+        });
+        task.execute(xmlLogOff);
     }
 
     private void procesarRespuesta(String tagReply, String response) {
         try {
             FieldsTrx fieldsTrx = XmlParser.parse(response, tagReply);
-            Log.d("FieldTRX", Objects.requireNonNull(fieldsTrx.getToken_data()));
-            TokenData tokenData = new TokenData();
-            tokenData.getTokens(Objects.requireNonNull(fieldsTrx.getToken_data()));
-            if (fieldsTrx.getResponse_code().equals("000")) {
-                Tools.showDialogPositive(TransaccionActivity.this, "Prueba", new DialogCallback() {
-                    @Override
-                    public void onDialogCallback(int value) {
-                        finish();
+            if (!fieldsTrx.getToken_data().equals("")) {
+                Log.d("FieldTRX", Objects.requireNonNull(fieldsTrx.getToken_data()));
+                TokenData tokenData = new TokenData();
+                tokenData.getTokens(Objects.requireNonNull(fieldsTrx.getToken_data()));
+                viewModel.addFieldTrx(fieldsTrx);
+                if (fieldsTrx.getResponse_code().equals("000")) {
+                    switch (transaccion.get_namet().trim()) {
+                        case "RETIRO AHORROS":
+                            procesarRetiroAhorros(fieldsTrx, tokenData);
+                            break;
+                        case "CONSULTA DE SALDOS":
+                            procesarConsultaSaldo(fieldsTrx, tokenData);
+                            break;
+                        case "GENERACION OTP":
+                            procesarGeneracionOtp(fieldsTrx, tokenData);
+                            break;
+                        case "DEPOSITO AHORROS":
+                            procesarDepositoAhorros(fieldsTrx, tokenData);
+                            break;
+                        default:
+                            throw new IllegalStateException("Unexpected value: ");
                     }
-                });
+                } else {
+                    Tools.showDialogErrorCallback(this, tokenData.getB1(), value -> finish());
+                }
             } else {
-                //spotDialog.dismiss();
-                Tools.showDialogError(this, tokenData.getB1());
+                Tools.showDialogError(this, "No llegaron Tokens");
             }
         } catch (XmlPullParserException | IOException e) {
             e.printStackTrace();
-            Tools.showDialogError(this, "Error al procesar la respuesta.");
+            try {
+                FieldsTrx fieldsTrx = XmlParser.parse(response, "default_reply_error");
+                if (!fieldsTrx.getToken_data().equals("")) {
+                    Log.d("FieldTRX", Objects.requireNonNull(fieldsTrx.getToken_data()));
+                    TokenData tokenData = new TokenData();
+                    tokenData.getTokens(Objects.requireNonNull(fieldsTrx.getToken_data()));
+                    Tools.showDialogErrorCallback(this, tokenData.getB1(), value -> finish());
+                } else {
+                    Tools.showDialogError(this, "No llegaron Tokens");
+                }
+            } catch (XmlPullParserException | IOException o) {
+                o.printStackTrace();
+                Tools.showDialogError(this, "Error al procesar la respuesta.");
+            }
         }
+    }
+
+    private void procesarRetiroAhorros(FieldsTrx fieldsTrx, TokenData tokenData) {
+        Tools.showDialogPositive(this, tokenData.getB1(), value -> {
+            Intent intent = new Intent(TransaccionActivity.this, ImpresionActivity.class);
+            intent.putExtra("cooperativa", cooperativa);
+            intent.putExtra("transaction", transaccion);
+            intent.putExtra("fieldsTrx", fieldsTrx);
+            intent.putExtra("tokenData", tokenData);
+            startActivity(intent);
+            finish();
+        });
+    }
+
+    private void procesarConsultaSaldo(FieldsTrx fieldsTrx, TokenData tokenData) {
+        Tools.showDialogPositive(this, tokenData.getB1(), value -> {
+            Intent intent = new Intent(TransaccionActivity.this, ImpresionActivity.class);
+            intent.putExtra("cooperativa", cooperativa);
+            intent.putExtra("transaction", transaccion);
+            intent.putExtra("fieldsTrx", fieldsTrx);
+            intent.putExtra("tokenData", tokenData);
+            startActivity(intent);
+            finish();
+        });
+    }
+
+    private void procesarGeneracionOtp(FieldsTrx fieldsTrx, TokenData tokenData) {
+        Tools.showDialogPositive(this, tokenData.getB1(), value -> {
+            Intent intent = new Intent(TransaccionActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        });
+    }
+
+    private void procesarDepositoAhorros(FieldsTrx fieldsTrx, TokenData tokenData) {
+        Tools.showDialogPositive(this, tokenData.getB1(), value -> {
+            Intent intent = new Intent(TransaccionActivity.this, ImpresionActivity.class);
+            intent.putExtra("cooperativa", cooperativa);
+            intent.putExtra("transaction", transaccion);
+            intent.putExtra("fieldsTrx", fieldsTrx);
+            intent.putExtra("tokenData", tokenData);
+            startActivity(intent);
+            finish();
+        });
     }
 }
