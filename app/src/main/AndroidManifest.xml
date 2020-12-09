@@ -26,7 +26,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.CooperativasActivity"></activity>
+        <activity android:name=".ui.LlavesDeCifradoActivity"></activity>
+        <activity android:name=".ui.ConfiguracionActivity" />
+        <activity android:name=".ui.ReportesActivity" />
+        <activity android:name=".ui.CooperativasActivity" />
         <activity android:name=".ui.FinishActivity" />
         <activity android:name=".ui.ImpresionActivity" />
         <activity android:name=".ui.TransaccionActivity" />
@@ -39,7 +42,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MainActivity"></activity>
+        <activity android:name=".ui.MainActivity" />
     </application>
 
 </manifest>

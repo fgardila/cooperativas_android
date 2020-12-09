@@ -2,6 +2,8 @@ package com.code93.linkcoop;
 
 import android.util.Base64;
 
+import com.code93.linkcoop.cache.SP2;
+
 import java.io.UnsupportedEncodingException;
 import java.security.Key;
 import java.security.spec.KeySpec;
@@ -13,10 +15,6 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class AesBase64Wrapper {
-
-    private static String IV = "1234567890123456";
-    private static String PASSWORD = "ABCDEF0123456789ABCDEF0123456789";
-    private static String SALT = "1234567890123456";
 
     public String encryptAndEncode(String raw) {
         try {
@@ -48,15 +46,17 @@ public class AesBase64Wrapper {
 
     private Cipher getCipher(int mode) throws Exception {
         Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        byte[] iv = getBytes(IV);
+        byte[] iv = getBytes(MyApp.sp2.getString(SP2.Companion.getAes_iv(), ""));
         c.init(mode, generateKey(), new IvParameterSpec(iv));
         return c;
     }
 
     private Key generateKey() throws Exception {
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-        char[] password = PASSWORD.toCharArray();
-        byte[] salt = getBytes(SALT);
+        String sPassword = MyApp.sp2.getString(SP2.Companion.getAes_password(), "");
+        String sSalt = MyApp.sp2.getString(SP2.Companion.getAes_salt(), "");
+        char[] password = sPassword.toCharArray();
+        byte[] salt = getBytes(sSalt);
 
         KeySpec spec = new PBEKeySpec(password, salt, 65536, 128);
         SecretKey tmp = factory.generateSecret(spec);

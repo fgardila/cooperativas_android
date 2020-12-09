@@ -129,4 +129,12 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
     public void sobreAplicacion(View view) {
 
     }
+
+    public void configuracion(View view) {
+        startActivity(new Intent(this, ConfiguracionActivity.class));
+    }
+
+    public void reportes(View view) {
+        startActivity(new Intent(this, ReportesActivity.class));
+    }
 }

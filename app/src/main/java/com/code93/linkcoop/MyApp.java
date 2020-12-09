@@ -26,5 +26,22 @@ public class MyApp extends Application {
             Config.init(this);
         }
         sp2 = SP2.Companion.getInstance(this);
+        if (sp2 != null) {
+            String aes_iv = sp2.getString(SP2.Companion.getAes_iv(), null);
+            if (aes_iv == null) {
+                sp2.putString(SP2.Companion.getAes_iv(), getString(R.string.aes_iv));
+            }
+
+            String aes_password = sp2.getString(SP2.Companion.getAes_password(), null);
+            if (aes_password == null) {
+                sp2.putString(SP2.Companion.getAes_password(), getString(R.string.aes_password));
+            }
+
+            String aes_salt = sp2.getString(SP2.Companion.getAes_salt(), null);
+            if (aes_salt == null) {
+                sp2.putString(SP2.Companion.getAes_salt(), getString(R.string.aes_salt));
+            }
+        }
+
     }
 }

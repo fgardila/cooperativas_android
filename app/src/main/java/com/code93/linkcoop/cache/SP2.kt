@@ -90,6 +90,9 @@ class SP2 private constructor(context: Context) : ICache {
         val saveLogin = "saveLogin"
         val SP_LOGIN = "login"
         val SP_TRACE = "trace"
+        val aes_iv = "aes_iv"
+        val aes_password = "aes_password"
+        val aes_salt = "aes_salt"
 
         private lateinit var sharedPreferences: SharedPreferences
         private lateinit var editor: SharedPreferences.Editor

@@ -53,7 +53,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:tint="@color/grey_60"
+            app:tint="@color/grey_60"
             android:src="@drawable/ic_navigate_next"
             />
 
