@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
     }
 
     public void sobreAplicacion(View view) {
-
+        startActivity(new Intent(this, ImpresionActivity.class));
     }
 
     public void configuracion(View view) {

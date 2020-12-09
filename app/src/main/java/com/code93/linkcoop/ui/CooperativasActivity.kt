@@ -8,12 +8,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.code93.linkcoop.R
 import com.code93.linkcoop.adapters.MenuCoopAdapter
 import com.code93.linkcoop.models.Cooperativa
 import com.code93.linkcoop.viewmodel.CooperativaViewModel
 import com.google.android.gms.common.api.CommonStatusCodes
-import kotlinx.android.synthetic.main.activity_cooperativas.*
 
 
 class CooperativasActivity : FragmentActivity(), MenuCoopAdapter.OnClickCoop {
@@ -25,6 +25,8 @@ class CooperativasActivity : FragmentActivity(), MenuCoopAdapter.OnClickCoop {
         setContentView(R.layout.activity_cooperativas)
 
         cooperativaViewModel = ViewModelProvider(this).get(CooperativaViewModel::class.java)
+
+        val rvCooperativas = findViewById<RecyclerView>(R.id.rvCooperativas)
 
         val adapter = MenuCoopAdapter(this, this)
         val recyclerView = rvCooperativas

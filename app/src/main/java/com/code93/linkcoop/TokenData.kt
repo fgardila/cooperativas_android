@@ -1,58 +1,104 @@
 package com.code93.linkcoop
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class TokenData (var idToken: String? = null,
                  var lenToken: String? = null,
                  var dataToken: String? = null) : Parcelable {
 
+    @IgnoredOnParcel
     var A0: String = ""
+    @IgnoredOnParcel
     var A1: String = ""
+    @IgnoredOnParcel
     var A2: String = ""
+    @IgnoredOnParcel
     var A3: String = ""
+    @IgnoredOnParcel
     var A4: String = ""
+    @IgnoredOnParcel
     var A5: String = ""
+    @IgnoredOnParcel
     var A6: String = ""
+    @IgnoredOnParcel
     var A7: String = ""
+    @IgnoredOnParcel
     var A8: String = ""
+    @IgnoredOnParcel
     var A9: String = ""
+    @IgnoredOnParcel
     var X1: String = ""
+    @IgnoredOnParcel
     var X2: String = ""
+    @IgnoredOnParcel
     var X3: String = ""
+    @IgnoredOnParcel
     var X4: String = ""
+    @IgnoredOnParcel
     var X5: String = ""
+    @IgnoredOnParcel
     var X6: String = ""
+    @IgnoredOnParcel
     var X7: String = ""
+    @IgnoredOnParcel
     var X8: String = ""
+    @IgnoredOnParcel
     var X9: String = ""
+    @IgnoredOnParcel
     var B1: String = ""
+    @IgnoredOnParcel
     var B2: String = ""
+    @IgnoredOnParcel
     var B3: String = ""
+    @IgnoredOnParcel
     var B4: String = ""
+    @IgnoredOnParcel
     var B5: String = ""
+    @IgnoredOnParcel
     var B6: String = ""
+    @IgnoredOnParcel
     var B7: String = ""
+    @IgnoredOnParcel
     var B8: String = ""
+    @IgnoredOnParcel
     var B9: String = ""
+    @IgnoredOnParcel
     var C1: String = ""
+    @IgnoredOnParcel
     var C2: String = ""
+    @IgnoredOnParcel
     var C3: String = ""
+    @IgnoredOnParcel
     var C4: String = ""
+    @IgnoredOnParcel
     var C5: String = ""
+    @IgnoredOnParcel
     var C6: String = ""
+    @IgnoredOnParcel
     var C7: String = ""
+    @IgnoredOnParcel
     var C8: String = ""
+    @IgnoredOnParcel
     var C9: String = ""
+    @IgnoredOnParcel
     var D1: String = ""
+    @IgnoredOnParcel
     var D2: String = ""
+    @IgnoredOnParcel
     var D3: String = ""
+    @IgnoredOnParcel
     var D4: String = ""
+    @IgnoredOnParcel
     var D5: String = ""
+    @IgnoredOnParcel
     var D6: String = ""
+    @IgnoredOnParcel
     var D7: String = ""
 
+    @IgnoredOnParcel
     var indice: Int = 0
 
     fun setToken(tokenId : String, tokenData : String) : String {

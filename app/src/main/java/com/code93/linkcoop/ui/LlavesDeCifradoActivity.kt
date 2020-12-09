@@ -17,7 +17,6 @@ import com.code93.linkcoop.cache.SP2.Companion.aes_iv
 import com.code93.linkcoop.cache.SP2.Companion.aes_password
 import com.code93.linkcoop.cache.SP2.Companion.aes_salt
 import com.code93.linkcoop.models.DataTransaccion
-import kotlinx.android.synthetic.main.activity_llaves_de_cifrado.*
 import java.util.*
 
 class LlavesDeCifradoActivity : AppCompatActivity(), MenuElementosAdapter.OnClickElemetos {
@@ -32,6 +31,8 @@ class LlavesDeCifradoActivity : AppCompatActivity(), MenuElementosAdapter.OnClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_llaves_de_cifrado)
+
+        val rvElementos = findViewById<RecyclerView>(R.id.rvElementos)
 
         elementos = getData()
         adapter = MenuElementosAdapter(this)
