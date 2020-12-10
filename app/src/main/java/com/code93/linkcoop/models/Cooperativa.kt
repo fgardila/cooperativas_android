@@ -13,6 +13,8 @@ data class Cooperativa(
         var _id: String = "",
         var _namec: String = "",
         var _product: String = "",
+        var _service: String = "",
+        var _channel: String = "",
         var url_imagen: String = "",
         var _transaction : List<Transaction>
 ) : Parcelable {}

@@ -6,6 +6,9 @@ import android.os.Environment;
 import android.util.Log;
 import android.util.Xml;
 
+import com.code93.linkcoop.models.Cooperativa;
+import com.code93.linkcoop.models.Transaction;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -25,30 +28,30 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class ToolsXML extends Activity {
 
-    public static String requestDeposit(String proCode, String numeroCuenta, String monto, String montoComision, String documento) {
+    public static String requestDeposit(Transaction transaction, Cooperativa cooperativa, String numeroCuenta, String monto, String documento) {
         TokenData tokenData = new TokenData();
         String tokenX4 = tokenData.setToken("X4", documento);
 
         ArrayList<DataElements> listFields = new ArrayList<>();
         listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "E210010810A050C0"));
         listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
-        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), proCode));
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), transaction.get_code().trim()));
         listFields.add(new DataElements(Tools.NameFields.reference.toString(), numeroCuenta));
         listFields.add(new DataElements(Tools.NameFields.transaction_amount.toString(), monto));
-        listFields.add(new DataElements(Tools.NameFields.commision_amount.toString(), montoComision));
+        listFields.add(new DataElements(Tools.NameFields.commision_amount.toString(), transaction.get_cost().trim()));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
         listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
         listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
-        listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "2"));
-        listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
+        listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), cooperativa.get_channel()));
+        listFields.add(new DataElements(Tools.NameFields.service_code.toString(), cooperativa.get_service()));
         listFields.add(new DataElements(Tools.NameFields.source_names.toString(), "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"));
         listFields.add(new DataElements(Tools.NameFields.phone_number.toString(), "0000000000"));
         listFields.add(new DataElements(Tools.NameFields.token_data.toString(), tokenX4));
-        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012000"));
+        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), cooperativa.get_product().trim()));
         return ToolsXML.createXML("request_deposit", listFields);
     }
 
-    public static String requestWithdrawal(String proCode, String numeroCuenta, String monto, String otp, String documento) {
+    public static String requestWithdrawal(Transaction transaction, Cooperativa cooperativa, String numeroCuenta, String monto, String otp, String documento) {
         TokenData tokenData = new TokenData();
         String tokenX4 = tokenData.setToken("X4", documento);
         String tokenB8 = tokenData.setToken("B9", otp);
@@ -57,7 +60,7 @@ public class ToolsXML extends Activity {
         ArrayList<DataElements> listFields = new ArrayList<>();
         listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "E200010810A050C0"));
         listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
-        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), proCode));
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), transaction.get_code().trim()));
         listFields.add(new DataElements(Tools.NameFields.reference.toString(), numeroCuenta));
         listFields.add(new DataElements(Tools.NameFields.transaction_amount.toString(), monto));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
@@ -68,27 +71,26 @@ public class ToolsXML extends Activity {
         listFields.add(new DataElements(Tools.NameFields.source_names.toString(), "XXXXX XXXXX XXXXX"));
         listFields.add(new DataElements(Tools.NameFields.phone_number.toString(), "0000000000"));
         listFields.add(new DataElements(Tools.NameFields.token_data.toString(), token));
-        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012000"));
+        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), cooperativa.get_product().trim()));
         return ToolsXML.createXML("request_withdrawal", listFields);
     }
 
-    public static String requestGenerate(String proCode, String reference) {
+    public static String requestGenerate(Transaction transaction, Cooperativa cooperativa, String reference) {
         ArrayList<DataElements> listFields = new ArrayList<>();
         listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "E000010810A00040"));
         listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
-        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), proCode));
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), transaction.get_code().trim()));
         listFields.add(new DataElements(Tools.NameFields.reference.toString(), reference));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
         listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
         listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "2"));
         listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
         listFields.add(new DataElements(Tools.NameFields.authorization_code.toString(), "845583"));
-        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012000"));
+        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), cooperativa.get_product().trim()));
         return ToolsXML.createXML("request_generate", listFields);
     }
 
     public static String requestInquiry(String proCode, String reference, String documento) {
-
         TokenData tokenData = new TokenData();
         String tokenX4 = tokenData.setToken("X4", documento);
 

@@ -212,7 +212,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
             }
         }
 
-        String xmlLogOff = ToolsXML.requestWithdrawal(transaccion.get_code().trim(), numeroDeCuenta,
+        String xmlLogOff = ToolsXML.requestWithdrawal(transaccion, cooperativa, numeroDeCuenta,
                 monto, otp, documento);
 
         DownloadXmlTask task = new DownloadXmlTask(xmlLogOff, response -> {
@@ -251,7 +251,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
             }
         }
 
-        String xml = ToolsXML.requestGenerate(transaccion.get_code().trim(), numeroDeCuenta);
+        String xml = ToolsXML.requestGenerate(transaccion, cooperativa, numeroDeCuenta);
 
         DownloadXmlTask task = new DownloadXmlTask(xml, response -> {
             procesarRespuesta("reply_generate", response);
@@ -278,8 +278,8 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
             }
         }
 
-        String xmlLogOff = ToolsXML.requestDeposit(transaccion.get_code().trim(), numeroDeCuenta,
-                monto, transaccion.get_cost().trim(), documento);
+        String xmlLogOff = ToolsXML.requestDeposit(transaccion, cooperativa, numeroDeCuenta,
+                monto, documento);
 
         DownloadXmlTask task = new DownloadXmlTask(xmlLogOff, response -> {
             procesarRespuesta("reply_deposit", response);
