@@ -7,17 +7,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Layout;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
+import com.code93.linkcoop.DialogCallback;
 import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.models.Cooperativa;
-import com.code93.linkcoop.models.DataTransaccion;
 import com.code93.linkcoop.models.FieldsTrx;
-import com.code93.linkcoop.models.Transaccion;
 import com.code93.linkcoop.models.Transaction;
 import com.zcs.sdk.DriverManager;
 import com.zcs.sdk.Printer;
@@ -25,8 +21,6 @@ import com.zcs.sdk.SdkResult;
 import com.zcs.sdk.print.PrnStrFormat;
 import com.zcs.sdk.print.PrnTextFont;
 import com.zcs.sdk.print.PrnTextStyle;
-
-import java.util.List;
 
 public class ImpresionActivity extends AppCompatActivity {
 
@@ -64,7 +58,12 @@ public class ImpresionActivity extends AppCompatActivity {
                 }, 2000);
             }
         } else {
-
+            Tools.showDialogErrorCallback(this, "No llego informacion de impresion.", new DialogCallback() {
+                @Override
+                public void onDialogCallback(int value) {
+                    startActivity(new Intent(ImpresionActivity.this, FinishActivity.class));
+                }
+            });
         }
 
     }
@@ -76,13 +75,9 @@ public class ImpresionActivity extends AppCompatActivity {
 
                 int printStatus = mPrinter.getPrinterStatus();
                 if (printStatus == SdkResult.SDK_PRN_STATUS_PAPEROUT) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Tools.showDialogError(ImpresionActivity.this, "No hay papel");
-
-                        }
-                    });
+                    runOnUiThread(() ->
+                            Tools.showDialogErrorCallback(ImpresionActivity.this, "No hay papel",
+                                    value -> printMatrixText()));
                 } else {
                     PrnStrFormat format = new PrnStrFormat();
                     format.setTextSize(35);
@@ -127,16 +122,17 @@ public class ImpresionActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Tools.showDialogError(ImpresionActivity.this, "No hay papel");
+                                Tools.showDialogErrorCallback(ImpresionActivity.this, "No hay papel", new DialogCallback() {
+                                    @Override
+                                    public void onDialogCallback(int value) {
+                                        printMatrixText();
+                                    }
+                                });
                             }
                         });
                     } else {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(new Intent(ImpresionActivity.this, FinishActivity.class));
-                            }
-                        });
+                        runOnUiThread(() ->
+                                startActivity(new Intent(ImpresionActivity.this, FinishActivity.class)));
                     }
                 }
             }

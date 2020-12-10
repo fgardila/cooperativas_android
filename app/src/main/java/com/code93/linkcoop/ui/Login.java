@@ -69,7 +69,6 @@ public class Login extends AppCompatActivity {
 
     private AlertDialog spotDialog;
     private FirebaseAuth auth;
-    private SoapPrimitive resultString;
 
     private CooperativaViewModel viewModel;
     private SP2 sp2;
@@ -105,7 +104,6 @@ public class Login extends AppCompatActivity {
         ImageView imgConnectCoop = findViewById(R.id.imgConnectCoop);
         imgConnectCoop.setOnClickListener(v -> {
             startActivity(new Intent(Login.this, MainActivity.class));
-            //Tools.showDialogError(Login.this, sp2.getString(SP2.Companion.getSP_LOGIN(), "NULL"));
         });
     }
 
@@ -233,7 +231,6 @@ public class Login extends AppCompatActivity {
                 viewModel.deleteAllCooperativas();
                 for (Cooperativa coop : logCoop.getCooperativas()) {
                     viewModel.addCooperativa(coop);
-                    //viewModel.updateCooperativa(coop);
                 }
 
                 Tools.showDialogPositive(this, tokenData.getB1(), value -> {

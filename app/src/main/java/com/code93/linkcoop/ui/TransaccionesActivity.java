@@ -7,30 +7,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.adapters.MenuTransAdapter;
 import com.code93.linkcoop.models.Cooperativa;
-import com.code93.linkcoop.models.DataTransaccion;
-import com.code93.linkcoop.models.Transaccion;
 import com.code93.linkcoop.models.Transaction;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class TransaccionesActivity extends AppCompatActivity implements MenuTransAdapter.OnClickTrans {
 
     RecyclerView rvTransacciones;
     TextView tvNomCoop;
     ImageView imgCoop;
-
-    ArrayList<Transaccion> transacciones;
 
     Cooperativa cooperativa;
 
@@ -49,7 +40,6 @@ public class TransaccionesActivity extends AppCompatActivity implements MenuTran
             tvNomCoop.setText(cooperativa.get_namec().trim());
         }
 
-        transacciones = new ArrayList<>();
         MenuTransAdapter adapter = new MenuTransAdapter(cooperativa.get_transaction(), this);
         rvTransacciones.setLayoutManager(new GridLayoutManager(this, 2));
         rvTransacciones.setAdapter(adapter);

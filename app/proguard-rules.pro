@@ -43,9 +43,6 @@
 -keepclassmembers class com.code93.linkcoop.models.Transaction{
   *;
 }
--keepclassmembers class com.code93.linkcoop.models.Transaccion{
-  *;
-}
 -keepclassmembers class com.code93.linkcoop.models.LoginCooperativas{
   *;
 }
