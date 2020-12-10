@@ -3,6 +3,9 @@ package com.code93.linkcoop.network
 import android.os.AsyncTask
 import android.util.Log
 import com.code93.linkcoop.MyApp
+import com.code93.linkcoop.cache.SP2.Companion.aes_iv
+import com.code93.linkcoop.cache.SP2.Companion.net_direccionip
+import com.code93.linkcoop.cache.SP2.Companion.net_puerto
 import org.ksoap2.SoapEnvelope
 import org.ksoap2.serialization.SoapObject
 import org.ksoap2.serialization.SoapPrimitive
@@ -30,10 +33,14 @@ class DownloadXmlTask(var xmlSend: String, var callback: DownloadCallback) : Asy
     @Throws(IOException::class)
     private fun sendRequest(xmlSend: String) : String {
         MyApp.sp2.incTraceNo()
+
+        val direccionip = MyApp.sp2.getString(net_direccionip, "0.0.0.0")
+        val puerto = MyApp.sp2.getString(net_puerto, "9999")
+
         val SOAP_ACTION = "http://tempuri.org/iServiceAsynchronous/Invoque_Async_Service"
         val METHOD_NAME = "Invoque_Async_Service"
         val NAMESPACE = "http://tempuri.org/"
-        val URL = "http://190.216.106.14:1992/AsynchronousService.svc"
+        val URL = "http://${direccionip}:${puerto}/AsynchronousService.svc"
 
         val Request = SoapObject(NAMESPACE, METHOD_NAME)
         Request.addProperty("XmlRequest", xmlSend)

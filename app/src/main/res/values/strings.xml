@@ -12,4 +12,9 @@
     <string name="aes_iv">1234567890123456</string>
     <string name="aes_password">ABCDEF0123456789ABCDEF0123456789</string>
     <string name="aes_salt">1234567890123456</string>
+
+    <string name="net_direccionip">190.216.106.14</string>
+    <string name="net_puerto">1992</string>
+    <string name="url_o_direccion_ip">URL o dirección IP</string>
+    <string name="puerto">Puerto</string>
 </resources>

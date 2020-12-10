@@ -93,6 +93,8 @@ class SP2 private constructor(context: Context) : ICache {
         val aes_iv = "aes_iv"
         val aes_password = "aes_password"
         val aes_salt = "aes_salt"
+        val net_direccionip = "net_direccionip"
+        val net_puerto = "net_puerto"
 
         private lateinit var sharedPreferences: SharedPreferences
         private lateinit var editor: SharedPreferences.Editor

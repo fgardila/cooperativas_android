@@ -26,7 +26,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.LlavesDeCifradoActivity"></activity>
+        <activity android:name=".ui.ConfigNetworkActivity"></activity>
+        <activity android:name=".ui.LlavesDeCifradoActivity" />
         <activity android:name=".ui.ConfiguracionActivity" />
         <activity android:name=".ui.ReportesActivity" />
         <activity android:name=".ui.CooperativasActivity" />

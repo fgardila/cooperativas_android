@@ -1,11 +1,11 @@
 package com.code93.linkcoop.ui
 
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.code93.linkcoop.DialogCallback
@@ -13,13 +13,11 @@ import com.code93.linkcoop.MyApp
 import com.code93.linkcoop.R
 import com.code93.linkcoop.Tools
 import com.code93.linkcoop.adapters.MenuElementosAdapter
-import com.code93.linkcoop.cache.SP2.Companion.aes_iv
-import com.code93.linkcoop.cache.SP2.Companion.aes_password
-import com.code93.linkcoop.cache.SP2.Companion.aes_salt
+import com.code93.linkcoop.cache.SP2
 import com.code93.linkcoop.models.DataTransaccion
-import java.util.*
+import java.util.ArrayList
 
-class LlavesDeCifradoActivity : AppCompatActivity(), MenuElementosAdapter.OnClickElemetos {
+class ConfigNetworkActivity : AppCompatActivity(), MenuElementosAdapter.OnClickElemetos {
 
     var adapter: MenuElementosAdapter? = null
 
@@ -30,7 +28,7 @@ class LlavesDeCifradoActivity : AppCompatActivity(), MenuElementosAdapter.OnClic
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_llaves_de_cifrado)
+        setContentView(R.layout.activity_config_network)
 
         val rvElementos = findViewById<RecyclerView>(R.id.rvElementos)
 
@@ -40,26 +38,22 @@ class LlavesDeCifradoActivity : AppCompatActivity(), MenuElementosAdapter.OnClic
         adapter!!.setOnClickElemento(this)
         rvElementos.layoutManager = LinearLayoutManager(this)
         rvElementos.adapter = adapter
-
     }
 
     private fun getData(): Array<DataTransaccion?> {
 
-        val aes_iv = MyApp.sp2.getString(aes_iv, "")
-        val aes_password = MyApp.sp2.getString(aes_password, "")
-        val aes_salt = MyApp.sp2.getString(aes_salt, "")
+        val net_direccionip = MyApp.sp2.getString(SP2.net_direccionip, "")
+        val net_puerto = MyApp.sp2.getString(SP2.net_puerto, "")
 
         val elementos: MutableList<DataTransaccion> = ArrayList()
         elementos.add(DataTransaccion(
-                "AES IV",
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS,
-                32, "Ingresa llave", R.drawable.ic_lock, aes_iv))
-        elementos.add(DataTransaccion("AES Password",
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS,
-                32, "Ingresa llave", R.drawable.ic_lock, aes_password))
-        elementos.add(DataTransaccion("AES Salt",
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS,
-                32, "Ingresa llave", R.drawable.ic_lock, aes_salt))
+                getString(R.string.url_o_direccion_ip),
+                InputType.TYPE_CLASS_TEXT,
+                32, "URL o dirección IP", R.drawable.ic_network_check, net_direccionip))
+        elementos.add(DataTransaccion(
+                getString(R.string.puerto),
+                InputType.TYPE_CLASS_NUMBER,
+                5, "Puerto", R.drawable.ic_network_check, net_puerto))
         return elementos.toTypedArray()
     }
 
@@ -78,7 +72,15 @@ class LlavesDeCifradoActivity : AppCompatActivity(), MenuElementosAdapter.OnClic
         }
     }
 
-    fun guardarLlaves(view: View) {
+    override fun onItemClick(item: RecyclerView.ViewHolder?, position: Int, id: Int) {
+        val intent = Intent(this, IngresarDataActivity::class.java)
+        elemSelect = elementos[position]
+        intent.putExtra("nameTrx", "Llaves de cifrado")
+        intent.putExtra("elemento", elemSelect)
+        startActivityForResult(intent, RTA_ELEMENTO)
+    }
+
+    fun guardarConfiguracion(view: View) {
         var camposOk = true
         for (data in elementos) {
             if (data!!.value == null || data.value == "") {
@@ -91,33 +93,21 @@ class LlavesDeCifradoActivity : AppCompatActivity(), MenuElementosAdapter.OnClic
         if (camposOk) {
             for (data in elementos) {
                 when (data!!.name) {
-                    "AES IV" -> {
-                        MyApp.sp2.putString(aes_iv, data.value)
+                    getString(R.string.url_o_direccion_ip) -> {
+                        MyApp.sp2.putString(SP2.net_direccionip, data.value)
                         continue
                     }
-                    "AES Password" -> {
-                        MyApp.sp2.putString(aes_password, data.value)
-                        continue
-                    }
-                    "AES Salt" -> {
-                        MyApp.sp2.putString(aes_salt, data.value)
+                    getString(R.string.puerto) -> {
+                        MyApp.sp2.putString(SP2.net_puerto, data.value)
                     }
                 }
             }
 
-            Tools.showDialogPositive(this, "Cambio de llaves realizado exitosamente", object : DialogCallback{
+            Tools.showDialogPositive(this, "Cambio de llaves realizado exitosamente", object : DialogCallback {
                 override fun onDialogCallback(value: Int) {
                     finish()
                 }
             })
         }
-    }
-
-    override fun onItemClick(item: RecyclerView.ViewHolder?, position: Int, id: Int) {
-        val intent = Intent(this, IngresarDataActivity::class.java)
-        elemSelect = elementos[position]
-        intent.putExtra("nameTrx", "Llaves de cifrado")
-        intent.putExtra("elemento", elemSelect)
-        startActivityForResult(intent, RTA_ELEMENTO)
     }
 }

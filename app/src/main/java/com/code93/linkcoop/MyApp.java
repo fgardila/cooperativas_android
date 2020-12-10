@@ -27,6 +27,17 @@ public class MyApp extends Application {
         }
         sp2 = SP2.Companion.getInstance(this);
         if (sp2 != null) {
+
+            String net_direccionip = sp2.getString(SP2.Companion.getNet_direccionip(), null);
+            if (net_direccionip == null) {
+                sp2.putString(SP2.Companion.getNet_direccionip(), getString(R.string.net_direccionip));
+            }
+
+            String net_puerto = sp2.getString(SP2.Companion.getNet_puerto(), null);
+            if (net_puerto == null) {
+                sp2.putString(SP2.Companion.getNet_puerto(), getString(R.string.net_puerto));
+            }
+
             String aes_iv = sp2.getString(SP2.Companion.getAes_iv(), null);
             if (aes_iv == null) {
                 sp2.putString(SP2.Companion.getAes_iv(), getString(R.string.aes_iv));
