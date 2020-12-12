@@ -234,7 +234,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
             }
         }
 
-        String xml = ToolsXML.requestInquiry(transaccion.get_code().trim(), numeroDeCuenta, documento);
+        String xml = ToolsXML.requestInquiry(transaccion, cooperativa, numeroDeCuenta, documento);
 
         DownloadXmlTask task = new DownloadXmlTask(xml, response -> {
             procesarRespuesta("reply_inquiry", response);

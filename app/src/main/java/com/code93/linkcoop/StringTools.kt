@@ -21,7 +21,7 @@ object StringTools {
         return d.toString()
     }
 
-    fun padright(s: String, len: Int, c: Char): String? {
+    fun padright(s: String, len: Int, c: Char): String {
         var data = s
         data = data.trim { it <= ' ' }
         val d = java.lang.StringBuilder(len)
