@@ -5,6 +5,14 @@ apply plugin: 'kotlin-parcelize'
 apply plugin: 'com.google.gms.google-services'
 
 android {
+    signingConfigs {
+        code93 {
+            storeFile file('C:\\AndroidProjects\\Code93\\KeyCode93\\KeyCode93.jks')
+            storePassword 'Code93qa12pl09*'
+            keyAlias 'key0'
+            keyPassword 'Code93qa12pl09*'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "29.0.3"
 
@@ -27,6 +35,7 @@ android {
             debuggable false
             jniDebuggable false
             renderscriptDebuggable false
+            signingConfig signingConfigs.code93
         }
     }
 

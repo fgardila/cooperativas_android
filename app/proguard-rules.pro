@@ -81,3 +81,17 @@
 -keep class dmax.dialog.* {
     *;
 }
+
+-keep class org.xmlpull.v1.*{
+    *;
+}
+-keep class * implements org.xmlpull.v1.XmlSerializer
+-keep class org.xmlpull.v1.XmlSerializer {
+    *;
+}
+-keep class com.code93.linkcoop.ToolsXML{
+    *;
+}
+-keep class com.code93.linkcoop.DataElements{
+    *;
+}
