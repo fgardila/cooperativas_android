@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.code93.linkcoop.data.CooperativaDatabase
+import com.code93.linkcoop.data.LinkCoopDatabase
 import com.code93.linkcoop.models.Cooperativa
 import com.code93.linkcoop.repository.CooperativaRepository
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +16,7 @@ class CooperativaViewModel(application: Application): AndroidViewModel(applicati
     private val repository: CooperativaRepository
 
     init {
-        val cooperativaDao = CooperativaDatabase.getDatabase(application).cooperativaDao()
+        val cooperativaDao = LinkCoopDatabase.getDatabase(application).cooperativaDao()
         repository = CooperativaRepository(cooperativaDao)
         readAllData = cooperativaDao.readAllData()
     }

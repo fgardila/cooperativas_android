@@ -221,6 +221,8 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
         task.execute(xmlLogOff);
     }
 
+    FieldsTrx fieldsTrxSend = new FieldsTrx();
+
     private void consultaSaldo() {
         String numeroDeCuenta = "";
         String documento = "";
@@ -235,6 +237,13 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
         }
 
         String xml = ToolsXML.requestInquiry(transaccion, cooperativa, numeroDeCuenta, documento);
+
+        try {
+            fieldsTrxSend = XmlParser.parse(xml, "request_inquiry");
+        } catch (XmlPullParserException | IOException e) {
+            e.printStackTrace();
+        }
+
 
         DownloadXmlTask task = new DownloadXmlTask(xml, response -> {
             procesarRespuesta("reply_inquiry", response);

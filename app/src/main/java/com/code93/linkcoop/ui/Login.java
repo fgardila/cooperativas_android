@@ -2,8 +2,6 @@ package com.code93.linkcoop.ui;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,23 +10,18 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.code93.linkcoop.AesBase64Wrapper;
-import com.code93.linkcoop.DataElements;
-import com.code93.linkcoop.DialogCallback;
 import com.code93.linkcoop.models.FieldsTrx;
 import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.ToolsXML;
-import com.code93.linkcoop.cache.SP;
 import com.code93.linkcoop.cache.SP2;
 import com.code93.linkcoop.models.Cooperativa;
 import com.code93.linkcoop.models.LoginCooperativas;
-import com.code93.linkcoop.network.DownloadCallback;
 import com.code93.linkcoop.network.DownloadXmlTask;
 import com.code93.linkcoop.viewmodel.CooperativaViewModel;
 import com.code93.linkcoop.xmlParsers.XmlParser;
@@ -41,20 +34,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
-
-import org.jetbrains.annotations.NotNull;
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapPrimitive;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
@@ -144,6 +126,7 @@ public class Login extends AppCompatActivity {
 
             String encrypUser = aes.encryptAndEncode(user);
             String encrypPwd = aes.encryptAndEncode(pwd);
+            MyApp.sp2.putString(SP2.Companion.getUser_encript(), encrypUser);
             sendLogin(encrypUser, encrypPwd);
         } else {
             spotDialog.dismiss();
@@ -228,6 +211,9 @@ public class Login extends AppCompatActivity {
                 MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), true);
                 Gson gson = new Gson();
                 LoginCooperativas logCoop = gson.fromJson(fieldsTrx.getBuffer_data(), LoginCooperativas.class);
+                MyApp.sp2.putString(SP2.Companion.getComercio_nombre(), logCoop.getComercio().getNombre().trim());
+                MyApp.sp2.putString(SP2.Companion.getComercio_ruc(), logCoop.getComercio().getRuc().trim());
+                MyApp.sp2.putString(SP2.Companion.getComercio_direccion(), logCoop.getComercio().getDireccion().trim());
                 viewModel.deleteAllCooperativas();
                 for (Cooperativa coop : logCoop.getCooperativas()) {
                     viewModel.addCooperativa(coop);

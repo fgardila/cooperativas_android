@@ -15,4 +15,8 @@ class ConfiguracionActivity : AppCompatActivity() {
     fun llavesDeCifrado(view: View) {
         startActivity(Intent(this, LlavesDeCifradoActivity::class.java))
     }
+
+    fun direccionIp(view: View) {
+        startActivity(Intent(this, ConfigNetworkActivity::class.java))
+    }
 }

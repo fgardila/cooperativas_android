@@ -86,6 +86,7 @@ class SP2 private constructor(context: Context) : ICache {
     companion object {
 
         val user = "user"
+        val user_encript = "user_encript"
         val pwd = "pwd"
         val saveLogin = "saveLogin"
         val SP_LOGIN = "login"
@@ -95,6 +96,9 @@ class SP2 private constructor(context: Context) : ICache {
         val aes_salt = "aes_salt"
         val net_direccionip = "net_direccionip"
         val net_puerto = "net_puerto"
+        val comercio_nombre = "comercio_nombre"
+        val comercio_ruc = "comercio_ruc"
+        val comercio_direccion = "comercio_direccion"
 
         private lateinit var sharedPreferences: SharedPreferences
         private lateinit var editor: SharedPreferences.Editor

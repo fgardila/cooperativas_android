@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
 
         TextView userLogin = findViewById(R.id.userLogin);
         userLogin.setText(SP2.Companion.getInstance(this).getString("email", ""));
+        TextView comercioName = findViewById(R.id.comercioName);
+        comercioName.setText(MyApp.sp2.getString(SP2.Companion.getComercio_nombre(), ""));
 
     }
 
@@ -83,10 +85,8 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
 
     public void clickCerrarSesion(View view) {
         spotDialog.show();
-        AesBase64Wrapper aes = new AesBase64Wrapper();
-
-        String xmlLogOff = ToolsXML.requestLogoff(aes.encryptAndEncode("lnavarrete"));
-
+        String user_encript = MyApp.sp2.getString(SP2.Companion.getUser_encript(), "");
+        String xmlLogOff = ToolsXML.requestLogoff(user_encript);
         DownloadXmlTask task = new DownloadXmlTask(xmlLogOff, this);
         task.execute(xmlLogOff);
     }
