@@ -22,7 +22,6 @@ android {
         targetSdkVersion 30
         versionCode app_version_code
         versionName app_version_name
-
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
@@ -31,7 +30,6 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            versionNameSuffix app_version_name
             debuggable false
             jniDebuggable false
             renderscriptDebuggable false

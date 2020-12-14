@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -14,7 +15,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.code93.linkcoop.DialogCallback;
 import com.code93.linkcoop.models.FieldsTrx;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.TokenData;
@@ -25,7 +25,6 @@ import com.code93.linkcoop.models.Cooperativa;
 import com.code93.linkcoop.models.DataTransaccion;
 import com.code93.linkcoop.models.Transaction;
 import com.code93.linkcoop.network.DownloadXmlTask;
-import com.code93.linkcoop.viewmodel.CooperativaViewModel;
 import com.code93.linkcoop.viewmodel.FieldsTrxViewModel;
 import com.code93.linkcoop.xmlParsers.XmlParser;
 
@@ -35,6 +34,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import dmax.dialog.SpotsDialog;
 
 public class TransaccionActivity extends AppCompatActivity implements MenuElementosAdapter.OnClickElemetos {
 
@@ -51,6 +52,8 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
 
     private FieldsTrxViewModel viewModel;
 
+    private AlertDialog spotDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +62,11 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
         viewModel = new ViewModelProvider(this).get(FieldsTrxViewModel.class);
 
         tvTransaccion = findViewById(R.id.tvTransaccion);
+
+        spotDialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Procesando")
+                .build();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -169,6 +177,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
             }
         }
         if (camposOk) {
+            spotDialog.show();
             switch (transaccion.get_namet().trim()) {
                 case "RETIRO AHORROS":
                     retiroAhorros();
@@ -183,6 +192,8 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                    depositoAhorros();
                    break;
                 default:
+                    spotDialog.dismiss();
+                    Tools.showDialogError(this, "Transaccion no disponible");
                     throw new IllegalStateException("Unexpected value: ");
             }
         }
@@ -216,7 +227,11 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                 monto, otp, documento);
 
         DownloadXmlTask task = new DownloadXmlTask(xmlLogOff, response -> {
-            procesarRespuesta("reply_withdrawal", response);
+            if (response.equals("Error de conexion"))
+                showErrorConexion();
+            else
+                procesarRespuesta("reply_withdrawal", response);
+
         });
         task.execute(xmlLogOff);
     }
@@ -246,7 +261,10 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
 
 
         DownloadXmlTask task = new DownloadXmlTask(xml, response -> {
-            procesarRespuesta("reply_inquiry", response);
+            if (response.equals("Error de conexion"))
+                showErrorConexion();
+            else
+                procesarRespuesta("reply_inquiry", response);
         });
         task.execute(xml);
     }
@@ -263,7 +281,10 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
         String xml = ToolsXML.requestGenerate(transaccion, cooperativa, numeroDeCuenta);
 
         DownloadXmlTask task = new DownloadXmlTask(xml, response -> {
-            procesarRespuesta("reply_generate", response);
+            if (response.equals("Error de conexion"))
+                showErrorConexion();
+            else
+                procesarRespuesta("reply_generate", response);
         });
         task.execute(xml);
 
@@ -291,7 +312,10 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                 monto, documento);
 
         DownloadXmlTask task = new DownloadXmlTask(xmlLogOff, response -> {
-            procesarRespuesta("reply_deposit", response);
+            if (response.equals("Error de conexion"))
+                showErrorConexion();
+            else
+                procesarRespuesta("reply_deposit", response);
         });
         task.execute(xmlLogOff);
     }
@@ -305,6 +329,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                 tokenData.getTokens(Objects.requireNonNull(fieldsTrx.getToken_data()));
                 viewModel.addFieldTrx(fieldsTrx);
                 if (fieldsTrx.getResponse_code().equals("000")) {
+                    spotDialog.dismiss();
                     switch (transaccion.get_namet().trim()) {
                         case "RETIRO AHORROS":
                             procesarRetiroAhorros(fieldsTrx, tokenData);
@@ -322,9 +347,11 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                             throw new IllegalStateException("Unexpected value: ");
                     }
                 } else {
+                    spotDialog.dismiss();
                     Tools.showDialogErrorCallback(this, tokenData.getB1(), value -> finish());
                 }
             } else {
+                spotDialog.dismiss();
                 Tools.showDialogError(this, "No llegaron Tokens");
             }
         } catch (XmlPullParserException | IOException e) {
@@ -332,15 +359,18 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
             try {
                 FieldsTrx fieldsTrx = XmlParser.parse(response, "default_reply_error");
                 if (!fieldsTrx.getToken_data().equals("")) {
+                    spotDialog.dismiss();
                     Log.d("FieldTRX", Objects.requireNonNull(fieldsTrx.getToken_data()));
                     TokenData tokenData = new TokenData();
                     tokenData.getTokens(Objects.requireNonNull(fieldsTrx.getToken_data()));
                     Tools.showDialogErrorCallback(this, tokenData.getB1(), value -> finish());
                 } else {
+                    spotDialog.dismiss();
                     Tools.showDialogError(this, "No llegaron Tokens");
                 }
             } catch (XmlPullParserException | IOException o) {
                 o.printStackTrace();
+                spotDialog.dismiss();
                 Tools.showDialogError(this, "Error al procesar la respuesta.");
             }
         }
@@ -388,5 +418,10 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
             startActivity(intent);
             finish();
         });
+    }
+
+    private void showErrorConexion() {
+        spotDialog.dismiss();
+        Tools.showDialogError(this, "Error de conexion");
     }
 }

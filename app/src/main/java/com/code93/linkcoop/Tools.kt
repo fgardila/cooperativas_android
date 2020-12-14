@@ -2,6 +2,7 @@ package com.code93.linkcoop
 
 import android.app.Dialog
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.CountDownTimer
 import android.util.Log
 import android.util.Patterns
@@ -178,5 +179,12 @@ object Tools {
             Log.e("Error", e.toString())
         }
         return str
+    }
+
+    @JvmStatic
+    fun isNetworkAvailable(ctx: Context): Boolean {
+        val connectivityManager = ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo = connectivityManager.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected
     }
 }

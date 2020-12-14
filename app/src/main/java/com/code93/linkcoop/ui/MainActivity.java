@@ -2,52 +2,29 @@ package com.code93.linkcoop.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
-import com.code93.linkcoop.AesBase64Wrapper;
-import com.code93.linkcoop.DialogCallback;
 import com.code93.linkcoop.models.FieldsTrx;
 import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.ToolsXML;
-import com.code93.linkcoop.adapters.MenuCoopAdapter;
 import com.code93.linkcoop.cache.SP2;
-import com.code93.linkcoop.models.Cooperativa;
-import com.code93.linkcoop.models.LoginCooperativas;
 import com.code93.linkcoop.network.DownloadCallback;
 import com.code93.linkcoop.network.DownloadXmlTask;
 import com.code93.linkcoop.viewmodel.CooperativaViewModel;
 import com.code93.linkcoop.xmlParsers.XmlParser;
-import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapPrimitive;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlSerializer;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
@@ -119,7 +96,17 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
 
     @Override
     public void onDownloadCallback(@NotNull String response) {
-        procesarRespuesta(response);
+        if (response.equals("Error de conexion")) {
+            showErroConexion();
+        } else {
+            procesarRespuesta(response);
+        }
+
+    }
+
+    private void showErroConexion() {
+        spotDialog.dismiss();
+        Tools.showDialogError(this, "Error de conexion");
     }
 
     public void visualizarCooperativas(View view) {

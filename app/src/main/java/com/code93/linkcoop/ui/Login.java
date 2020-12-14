@@ -2,10 +2,12 @@ package com.code93.linkcoop.ui;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.code93.linkcoop.AesBase64Wrapper;
+import com.code93.linkcoop.BuildConfig;
 import com.code93.linkcoop.models.FieldsTrx;
 import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
@@ -22,6 +25,7 @@ import com.code93.linkcoop.ToolsXML;
 import com.code93.linkcoop.cache.SP2;
 import com.code93.linkcoop.models.Cooperativa;
 import com.code93.linkcoop.models.LoginCooperativas;
+import com.code93.linkcoop.network.DownloadCallback;
 import com.code93.linkcoop.network.DownloadXmlTask;
 import com.code93.linkcoop.viewmodel.CooperativaViewModel;
 import com.code93.linkcoop.xmlParsers.XmlParser;
@@ -34,6 +38,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
+
+import org.jetbrains.annotations.NotNull;
 import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -87,6 +93,11 @@ public class Login extends AppCompatActivity {
         imgConnectCoop.setOnClickListener(v -> {
             startActivity(new Intent(Login.this, MainActivity.class));
         });
+
+        TextView tvVersion = findViewById(R.id.tvVersion);
+        String version = BuildConfig.VERSION_NAME;
+        tvVersion.setText(version);
+
     }
 
     /**
@@ -122,12 +133,14 @@ public class Login extends AppCompatActivity {
             tilPassword.setError("");
             tilEmail.setErrorEnabled(false);
             tilPassword.setErrorEnabled(false);
-            AesBase64Wrapper aes = new AesBase64Wrapper();
+            new Thread(() -> {
+                AesBase64Wrapper aes = new AesBase64Wrapper();
+                String encrypUser = aes.encryptAndEncode(user);
+                String encrypPwd = aes.encryptAndEncode(pwd);
+                MyApp.sp2.putString(SP2.Companion.getUser_encript(), encrypUser);
+                sendLogin(encrypUser, encrypPwd);
+            }).start();
 
-            String encrypUser = aes.encryptAndEncode(user);
-            String encrypPwd = aes.encryptAndEncode(pwd);
-            MyApp.sp2.putString(SP2.Companion.getUser_encript(), encrypUser);
-            sendLogin(encrypUser, encrypPwd);
         } else {
             spotDialog.dismiss();
             Tools.showDialogError(this, "Complete todos los campos requeridos");
@@ -138,9 +151,17 @@ public class Login extends AppCompatActivity {
         String xmlLogOff = ToolsXML.requestLogon(encrypUser, encrypPwd);
 
         DownloadXmlTask task = new DownloadXmlTask(xmlLogOff, response -> {
-            procesarRespuesta(response);
+            if (response.equals("Error de conexion"))
+                showErrorConexion();
+            else
+                procesarRespuesta(response);
         });
         task.execute(xmlLogOff);
+    }
+
+    private void showErrorConexion() {
+        spotDialog.dismiss();
+        Tools.showDialogError(this, "Error de conexion");
     }
 
     private ArrayList<String> sharedPreferences() {
@@ -163,6 +184,11 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        if (!Tools.isNetworkAvailable(this)) {
+            Tools.showDialogError(this, "No tiene conexion a internet");
+        }
+
         FirebaseUser currentUser = auth.getCurrentUser();
         updateUI(currentUser);
 
@@ -201,13 +227,13 @@ public class Login extends AppCompatActivity {
     }
 
     public void procesarRespuesta(String response) {
+        Log.d("Login.java", "Procesar respuesta");
         try {
             FieldsTrx fieldsTrx = XmlParser.parse(response, "reply_logon");
             Log.d("FieldTRX", Objects.requireNonNull(fieldsTrx.getToken_data()));
             TokenData tokenData = new TokenData();
             tokenData.getTokens(Objects.requireNonNull(fieldsTrx.getToken_data()));
             if (fieldsTrx.getResponse_code().equals("00")) {
-                spotDialog.dismiss();
                 MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), true);
                 Gson gson = new Gson();
                 LoginCooperativas logCoop = gson.fromJson(fieldsTrx.getBuffer_data(), LoginCooperativas.class);
@@ -219,10 +245,12 @@ public class Login extends AppCompatActivity {
                     viewModel.addCooperativa(coop);
                 }
 
+                spotDialog.dismiss();
                 Tools.showDialogPositive(this, tokenData.getB1(), value -> {
                     startActivity(new Intent(Login.this, MainActivity.class));
                     finish();
                 });
+
             } else {
                 spotDialog.dismiss();
                 Tools.showDialogError(this, tokenData.getB1());
