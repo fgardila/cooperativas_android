@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Entity()
 data class LogTransacciones(
         @PrimaryKey(autoGenerate = true)
-        val id: Int,
+        var id: Int,
         var comercio: Comercio,
         var cooperativa: Cooperativa,
         var transaction: Transaction,

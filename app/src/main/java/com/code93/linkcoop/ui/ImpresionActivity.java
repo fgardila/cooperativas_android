@@ -14,6 +14,7 @@ import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.models.Cooperativa;
 import com.code93.linkcoop.models.FieldsTrx;
+import com.code93.linkcoop.models.LogTransacciones;
 import com.code93.linkcoop.models.Transaction;
 import com.zcs.sdk.DriverManager;
 import com.zcs.sdk.Printer;
@@ -27,30 +28,23 @@ public class ImpresionActivity extends AppCompatActivity {
     private Printer mPrinter;
     private DriverManager mDriverManager = MyApp.sDriverManager;
 
-    Cooperativa cooperativa;
-    Transaction transaccion;
-    FieldsTrx fieldsTrx;
-    TokenData tokenData;
+    LogTransacciones logTransacciones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_impresion);
 
-        if (Build.MODEL.equals("Z90")) {
+        if (Build.MODEL.contains("Z90")) {
             mDriverManager = MyApp.sDriverManager;
             mPrinter = mDriverManager.getPrinter();
         }
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            transaccion = (Transaction) getIntent().getParcelableExtra("transaction");
-            cooperativa = (Cooperativa) getIntent().getParcelableExtra("cooperativa");
-            fieldsTrx = (FieldsTrx) getIntent().getParcelableExtra("fieldsTrx");
-            tokenData = (TokenData) getIntent().getParcelableExtra("tokenData");
-
-            if (Build.MODEL.equals("Z90")) {
-                printMatrixText();
+            logTransacciones = (LogTransacciones) getIntent().getParcelableExtra("logTransacciones");
+            if (Build.MODEL.contains("Z90")) {
+                printMatrixText(logTransacciones);
             } else {
                 final Handler handler = new Handler();
                 handler.postDelayed(() -> {
@@ -68,7 +62,7 @@ public class ImpresionActivity extends AppCompatActivity {
 
     }
 
-    private void printMatrixText() {
+    private void printMatrixText(LogTransacciones logTransacciones) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -77,46 +71,43 @@ public class ImpresionActivity extends AppCompatActivity {
                 if (printStatus == SdkResult.SDK_PRN_STATUS_PAPEROUT) {
                     runOnUiThread(() ->
                             Tools.showDialogErrorCallback(ImpresionActivity.this, "No hay papel",
-                                    value -> printMatrixText()));
+                                    value -> printMatrixText(logTransacciones)));
                 } else {
                     PrnStrFormat format = new PrnStrFormat();
                     format.setTextSize(35);
                     format.setAli(Layout.Alignment.ALIGN_CENTER);
                     format.setStyle(PrnTextStyle.BOLD);
                     format.setFont(PrnTextFont.DEFAULT);
-
                     mPrinter.setPrintAppendString("Link COOP", format);
                     format.setTextSize(25);
                     format.setStyle(PrnTextStyle.NORMAL);
                     format.setAli(Layout.Alignment.ALIGN_CENTER);
                     mPrinter.setPrintAppendString(" ", format);
-                    mPrinter.setPrintAppendString(" Negocio de Prueba ", format);
-                    mPrinter.setPrintAppendString(" 1704142841001 ", format);
-                    mPrinter.setPrintAppendString(" Avenidad Quito y Brasilia ", format);
-                    mPrinter.setPrintAppendString(" Telefono: 2455555 ", format);
-                    format.setAli(Layout.Alignment.ALIGN_CENTER);
+                    mPrinter.setPrintAppendString(logTransacciones.getComercio().getNombre(), format);
+                    mPrinter.setPrintAppendString(logTransacciones.getComercio().getRuc(), format);
+                    mPrinter.setPrintAppendString(logTransacciones.getComercio().getDireccion(), format);
+                    mPrinter.setPrintAppendString(logTransacciones.getFieldsTrxResponse().getSwitch_date_time(), format);
+                    mPrinter.setPrintAppendString("Switch Sequence " +
+                            logTransacciones.getFieldsTrxResponse().getSwitch_sequence() +
+                            " Adquirer Sequence " + logTransacciones.getFieldsTrxResponse().getAdquirer_sequence() , format);
                     format.setTextSize(30);
                     format.setStyle(PrnTextStyle.BOLD);
-                    mPrinter.setPrintAppendString(" QUITO ", format);
-                    format.setTextSize(25);
-                    format.setStyle(PrnTextStyle.NORMAL);
                     format.setAli(Layout.Alignment.ALIGN_CENTER);
-                    mPrinter.setPrintAppendString(" Numero de tarjeta", format);
-                    format.setAli(Layout.Alignment.ALIGN_CENTER);
-                    format.setTextSize(30);
-                    format.setStyle(PrnTextStyle.BOLD);
-                    mPrinter.setPrintAppendString("**** **** **** **** 7816", format);
-                    format.setAli(Layout.Alignment.ALIGN_CENTER);
-                    format.setStyle(PrnTextStyle.NORMAL);
-                    format.setTextSize(25);
-                    mPrinter.setPrintAppendString(" ", format);
-                    mPrinter.setPrintAppendString(" Valor de TOTAL:    $25.50 ", format);
-                    mPrinter.setPrintAppendString("  ", format);
-                    mPrinter.setPrintAppendString(" Test ", format);
-                    mPrinter.setPrintAppendString(" ", format);
-                    mPrinter.setPrintAppendString(" ", format);
-                    mPrinter.setPrintAppendString(" ", format);
-                    mPrinter.setPrintAppendString(" ", format);
+                    mPrinter.setPrintAppendString(logTransacciones.getCooperativa().get_namec().trim(), format);
+                    switch (logTransacciones.getTransaction().get_namet().trim()) {
+                        case "RETIRO AHORROS":
+                            impresionRetiro(logTransacciones, format);
+                            break;
+                        case "CONSULTA DE SALDOS":
+                            impresionSaldo(logTransacciones, format);
+                            break;
+                        case "DEPOSITO AHORROS":
+                            impresionDeposito(logTransacciones, format);
+                            break;
+                        default:
+                            Tools.showDialogError(ImpresionActivity.this, "Transaccion no disponible");
+                            throw new IllegalStateException("Unexpected value: ");
+                    }
                     printStatus = mPrinter.setPrintStart();
                     if (printStatus == SdkResult.SDK_PRN_STATUS_PAPEROUT) {
                         runOnUiThread(new Runnable() {
@@ -125,7 +116,7 @@ public class ImpresionActivity extends AppCompatActivity {
                                 Tools.showDialogErrorCallback(ImpresionActivity.this, "No hay papel", new DialogCallback() {
                                     @Override
                                     public void onDialogCallback(int value) {
-                                        printMatrixText();
+                                        printMatrixText(logTransacciones);
                                     }
                                 });
                             }
@@ -135,6 +126,55 @@ public class ImpresionActivity extends AppCompatActivity {
                                 startActivity(new Intent(ImpresionActivity.this, FinishActivity.class)));
                     }
                 }
+            }
+
+            private void impresionDeposito(LogTransacciones logTransacciones, PrnStrFormat format) {
+                format.setTextSize(28);
+                mPrinter.setPrintAppendString(logTransacciones.getTransaction().get_namet().trim(), format);
+                format.setAli(Layout.Alignment.ALIGN_CENTER);
+                format.setStyle(PrnTextStyle.NORMAL);
+                format.setTextSize(25);
+                mPrinter.setPrintAppendString(" ", format);
+                mPrinter.setPrintAppendString(" Monto :    $ " + logTransacciones.getFieldsTrxSend().getTransaction_amount(), format);
+                mPrinter.setPrintAppendString("  ", format);
+                mPrinter.setPrintAppendString(" Comision :    $ " + logTransacciones.getFieldsTrxSend().getCommision_amount(), format);
+                mPrinter.setPrintAppendString(" ", format);
+                mPrinter.setPrintAppendString(" Test ", format);
+                mPrinter.setPrintAppendString(" ", format);
+                mPrinter.setPrintAppendString(" ", format);
+            }
+
+            private void impresionSaldo(LogTransacciones logTransacciones, PrnStrFormat format) {
+                format.setTextSize(28);
+                mPrinter.setPrintAppendString(logTransacciones.getTransaction().get_namet().trim(), format);
+                format.setAli(Layout.Alignment.ALIGN_CENTER);
+                format.setStyle(PrnTextStyle.NORMAL);
+                format.setTextSize(25);
+                if (!logTransacciones.getFieldsTrxResponse().getTarget_names().isEmpty()) {
+                    mPrinter.setPrintAppendString("Target Name: " +
+                            logTransacciones.getFieldsTrxResponse().getTarget_names(), format);
+                }
+                mPrinter.setPrintAppendString(" available_balance :    $ " + logTransacciones.getFieldsTrxResponse().getAvailable_balance(), format);
+                mPrinter.setPrintAppendString("  ", format);
+                mPrinter.setPrintAppendString(" ledger_balance :    $ " + logTransacciones.getFieldsTrxResponse().getLedger_balance(), format);
+            }
+
+            private void impresionRetiro(LogTransacciones logTransacciones, PrnStrFormat format) {
+                format.setTextSize(28);
+                mPrinter.setPrintAppendString(logTransacciones.getTransaction().get_namet().trim(), format);
+                format.setAli(Layout.Alignment.ALIGN_CENTER);
+                format.setStyle(PrnTextStyle.NORMAL);
+                format.setTextSize(25);
+                mPrinter.setPrintAppendString(" ", format);
+                mPrinter.setPrintAppendString(" Monto :    $ " + logTransacciones.getFieldsTrxSend().getTransaction_amount(), format);
+                mPrinter.setPrintAppendString("  ", format);
+                mPrinter.setPrintAppendString(" Comision :    $ " + logTransacciones.getFieldsTrxSend().getCommision_amount(), format);
+                mPrinter.setPrintAppendString(" ", format);
+                mPrinter.setPrintAppendString(" Test ", format);
+                mPrinter.setPrintAppendString(" ", format);
+                mPrinter.setPrintAppendString(" ", format);
+                mPrinter.setPrintAppendString(" ", format);
+                mPrinter.setPrintAppendString(" ", format);
             }
         }).start();
     }

@@ -2,7 +2,6 @@ package com.code93.linkcoop.ui;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -60,6 +59,9 @@ public class Login extends AppCompatActivity {
 
     private CooperativaViewModel viewModel;
     private SP2 sp2;
+
+    private String userE;
+    private String pwdE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,13 +135,7 @@ public class Login extends AppCompatActivity {
             tilPassword.setError("");
             tilEmail.setErrorEnabled(false);
             tilPassword.setErrorEnabled(false);
-            new Thread(() -> {
-                AesBase64Wrapper aes = new AesBase64Wrapper();
-                String encrypUser = aes.encryptAndEncode(user);
-                String encrypPwd = aes.encryptAndEncode(pwd);
-                MyApp.sp2.putString(SP2.Companion.getUser_encript(), encrypUser);
-                sendLogin(encrypUser, encrypPwd);
-            }).start();
+            new Thread(this::encriptarUsuario).start();
 
         } else {
             spotDialog.dismiss();
@@ -147,21 +143,57 @@ public class Login extends AppCompatActivity {
         }
     }
 
+    private void encriptarUsuario() {
+        String user = etEmail.getText().toString();
+        AesBase64Wrapper aes = new AesBase64Wrapper();
+        aes.encryptAndEncode(user, this, new DownloadCallback() {
+            @Override
+            public void onDownloadCallback(@NotNull String response) {
+                userE = response;
+                Log.d("UserEncrip: ", response);
+                if (response.contains("Error")) {
+                    showError(response);
+                } else {
+                    encriptarContrasena();
+                }
+            }
+        });
+    }
+
+    private void encriptarContrasena() {
+        String pwd = etPassword.getText().toString();
+        AesBase64Wrapper aes = new AesBase64Wrapper();
+        aes.encryptAndEncode(pwd, this, new DownloadCallback() {
+            @Override
+            public void onDownloadCallback(@NotNull String response) {
+                pwdE = response;
+                Log.d("pwdE: ", response);
+                MyApp.sp2.putString(SP2.Companion.getUser_encript(), userE);
+                sendLogin(userE, pwdE);
+            }
+        });
+    }
+
     private void sendLogin(String encrypUser, String encrypPwd) {
         String xmlLogOff = ToolsXML.requestLogon(encrypUser, encrypPwd);
 
         DownloadXmlTask task = new DownloadXmlTask(xmlLogOff, response -> {
             if (response.equals("Error de conexion"))
-                showErrorConexion();
+                showError("Error de conexion");
             else
                 procesarRespuesta(response);
         });
         task.execute(xmlLogOff);
     }
 
-    private void showErrorConexion() {
-        spotDialog.dismiss();
-        Tools.showDialogError(this, "Error de conexion");
+    private void showError(String error) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                spotDialog.dismiss();
+                Tools.showDialogError(Login.this, error);
+            }
+        });
     }
 
     private ArrayList<String> sharedPreferences() {

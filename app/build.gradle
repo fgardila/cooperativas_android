@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId "com.code93.linkcoop"
-        minSdkVersion 22
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode app_version_code
         versionName app_version_name
@@ -30,6 +30,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFile 'proguard-project.txt'
             debuggable false
             jniDebuggable false
             renderscriptDebuggable false

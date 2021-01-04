@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.code93.linkcoop.cache.SP2;
+import com.code93.linkcoop.models.Comercio;
 import com.code93.linkcoop.models.FieldsTrx;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.TokenData;
@@ -23,9 +25,11 @@ import com.code93.linkcoop.ToolsXML;
 import com.code93.linkcoop.adapters.MenuElementosAdapter;
 import com.code93.linkcoop.models.Cooperativa;
 import com.code93.linkcoop.models.DataTransaccion;
+import com.code93.linkcoop.models.LogTransacciones;
 import com.code93.linkcoop.models.Transaction;
 import com.code93.linkcoop.network.DownloadXmlTask;
 import com.code93.linkcoop.viewmodel.FieldsTrxViewModel;
+import com.code93.linkcoop.viewmodel.LogTransaccionesViewModel;
 import com.code93.linkcoop.xmlParsers.XmlParser;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -43,6 +47,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
     RecyclerView rvElementos;
     TextView tvTransaccion;
 
+    Comercio comercio;
     Cooperativa cooperativa;
     Transaction transaccion;
     List<DataTransaccion> elementos;
@@ -50,16 +55,18 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
 
     MenuElementosAdapter adapter;
 
-    private FieldsTrxViewModel viewModel;
+    private LogTransaccionesViewModel viewModel;
 
     private AlertDialog spotDialog;
+
+    final String depositoAhorros = "DEPOSITO AHORROS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaccion);
 
-        viewModel = new ViewModelProvider(this).get(FieldsTrxViewModel.class);
+        viewModel = new ViewModelProvider(this).get(LogTransaccionesViewModel.class);
 
         tvTransaccion = findViewById(R.id.tvTransaccion);
 
@@ -69,7 +76,12 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                 .build();
 
         Bundle extras = getIntent().getExtras();
+        SP2 sp2 = SP2.Companion.getInstance(this);
         if (extras != null) {
+            comercio = new Comercio();
+            comercio.setNombre(sp2.getString(SP2.Companion.getComercio_nombre(), ""));
+            comercio.setRuc(sp2.getString(SP2.Companion.getComercio_ruc(), ""));
+            comercio.setDireccion(sp2.getString(SP2.Companion.getComercio_direccion(), ""));
             transaccion = (Transaction) getIntent().getParcelableExtra("transaction");
             cooperativa = (Cooperativa) getIntent().getParcelableExtra("cooperativa");
             elementos = getElementos(transaccion.get_namet().trim());
@@ -118,7 +130,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                         InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
                         12, "Ingresa el numero de la cuenta a consultar", R.drawable.ic_account_balance));
                 break;
-            case "DEPOSITO AHORROS":
+            case depositoAhorros:
                 elementos.add(new DataTransaccion("Monto",
                         InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
                         9, "Ingresa el monto", R.drawable.ic_money));
@@ -145,12 +157,9 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                 value = data.getStringExtra("value");
             }
             elementos.set(pos, new DataTransaccion(elemSelect, value));
-            //transaccion.setDataTrans(elementos);
             adapter.setElementos(elementos);
             adapter.notifyDataSetChanged();
-            /*adapter.setOnClickElemento(this);
-            rvElementos.setLayoutManager(new LinearLayoutManager(this));
-            rvElementos.setAdapter(adapter);*/
+
 
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -188,7 +197,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                 case "GENERACION OTP":
                     generacionOtp();
                     break;
-                case "DEPOSITO AHORROS":
+                case depositoAhorros:
                    depositoAhorros();
                    break;
                 default:
@@ -199,6 +208,8 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
         }
 
     }
+
+    FieldsTrx fieldsTrxSend = new FieldsTrx();
 
     private void retiroAhorros() {
         String monto = "";
@@ -223,20 +234,24 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
             }
         }
 
-        String xmlLogOff = ToolsXML.requestWithdrawal(transaccion, cooperativa, numeroDeCuenta,
+        String xml = ToolsXML.requestWithdrawal(transaccion, cooperativa, numeroDeCuenta,
                 monto, otp, documento);
 
-        DownloadXmlTask task = new DownloadXmlTask(xmlLogOff, response -> {
+        try {
+            fieldsTrxSend = XmlParser.parse(xml, "request_withdrawal");
+        } catch (XmlPullParserException | IOException e) {
+            e.printStackTrace();
+        }
+
+        DownloadXmlTask task = new DownloadXmlTask(xml, response -> {
             if (response.equals("Error de conexion"))
                 showErrorConexion();
             else
                 procesarRespuesta("reply_withdrawal", response);
 
         });
-        task.execute(xmlLogOff);
+        task.execute(xml);
     }
-
-    FieldsTrx fieldsTrxSend = new FieldsTrx();
 
     private void consultaSaldo() {
         String numeroDeCuenta = "";
@@ -308,16 +323,22 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
             }
         }
 
-        String xmlLogOff = ToolsXML.requestDeposit(transaccion, cooperativa, numeroDeCuenta,
+        String xml = ToolsXML.requestDeposit(transaccion, cooperativa, numeroDeCuenta,
                 monto, documento);
 
-        DownloadXmlTask task = new DownloadXmlTask(xmlLogOff, response -> {
+        try {
+            fieldsTrxSend = XmlParser.parse(xml, "request_deposit");
+        } catch (XmlPullParserException | IOException e) {
+            e.printStackTrace();
+        }
+
+        DownloadXmlTask task = new DownloadXmlTask(xml, response -> {
             if (response.equals("Error de conexion"))
                 showErrorConexion();
             else
                 procesarRespuesta("reply_deposit", response);
         });
-        task.execute(xmlLogOff);
+        task.execute(xml);
     }
 
     private void procesarRespuesta(String tagReply, String response) {
@@ -327,21 +348,25 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                 Log.d("FieldTRX", Objects.requireNonNull(fieldsTrx.getToken_data()));
                 TokenData tokenData = new TokenData();
                 tokenData.getTokens(Objects.requireNonNull(fieldsTrx.getToken_data()));
-                viewModel.addFieldTrx(fieldsTrx);
+
+                LogTransacciones logTransacciones = new LogTransacciones(
+                        0, comercio, cooperativa, transaccion, fieldsTrxSend, fieldsTrx);
+
+                viewModel.addLogTransacciones(logTransacciones);
                 if (fieldsTrx.getResponse_code().equals("000")) {
                     spotDialog.dismiss();
                     switch (transaccion.get_namet().trim()) {
                         case "RETIRO AHORROS":
-                            procesarRetiroAhorros(fieldsTrx, tokenData);
+                            procesarRetiroAhorros(logTransacciones, tokenData);
                             break;
                         case "CONSULTA DE SALDOS":
-                            procesarConsultaSaldo(fieldsTrx, tokenData);
+                            procesarConsultaSaldo(logTransacciones, tokenData);
                             break;
                         case "GENERACION OTP":
-                            procesarGeneracionOtp(fieldsTrx, tokenData);
+                            procesarGeneracionOtp(logTransacciones, tokenData);
                             break;
-                        case "DEPOSITO AHORROS":
-                            procesarDepositoAhorros(fieldsTrx, tokenData);
+                        case depositoAhorros:
+                            procesarDepositoAhorros(logTransacciones, tokenData);
                             break;
                         default:
                             throw new IllegalStateException("Unexpected value: ");
@@ -376,31 +401,25 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
         }
     }
 
-    private void procesarRetiroAhorros(FieldsTrx fieldsTrx, TokenData tokenData) {
+    private void procesarRetiroAhorros(LogTransacciones logTransacciones, TokenData tokenData) {
         Tools.showDialogPositive(this, tokenData.getB1(), value -> {
             Intent intent = new Intent(TransaccionActivity.this, ImpresionActivity.class);
-            intent.putExtra("cooperativa", cooperativa);
-            intent.putExtra("transaction", transaccion);
-            intent.putExtra("fieldsTrx", fieldsTrx);
-            intent.putExtra("tokenData", tokenData);
+            intent.putExtra("logTransacciones", logTransacciones);
             startActivity(intent);
             finish();
         });
     }
 
-    private void procesarConsultaSaldo(FieldsTrx fieldsTrx, TokenData tokenData) {
+    private void procesarConsultaSaldo(LogTransacciones logTransacciones, TokenData tokenData) {
         Tools.showDialogPositive(this, tokenData.getB1(), value -> {
             Intent intent = new Intent(TransaccionActivity.this, ImpresionActivity.class);
-            intent.putExtra("cooperativa", cooperativa);
-            intent.putExtra("transaction", transaccion);
-            intent.putExtra("fieldsTrx", fieldsTrx);
-            intent.putExtra("tokenData", tokenData);
+            intent.putExtra("logTransacciones", logTransacciones);
             startActivity(intent);
             finish();
         });
     }
 
-    private void procesarGeneracionOtp(FieldsTrx fieldsTrx, TokenData tokenData) {
+    private void procesarGeneracionOtp(LogTransacciones logTransacciones, TokenData tokenData) {
         Tools.showDialogPositive(this, tokenData.getB1(), value -> {
             Intent intent = new Intent(TransaccionActivity.this, MainActivity.class);
             startActivity(intent);
@@ -408,14 +427,10 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
         });
     }
 
-    private void procesarDepositoAhorros(FieldsTrx fieldsTrx, TokenData tokenData) {
+    private void procesarDepositoAhorros(LogTransacciones logTransacciones, TokenData tokenData) {
         Tools.showDialogPositive(this, tokenData.getB1(), value -> {
             Intent intent = new Intent(TransaccionActivity.this, ImpresionActivity.class);
-            intent.putExtra("cooperativa", cooperativa);
-            intent.putExtra("transaction", transaccion);
-            intent.putExtra("fieldsTrx", fieldsTrx);
-            intent.putExtra("tokenData", tokenData);
-            startActivity(intent);
+            intent.putExtra("logTransacciones", logTransacciones);
             finish();
         });
     }
