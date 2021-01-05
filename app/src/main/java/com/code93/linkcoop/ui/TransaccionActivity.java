@@ -310,16 +310,18 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
         String numeroDeCuenta = "";
         String documento = "";
         for (DataTransaccion data : elementos) {
-            if (data.getName().equals("Monto")) {
-                monto = data.getValue();
-                continue;
-            }
-            if (data.getName().equals("Numero de cuenta")) {
-                numeroDeCuenta = data.getValue();
-                continue;
-            }
-            if (data.getName().equals("Documento de identidad")) {
-                documento = data.getValue();
+            switch (data.getName()) {
+                case "Monto":
+                    monto = data.getValue();
+                    break;
+                case "Numero de cuenta":
+                    numeroDeCuenta = data.getValue();
+                    break;
+                case "Documento de identidad":
+                    documento = data.getValue();
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + data.getName());
             }
         }
 
