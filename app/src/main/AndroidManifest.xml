@@ -35,6 +35,7 @@
         <activity android:name=".ui.ImpresionActivity" />
         <activity android:name=".ui.TransaccionActivity" />
         <activity android:name=".ui.IngresarDataActivity" />
+        <activity android:name=".ui.IngresarReferenciaActivity" />
         <activity android:name=".ui.TransaccionesActivity" />
         <activity android:name=".ui.Login">
             <intent-filter>

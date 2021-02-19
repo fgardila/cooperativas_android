@@ -23,10 +23,11 @@ import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.ToolsXML;
 import com.code93.linkcoop.cache.SP2;
 import com.code93.linkcoop.models.Cooperativa;
+import com.code93.linkcoop.models.Instituciones;
 import com.code93.linkcoop.models.LoginCooperativas;
 import com.code93.linkcoop.network.DownloadCallback;
 import com.code93.linkcoop.network.DownloadXmlTask;
-import com.code93.linkcoop.viewmodel.CooperativaViewModel;
+import com.code93.linkcoop.viewmodel.InstitucionesViewModel;
 import com.code93.linkcoop.xmlParsers.XmlParser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -57,7 +58,7 @@ public class Login extends AppCompatActivity {
     private AlertDialog spotDialog;
     private FirebaseAuth auth;
 
-    private CooperativaViewModel viewModel;
+    private InstitucionesViewModel viewModel;
     private SP2 sp2;
 
     private String userE;
@@ -68,7 +69,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        viewModel = new ViewModelProvider(this).get(CooperativaViewModel.class);
+        viewModel = new ViewModelProvider(this).get(InstitucionesViewModel.class);
         sp2 = SP2.Companion.getInstance(this);
 
         auth = FirebaseAuth.getInstance();
@@ -268,13 +269,14 @@ public class Login extends AppCompatActivity {
             if (fieldsTrx.getResponse_code().equals("00")) {
                 MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), true);
                 Gson gson = new Gson();
-                LoginCooperativas logCoop = gson.fromJson(fieldsTrx.getBuffer_data(), LoginCooperativas.class);
+                String jsson = "{\"comercio\":{\"nombre\":\"DESARROLLO LINK-COOP\",\"ruc\":\"1306396456   \",\"direccion\":\"EL GUABO\"},\"instituciones\":[{\"_id\":1002,\"_namec\":\"COOPERATIVA MIFEX\",\"_product\":\"012001\",\"_service\":\"0030011001\",\"_channel\":2,\"url_imagen\":\"http://190.216.106.14:1992/Img/img_1002.png\",\"_transaction\":[{\"_code\":\"301000\",\"_namet\":\"CONSULTA DE SALDOS\",\"_cost\":0.25,\"_subservice\":0,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]},{\"_code\":\"306000\",\"_namet\":\"GENERACION OTP\",\"_cost\":0,\"_subservice\":1,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"},{\"description\":\"Nombre del Cliente\",\"data_type\":\"numerico\",\"buss_type\":\"token\",\"identificator\":\"X4\",\"mode\":\"input\"}]},{\"_code\":\"501000\",\"_namet\":\"DEPOSITOS AHORROS\",\"_cost\":0.51,\"_subservice\":3,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]}]},{\"_id\":1007,\"_namec\":\"COOPERATIVA COOPROGRESO\",\"_product\":\"999999\",\"_service\":\"0030011001\",\"_channel\":2,\"url_imagen\":\"http://190.216.106.14:1992/Img/img_1007.png\",\"_transaction\":[{\"_code\":\"101001\",\"_namet\":\"RETIRO DE AHORROS\",\"_cost\":0.51,\"_subservice\":4,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]},{\"_code\":\"501000\",\"_namet\":\"DEPOSITOS AHORROS\",\"_cost\":0.25,\"_subservice\":2,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]}]},{\"_id\":1008,\"_namec\":\"COOPERATIVA CASMEC\",\"_product\":\"999999\",\"_service\":\"0030011001\",\"_channel\":2,\"url_imagen\":\"http://190.216.106.14:1992/Img/X\",\"_transaction\":[{\"_code\":\"301000\",\"_namet\":\"CONSULTA DE SALDOS\",\"_cost\":0.25,\"_subservice\":5,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]}]}]}";
+                LoginCooperativas logCoop = gson.fromJson(jsson, LoginCooperativas.class);
                 MyApp.sp2.putString(SP2.Companion.getComercio_nombre(), logCoop.getComercio().getNombre().trim());
                 MyApp.sp2.putString(SP2.Companion.getComercio_ruc(), logCoop.getComercio().getRuc().trim());
                 MyApp.sp2.putString(SP2.Companion.getComercio_direccion(), logCoop.getComercio().getDireccion().trim());
-                viewModel.deleteAllCooperativas();
-                for (Cooperativa coop : logCoop.getCooperativas()) {
-                    viewModel.addCooperativa(coop);
+                viewModel.deleteAllInstituciones();
+                for (Instituciones inst : logCoop.getInstituciones()) {
+                    viewModel.addInstituciones(inst);
                 }
 
                 spotDialog.dismiss();

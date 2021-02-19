@@ -7,5 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class Transaction(
         var _code: String = "",
         var _namet: String = "",
-        var _cost: String = ""
+        var _cost: String = "",
+        var _subservice: String = "",
+        var referencias: List<Referencias>
 ) : Parcelable { }

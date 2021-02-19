@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.code93.linkcoop.DialogCallback;
+import com.code93.linkcoop.adapters.MenuReferenciasAdapter;
 import com.code93.linkcoop.cache.SP2;
 import com.code93.linkcoop.models.Comercio;
 import com.code93.linkcoop.models.FieldsTrx;
@@ -23,13 +24,13 @@ import com.code93.linkcoop.R;
 import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.ToolsXML;
-import com.code93.linkcoop.adapters.MenuElementosAdapter;
 import com.code93.linkcoop.models.Cooperativa;
 import com.code93.linkcoop.models.DataTransaccion;
+import com.code93.linkcoop.models.Instituciones;
 import com.code93.linkcoop.models.LogTransacciones;
+import com.code93.linkcoop.models.Referencias;
 import com.code93.linkcoop.models.Transaction;
 import com.code93.linkcoop.network.DownloadXmlTask;
-import com.code93.linkcoop.viewmodel.FieldsTrxViewModel;
 import com.code93.linkcoop.viewmodel.LogTransaccionesViewModel;
 import com.code93.linkcoop.xmlParsers.XmlParser;
 
@@ -42,7 +43,7 @@ import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
 
-public class TransaccionActivity extends AppCompatActivity implements MenuElementosAdapter.OnClickElemetos {
+public class TransaccionActivity extends AppCompatActivity implements MenuReferenciasAdapter.OnClickElemetos {
 
     private static final int RTA_ELEMENTO = 101;
     RecyclerView rvElementos;
@@ -50,11 +51,12 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
 
     Comercio comercio;
     Cooperativa cooperativa;
+    Instituciones instituciones;
     Transaction transaccion;
-    List<DataTransaccion> elementos;
-    DataTransaccion elemSelect;
+    List<Referencias> referencias;
+    Referencias refeSelect;
 
-    MenuElementosAdapter adapter;
+    MenuReferenciasAdapter adapter;
 
     private LogTransaccionesViewModel viewModel;
 
@@ -84,8 +86,9 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
             comercio.setRuc(sp2.getString(SP2.Companion.getComercio_ruc(), ""));
             comercio.setDireccion(sp2.getString(SP2.Companion.getComercio_direccion(), ""));
             transaccion = (Transaction) getIntent().getParcelableExtra("transaction");
-            cooperativa = (Cooperativa) getIntent().getParcelableExtra("cooperativa");
-            elementos = getElementos(transaccion.get_namet().trim());
+            instituciones = (Instituciones) getIntent().getParcelableExtra("instituciones");
+            //referencias = getElementos(transaccion.get_namet().trim());
+            referencias = transaccion.getReferencias();
             tvTransaccion.setText(transaccion.get_namet().trim());
         } else {
 
@@ -93,8 +96,8 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
 
         rvElementos = findViewById(R.id.rvElementos);
 
-        adapter = new MenuElementosAdapter(this);
-        adapter.setElementos(elementos);
+        adapter = new MenuReferenciasAdapter(this);
+        adapter.setReferencias(referencias);
         adapter.setOnClickElemento(this);
         rvElementos.setLayoutManager(new LinearLayoutManager(this));
         rvElementos.setAdapter(adapter);
@@ -159,13 +162,13 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == RTA_ELEMENTO) {
-            int pos = elementos.indexOf(elemSelect);
+            int pos = referencias.indexOf(refeSelect);
             String value = null;
             if (data != null) {
                 value = data.getStringExtra("value");
             }
-            elementos.set(pos, new DataTransaccion(elemSelect, value));
-            adapter.setElementos(elementos);
+            //referencias.set(pos, new DataTransaccion(refeSelect, value));
+            adapter.setReferencias(referencias);
             adapter.notifyDataSetChanged();
 
 
@@ -176,18 +179,18 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
 
     @Override
     public void onItemClick(RecyclerView.ViewHolder item, int position, int id) {
-        Intent intent = new Intent(this, IngresarDataActivity.class);
-        elemSelect = elementos.get(position);
+        Intent intent = new Intent(this, IngresarReferenciaActivity.class);
+        refeSelect = referencias.get(position);
         intent.putExtra("nameTrx", transaccion.get_namet().trim());
-        intent.putExtra("elemento", elemSelect);
+        intent.putExtra("referencia", refeSelect);
         startActivityForResult(intent, RTA_ELEMENTO);
     }
 
     public void analizarDatos(View view) {
         boolean camposOk = true;
-        for (DataTransaccion data : elementos) {
-            if (data.getValue() == null || data.getValue().equals("")) {
-                Toast.makeText(this, "El " + data.getName().trim() + " no se ha completado.",
+        for (Referencias refe : referencias) {
+            if (refe.getValue() == null || refe.getValue().equals("")) {
+                Toast.makeText(this, "El " + refe.getDescription().trim() + " no se ha completado.",
                         Toast.LENGTH_SHORT).show();
                 camposOk = false;
                 break;
@@ -226,7 +229,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
         String numeroDeCuenta = "";
         String otp = "";
         String documento = "";
-        for (DataTransaccion data : elementos) {
+        /*for (Referencias data : referencias) {
             if (data.getName().equals("Monto")) {
                 monto = data.getValue();
                 continue;
@@ -242,7 +245,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
             if (data.getName().equals("Documento de identidad")) {
                 documento = data.getValue();
             }
-        }
+        }*/
 
         String xml = ToolsXML.requestWithdrawal(transaccion, cooperativa, numeroDeCuenta,
                 monto, otp, documento);
@@ -266,7 +269,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
     private void consultaSaldo() {
         String numeroDeCuenta = "";
         String documento = "";
-        for (DataTransaccion data : elementos) {
+        /*for (DataTransaccion data : referencias) {
             if (data.getName().equals("Numero de cuenta")) {
                 numeroDeCuenta = data.getValue();
                 continue;
@@ -274,7 +277,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
             if (data.getName().equals("Documento de identidad")) {
                 documento = data.getValue();
             }
-        }
+        }*/
 
         String xml = ToolsXML.requestInquiry(transaccion, cooperativa, numeroDeCuenta, documento);
 
@@ -296,12 +299,12 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
 
     private void generacionOtp() {
         String numeroDeCuenta = "";
-        for (DataTransaccion data : elementos) {
+        /*for (DataTransaccion data : referencias) {
             if (data.getName().equals("Numero de cuenta")) {
                 numeroDeCuenta = data.getValue();
                 break;
             }
-        }
+        }*/
 
         String xml = ToolsXML.requestGenerate(transaccion, cooperativa, numeroDeCuenta);
 
@@ -319,7 +322,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
         String monto = "";
         String numeroDeCuenta = "";
         String documento = "";
-        for (DataTransaccion data : elementos) {
+        /*for (DataTransaccion data : referencias) {
             switch (data.getName()) {
                 case "Monto":
                     monto = data.getValue();
@@ -333,7 +336,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                 default:
                     throw new IllegalStateException("Unexpected value: " + data.getName());
             }
-        }
+        }*/
 
         String xml = ToolsXML.requestDeposit(transaccion, cooperativa, numeroDeCuenta,
                 monto, documento);
