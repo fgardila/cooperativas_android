@@ -2,6 +2,7 @@ package com.code93.linkcoop.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -39,9 +40,9 @@ class CooperativasActivity : FragmentActivity(), MenuCoopAdapter.OnClickCoop {
     }
 
     override fun onItemClick(instituciones: Instituciones?) {
-        Toast.makeText(this, "" + instituciones!!._namec, Toast.LENGTH_LONG).show()
+        Log.d("CooperativasActivity.kt", "Instituacion ${instituciones!!._namec}" )
         val intent = Intent(this, TransaccionesActivity::class.java)
-        intent.putExtra("inst", instituciones)
+        intent.putExtra("Institucion", instituciones)
         startActivity(intent)
     }
 }

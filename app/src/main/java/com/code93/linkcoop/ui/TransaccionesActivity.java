@@ -36,7 +36,7 @@ public class TransaccionesActivity extends AppCompatActivity implements MenuTran
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            instituciones = (Instituciones) getIntent().getParcelableExtra("inst");
+            instituciones = getIntent().getParcelableExtra("Institucion");
             tvNomCoop.setText(instituciones.get_namec().trim());
         }
 

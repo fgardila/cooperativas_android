@@ -22,19 +22,15 @@ import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.ToolsXML;
 import com.code93.linkcoop.cache.SP2;
-import com.code93.linkcoop.models.Cooperativa;
 import com.code93.linkcoop.models.Instituciones;
 import com.code93.linkcoop.models.LoginCooperativas;
 import com.code93.linkcoop.network.DownloadCallback;
 import com.code93.linkcoop.network.DownloadXmlTask;
 import com.code93.linkcoop.viewmodel.InstitucionesViewModel;
 import com.code93.linkcoop.xmlParsers.XmlParser;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
@@ -101,6 +97,13 @@ public class Login extends AppCompatActivity {
         String version = BuildConfig.VERSION_NAME;
         tvVersion.setText(version);
 
+        TextView tvSerial = findViewById(R.id.tvSerial);
+        String serial = "No tiene serial";
+        tvSerial.setText(serial);
+
+        TextView tvGoogle = findViewById(R.id.tvGoogle);
+        String google = "No tiene google";
+        tvGoogle.setText(google);
     }
 
     /**
@@ -234,19 +237,15 @@ public class Login extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
         if (user == null) {
-            // Sign Anonymously
             auth.signInAnonymously()
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("TAG", "signInAnonymously:success");
-                                FirebaseUser newUser = auth.getCurrentUser();
-                                updateUI(user);
-                            } else {
-                                Log.w("TAG", "signInAnonymously:failure", task.getException());
-                                Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                            }
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            Log.d("TAG", "signInAnonymously:success");
+                            FirebaseUser newUser = auth.getCurrentUser();
+                            updateUI(newUser);
+                        } else {
+                            Log.w("TAG", "signInAnonymously:failure", task.getException());
+                            Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
                     });
         } else {
@@ -269,7 +268,7 @@ public class Login extends AppCompatActivity {
             if (fieldsTrx.getResponse_code().equals("00")) {
                 MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), true);
                 Gson gson = new Gson();
-                String jsson = "{\"comercio\":{\"nombre\":\"DESARROLLO LINK-COOP\",\"ruc\":\"1306396456   \",\"direccion\":\"EL GUABO\"},\"instituciones\":[{\"_id\":1002,\"_namec\":\"COOPERATIVA MIFEX\",\"_product\":\"012001\",\"_service\":\"0030011001\",\"_channel\":2,\"url_imagen\":\"http://190.216.106.14:1992/Img/img_1002.png\",\"_transaction\":[{\"_code\":\"301000\",\"_namet\":\"CONSULTA DE SALDOS\",\"_cost\":0.25,\"_subservice\":0,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]},{\"_code\":\"306000\",\"_namet\":\"GENERACION OTP\",\"_cost\":0,\"_subservice\":1,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"},{\"description\":\"Nombre del Cliente\",\"data_type\":\"numerico\",\"buss_type\":\"token\",\"identificator\":\"X4\",\"mode\":\"input\"}]},{\"_code\":\"501000\",\"_namet\":\"DEPOSITOS AHORROS\",\"_cost\":0.51,\"_subservice\":3,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]}]},{\"_id\":1007,\"_namec\":\"COOPERATIVA COOPROGRESO\",\"_product\":\"999999\",\"_service\":\"0030011001\",\"_channel\":2,\"url_imagen\":\"http://190.216.106.14:1992/Img/img_1007.png\",\"_transaction\":[{\"_code\":\"101001\",\"_namet\":\"RETIRO DE AHORROS\",\"_cost\":0.51,\"_subservice\":4,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]},{\"_code\":\"501000\",\"_namet\":\"DEPOSITOS AHORROS\",\"_cost\":0.25,\"_subservice\":2,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]}]},{\"_id\":1008,\"_namec\":\"COOPERATIVA CASMEC\",\"_product\":\"999999\",\"_service\":\"0030011001\",\"_channel\":2,\"url_imagen\":\"http://190.216.106.14:1992/Img/X\",\"_transaction\":[{\"_code\":\"301000\",\"_namet\":\"CONSULTA DE SALDOS\",\"_cost\":0.25,\"_subservice\":5,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]}]}]}";
+                String jsson = "{\"comercio\":{\"nombre\":\"DESARROLLO FABIAN ARDILA\",\"ruc\":\"1306396456   \",\"direccion\":\"EL GUABO\"},\"instituciones\":[{\"_id\":1002,\"_namec\":\"COOPERATIVA MIFEX\",\"_product\":\"012001\",\"_service\":\"0030011001\",\"_channel\":2,\"url_imagen\":\"http://190.216.106.14:1992/Img/img_1002.png\",\"_transaction\":[{\"_bitmap\":\"E200010810A050C0\",\"_code\":\"301000\",\"_cost\":\"0.25\",\"_message_code\":\"0200\",\"_namet\":\"CONSULTA DE SALDOS\",\"_subservice\":\"0\",\"referencias\":[{\"buss_type\":\"xml_element\",\"data_type\":\"numerico\",\"description\":\"Numero de Cuenta\",\"identificator\":\"referencia\",\"mode\":\"input\",\"value\":\"\"}]},{\"_bitmap\":\"E200010810A050C0\",\"_code\":\"306000\",\"_cost\":\"0.00\",\"_namet\":\"GENERACION OTP\",\"_subservice\":\"1\",\"referencias\":[{\"buss_type\":\"xml_element\",\"data_type\":\"numerico\",\"description\":\"Numero de Cuenta\",\"identificator\":\"referencia\",\"mode\":\"input\",\"value\":\"\"},{\"buss_type\":\"token\",\"data_type\":\"numerico\",\"description\":\"Nombre del Cliente\",\"identificator\":\"X4\",\"mode\":\"input\",\"value\":\"\"}]},{\"_bitmap\":\"E200010810A050C0\",\"_code\":\"306000\",\"_cost\":\"0.00\",\"_namet\":\"GENERACION OTP\",\"_subservice\":\"1\",\"referencias\":[{\"buss_type\":\"xml_element\",\"data_type\":\"numerico\",\"description\":\"Numero de Cuenta\",\"identificator\":\"referencia\",\"mode\":\"input\",\"value\":\"\"},{\"buss_type\":\"token\",\"data_type\":\"numerico\",\"description\":\"Nombre del Cliente\",\"identificator\":\"X4\",\"mode\":\"input\",\"value\":\"\"}]}]},{\"_id\":1007,\"_namec\":\"COOPERATIVA COOPROGRESO\",\"_product\":\"999999\",\"_service\":\"0030011001\",\"_channel\":2,\"url_imagen\":\"http://190.216.106.14:1992/Img/img_1007.png\",\"_transaction\":[{\"_bitmap\":\"E200010810A050C0\",\"_code\":\"306000\",\"_cost\":\"0.00\",\"_namet\":\"GENERACION OTP\",\"_subservice\":\"1\",\"referencias\":[{\"buss_type\":\"xml_element\",\"data_type\":\"numerico\",\"description\":\"Numero de Cuenta\",\"identificator\":\"referencia\",\"mode\":\"input\",\"value\":\"\"},{\"buss_type\":\"token\",\"data_type\":\"numerico\",\"description\":\"Nombre del Cliente\",\"identificator\":\"X4\",\"mode\":\"input\",\"value\":\"\"}]},{\"_bitmap\":\"E200010810A050C0\",\"_code\":\"306000\",\"_cost\":\"0.00\",\"_namet\":\"GENERACION OTP\",\"_subservice\":\"1\",\"referencias\":[{\"buss_type\":\"xml_element\",\"data_type\":\"numerico\",\"description\":\"Numero de Cuenta\",\"identificator\":\"referencia\",\"mode\":\"input\",\"value\":\"\"},{\"buss_type\":\"token\",\"data_type\":\"numerico\",\"description\":\"Nombre del Cliente\",\"identificator\":\"X4\",\"mode\":\"input\",\"value\":\"\"}]}]},{\"_id\":1008,\"_namec\":\"COOPERATIVA CASMEC\",\"_product\":\"999999\",\"_service\":\"0030011001\",\"_channel\":2,\"url_imagen\":\"http://190.216.106.14:1992/Img/img_1003.png\",\"_transaction\":[{\"_bitmap\":\"E200010810A050C0\",\"_code\":\"306000\",\"_cost\":\"0.00\",\"_namet\":\"GENERACION OTP\",\"_subservice\":\"1\",\"referencias\":[{\"buss_type\":\"xml_element\",\"data_type\":\"numerico\",\"description\":\"Numero de Cuenta\",\"identificator\":\"referencia\",\"mode\":\"input\",\"value\":\"\"},{\"buss_type\":\"token\",\"data_type\":\"numerico\",\"description\":\"Nombre del Cliente\",\"identificator\":\"X4\",\"mode\":\"input\",\"value\":\"\"}]}]}]}";
                 LoginCooperativas logCoop = gson.fromJson(jsson, LoginCooperativas.class);
                 MyApp.sp2.putString(SP2.Companion.getComercio_nombre(), logCoop.getComercio().getNombre().trim());
                 MyApp.sp2.putString(SP2.Companion.getComercio_ruc(), logCoop.getComercio().getRuc().trim());

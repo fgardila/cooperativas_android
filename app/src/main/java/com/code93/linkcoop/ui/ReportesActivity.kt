@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.code93.linkcoop.R
-import com.code93.linkcoop.Tools.showDialogError
 import com.code93.linkcoop.models.LogTransacciones
 import com.code93.linkcoop.viewmodel.LogTransaccionesViewModel
 

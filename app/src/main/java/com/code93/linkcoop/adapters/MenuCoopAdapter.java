@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.code93.linkcoop.R;
-import com.code93.linkcoop.models.Cooperativa;
 import com.code93.linkcoop.models.Instituciones;
 
 import java.util.ArrayList;
