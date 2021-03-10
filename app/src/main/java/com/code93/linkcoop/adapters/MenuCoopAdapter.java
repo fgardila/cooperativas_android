@@ -14,13 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.models.Cooperativa;
+import com.code93.linkcoop.models.Instituciones;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MenuCoopAdapter extends RecyclerView.Adapter<MenuCoopAdapter.MenuCoopHolder> {
 
-    List<Cooperativa> cooperativas = new ArrayList<>();
+    List<Instituciones> instituciones = new ArrayList<>();
     Context context;
 
     public MenuCoopAdapter(Context context, OnClickCoop listener) {
@@ -28,15 +29,15 @@ public class MenuCoopAdapter extends RecyclerView.Adapter<MenuCoopAdapter.MenuCo
         setOnClickCoop(listener);
     }
 
-    public void setDatas(List<Cooperativa> cooperativas) {
-        this.cooperativas = cooperativas;
+    public void setDatas(List<Instituciones> instituciones) {
+        this.instituciones = instituciones;
         notifyDataSetChanged();
     }
 
     private OnClickCoop listener;
 
     public interface OnClickCoop {
-        void onItemClick(Cooperativa cooperativa);
+        void onItemClick(Instituciones instituciones);
     }
 
     public void setOnClickCoop(OnClickCoop listener) {
@@ -56,7 +57,7 @@ public class MenuCoopAdapter extends RecyclerView.Adapter<MenuCoopAdapter.MenuCo
 
     @Override
     public void onBindViewHolder(@NonNull MenuCoopHolder holder, int position) {
-        Cooperativa coop = cooperativas.get(position);
+        Instituciones coop = instituciones.get(position);
         if (coop.getUrl_imagen().equals("")){
             holder.tvNameCoop.setText(coop.get_namec().trim());
         } else {
@@ -74,8 +75,8 @@ public class MenuCoopAdapter extends RecyclerView.Adapter<MenuCoopAdapter.MenuCo
 
     @Override
     public int getItemCount() {
-        Log.d("SIZE LIST", "" + cooperativas.size());
-        return cooperativas.size();
+        Log.d("SIZE LIST", "" + instituciones.size());
+        return instituciones.size();
     }
 
     public static class MenuCoopHolder extends RecyclerView.ViewHolder {

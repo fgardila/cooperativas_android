@@ -10,8 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.code93.linkcoop.models.Comercio;
-import com.code93.linkcoop.models.Cooperativa;
 import com.code93.linkcoop.models.FieldsTrx;
 import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
@@ -19,18 +17,15 @@ import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.ToolsXML;
 import com.code93.linkcoop.cache.SP2;
-import com.code93.linkcoop.models.LogTransacciones;
-import com.code93.linkcoop.models.Transaction;
 import com.code93.linkcoop.network.DownloadCallback;
 import com.code93.linkcoop.network.DownloadXmlTask;
-import com.code93.linkcoop.viewmodel.CooperativaViewModel;
+import com.code93.linkcoop.viewmodel.InstitucionesViewModel;
 import com.code93.linkcoop.xmlParsers.XmlParser;
 
 import org.jetbrains.annotations.NotNull;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
@@ -38,7 +33,7 @@ import dmax.dialog.SpotsDialog;
 
 public class MainActivity extends AppCompatActivity implements DownloadCallback {
 
-    CooperativaViewModel viewModel;
+    InstitucionesViewModel viewModel;
 
     private AlertDialog spotDialog;
 
@@ -47,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        viewModel = new ViewModelProvider(this).get(CooperativaViewModel.class);
+        viewModel = new ViewModelProvider(this).get(InstitucionesViewModel.class);
 
         spotDialog = new SpotsDialog.Builder()
                 .setContext(this)

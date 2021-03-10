@@ -7,24 +7,23 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.code93.linkcoop.R
 import com.code93.linkcoop.adapters.MenuCoopAdapter
 import com.code93.linkcoop.models.Cooperativa
-import com.code93.linkcoop.viewmodel.CooperativaViewModel
-import com.google.android.gms.common.api.CommonStatusCodes
+import com.code93.linkcoop.models.Instituciones
+import com.code93.linkcoop.viewmodel.InstitucionesViewModel
 
 
 class CooperativasActivity : FragmentActivity(), MenuCoopAdapter.OnClickCoop {
 
-    private lateinit var cooperativaViewModel: CooperativaViewModel
+    private lateinit var institucionesViewModel: InstitucionesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cooperativas)
 
-        cooperativaViewModel = ViewModelProvider(this).get(CooperativaViewModel::class.java)
+        institucionesViewModel = ViewModelProvider(this).get(InstitucionesViewModel::class.java)
 
         val rvCooperativas = findViewById<RecyclerView>(R.id.rvCooperativas)
 
@@ -34,15 +33,15 @@ class CooperativasActivity : FragmentActivity(), MenuCoopAdapter.OnClickCoop {
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         //recyclerView.layoutManager = LinearLayoutManager(this)
 
-        cooperativaViewModel.readAllData.observe(this, Observer { coops ->
+        institucionesViewModel.readAllData.observe(this, Observer { coops ->
             adapter.setDatas(coops)
         })
     }
 
-    override fun onItemClick(cooperativa: Cooperativa?) {
-        Toast.makeText(this, "" + cooperativa!!._namec, Toast.LENGTH_LONG).show()
+    override fun onItemClick(instituciones: Instituciones?) {
+        Toast.makeText(this, "" + instituciones!!._namec, Toast.LENGTH_LONG).show()
         val intent = Intent(this, TransaccionesActivity::class.java)
-        intent.putExtra("coop", cooperativa)
+        intent.putExtra("inst", instituciones)
         startActivity(intent)
     }
 }

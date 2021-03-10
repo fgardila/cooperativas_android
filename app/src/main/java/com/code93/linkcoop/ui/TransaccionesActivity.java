@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.adapters.MenuTransAdapter;
-import com.code93.linkcoop.models.Cooperativa;
+import com.code93.linkcoop.models.Instituciones;
 import com.code93.linkcoop.models.Transaction;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -23,7 +23,7 @@ public class TransaccionesActivity extends AppCompatActivity implements MenuTran
     TextView tvNomCoop;
     ImageView imgCoop;
 
-    Cooperativa cooperativa;
+    Instituciones instituciones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +36,11 @@ public class TransaccionesActivity extends AppCompatActivity implements MenuTran
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            cooperativa = (Cooperativa) getIntent().getParcelableExtra("coop");
-            tvNomCoop.setText(cooperativa.get_namec().trim());
+            instituciones = (Instituciones) getIntent().getParcelableExtra("inst");
+            tvNomCoop.setText(instituciones.get_namec().trim());
         }
 
-        MenuTransAdapter adapter = new MenuTransAdapter(cooperativa.get_transaction(), this);
+        MenuTransAdapter adapter = new MenuTransAdapter(instituciones.get_transaction(), this);
         rvTransacciones.setLayoutManager(new GridLayoutManager(this, 2));
         rvTransacciones.setAdapter(adapter);
     }
@@ -59,7 +59,7 @@ public class TransaccionesActivity extends AppCompatActivity implements MenuTran
                     dialog.dismiss();
                     Intent intent = new Intent(TransaccionesActivity.this, TransaccionActivity.class);
                     intent.putExtra("transaction", transaction);
-                    intent.putExtra("cooperativa", cooperativa);
+                    intent.putExtra("instituciones", instituciones);
                     startActivity(intent);
                     finish();
                 }
