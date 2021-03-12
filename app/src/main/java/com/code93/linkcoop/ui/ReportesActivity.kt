@@ -1,6 +1,8 @@
 package com.code93.linkcoop.ui
 
 import android.os.Bundle
+import android.view.View
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -43,14 +45,20 @@ class ReportesActivity : AppCompatActivity() {
                 "DEPOSITO AHORROS" -> depositoAhorros(trx)
                 else -> {
                     Toast.makeText(this, "Transaccion no listada " + trx.transaction.nameTransaction, Toast.LENGTH_SHORT).show()
-                }
+                }a
             }
         }*/
-        reportesAdapter.logs = logs
-        rvReportes.setHasFixedSize(true)
-        rvReportes.layoutManager = LinearLayoutManager(this)
-        rvReportes.adapter = reportesAdapter
-        reportesAdapter.notifyDataSetChanged()
+        if (logs.isEmpty()) {
+            val noItems = findViewById<RelativeLayout>(R.id.noItems)
+            noItems.visibility = View.VISIBLE
+        } else {
+            reportesAdapter.logs = logs
+            rvReportes.setHasFixedSize(true)
+            rvReportes.layoutManager = LinearLayoutManager(this)
+            rvReportes.adapter = reportesAdapter
+            reportesAdapter.notifyDataSetChanged()
+        }
+
     }
 
     private fun depositoAhorros(trx: LogTransacciones) {
