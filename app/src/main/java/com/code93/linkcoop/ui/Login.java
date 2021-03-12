@@ -241,7 +241,7 @@ public class Login extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Log.d("TAG", "signInAnonymously:success");
                                 FirebaseUser newUser = auth.getCurrentUser();
-                                updateUI(user);
+                                updateUI(newUser);
                             } else {
                                 Log.w("TAG", "signInAnonymously:failure", task.getException());
                                 Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
