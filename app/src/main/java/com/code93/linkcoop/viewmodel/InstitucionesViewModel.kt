@@ -5,7 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.code93.linkcoop.data.LinkCoopDatabase
-import com.code93.linkcoop.models.Cooperativa
 import com.code93.linkcoop.models.Instituciones
 import com.code93.linkcoop.repository.InstitucionesRepository
 import kotlinx.coroutines.Dispatchers

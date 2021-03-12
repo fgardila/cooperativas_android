@@ -10,12 +10,8 @@ import android.text.Layout;
 import com.code93.linkcoop.DialogCallback;
 import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
-import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
-import com.code93.linkcoop.models.Cooperativa;
-import com.code93.linkcoop.models.FieldsTrx;
 import com.code93.linkcoop.models.LogTransacciones;
-import com.code93.linkcoop.models.Transaction;
 import com.zcs.sdk.DriverManager;
 import com.zcs.sdk.Printer;
 import com.zcs.sdk.SdkResult;
@@ -94,7 +90,7 @@ public class ImpresionActivity extends AppCompatActivity {
                     format.setStyle(PrnTextStyle.BOLD);
                     format.setAli(Layout.Alignment.ALIGN_CENTER);
                     mPrinter.setPrintAppendString(logTransacciones.getCooperativa().get_namec().trim(), format);
-                    switch (logTransacciones.getTransaction().get_namet().trim()) {
+                    switch (logTransacciones.getTransaction().getNameTransaction().trim()) {
                         case "RETIRO AHORROS":
                             impresionRetiro(logTransacciones, format);
                             break;
@@ -130,7 +126,7 @@ public class ImpresionActivity extends AppCompatActivity {
 
             private void impresionDeposito(LogTransacciones logTransacciones, PrnStrFormat format) {
                 format.setTextSize(28);
-                mPrinter.setPrintAppendString(logTransacciones.getTransaction().get_namet().trim(), format);
+                mPrinter.setPrintAppendString(logTransacciones.getTransaction().getNameTransaction().trim(), format);
                 format.setAli(Layout.Alignment.ALIGN_CENTER);
                 format.setStyle(PrnTextStyle.NORMAL);
                 format.setTextSize(25);
@@ -146,7 +142,7 @@ public class ImpresionActivity extends AppCompatActivity {
 
             private void impresionSaldo(LogTransacciones logTransacciones, PrnStrFormat format) {
                 format.setTextSize(28);
-                mPrinter.setPrintAppendString(logTransacciones.getTransaction().get_namet().trim(), format);
+                mPrinter.setPrintAppendString(logTransacciones.getTransaction().getNameTransaction().trim(), format);
                 format.setAli(Layout.Alignment.ALIGN_CENTER);
                 format.setStyle(PrnTextStyle.NORMAL);
                 format.setTextSize(25);
@@ -161,7 +157,7 @@ public class ImpresionActivity extends AppCompatActivity {
 
             private void impresionRetiro(LogTransacciones logTransacciones, PrnStrFormat format) {
                 format.setTextSize(28);
-                mPrinter.setPrintAppendString(logTransacciones.getTransaction().get_namet().trim(), format);
+                mPrinter.setPrintAppendString(logTransacciones.getTransaction().getNameTransaction().trim(), format);
                 format.setAli(Layout.Alignment.ALIGN_CENTER);
                 format.setStyle(PrnTextStyle.NORMAL);
                 format.setTextSize(25);

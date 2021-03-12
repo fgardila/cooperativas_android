@@ -9,13 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.code93.linkcoop.DialogCallback;
 import com.code93.linkcoop.adapters.MenuReferenciasAdapter;
 import com.code93.linkcoop.cache.SP2;
 import com.code93.linkcoop.models.Comercio;
@@ -25,7 +23,6 @@ import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.ToolsXML;
 import com.code93.linkcoop.models.Cooperativa;
-import com.code93.linkcoop.models.DataTransaccion;
 import com.code93.linkcoop.models.Instituciones;
 import com.code93.linkcoop.models.LogTransacciones;
 import com.code93.linkcoop.models.Referencias;
@@ -37,7 +34,6 @@ import com.code93.linkcoop.xmlParsers.XmlParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -89,7 +85,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuRefere
             instituciones = (Instituciones) getIntent().getParcelableExtra("instituciones");
             //referencias = getElementos(transaccion.get_namet().trim());
             referencias = transaccion.getReferencias();
-            tvTransaccion.setText(transaccion.get_namet().trim());
+            tvTransaccion.setText(transaccion.getNameTransaction().trim());
         } else {
 
         }
@@ -102,61 +98,6 @@ public class TransaccionActivity extends AppCompatActivity implements MenuRefere
         rvElementos.setLayoutManager(new LinearLayoutManager(this));
         rvElementos.setAdapter(adapter);
 
-    }
-
-    private List<DataTransaccion> getElementos(String nameTrx) {
-        List<DataTransaccion> elementos = new ArrayList<>();
-        switch (nameTrx) {
-            case "RETIRO AHORROS":
-                elementos.add(new DataTransaccion("Monto",
-                        InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        9, "Ingresa el monto", R.drawable.ic_money));
-                elementos.add(new DataTransaccion("Numero de cuenta",
-                        InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        12, "Ingresa el numero de cuenta", R.drawable.ic_account_balance));
-                elementos.add(new DataTransaccion("OTP Generado",
-                        InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        9, "Ingresa la OTP", R.drawable.ic_textsms));
-                elementos.add(new DataTransaccion("Documento de identidad",
-                        InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        15, "Ingresa documento de identidad", R.drawable.ic_account));
-                break;
-            case "CONSULTA DE SALDOS":
-            case "CONSULTA SALDOS CC":
-            case "CONSULTA SALDOS AH":
-                elementos.add(new DataTransaccion("Numero de cuenta",
-                        InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        12, "Ingresa el numero de cuenta", R.drawable.ic_account_balance));
-                elementos.add(new DataTransaccion("Documento de identidad",
-                        InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        15, "Ingresa documento de identidad", R.drawable.ic_account));
-                break;
-            case "GENERACION OTP":
-                elementos.add(new DataTransaccion("Numero de cuenta",
-                        InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        12, "Ingresa el numero de la cuenta a consultar", R.drawable.ic_account_balance));
-                break;
-            case depositoAhorros:
-                elementos.add(new DataTransaccion("Monto",
-                        InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        9, "Ingresa el monto", R.drawable.ic_money));
-                elementos.add(new DataTransaccion("Numero de cuenta",
-                        InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        12, "Ingresa el numero de cuenta", R.drawable.ic_account_balance));
-                elementos.add(new DataTransaccion("Documento del depositante",
-                        InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        15, "Ingresa documento de identidad", R.drawable.ic_account));
-                break;
-            default:
-                Tools.showDialogErrorCallback(this, "Transacción no disponible " + nameTrx, new DialogCallback() {
-                    @Override
-                    public void onDialogCallback(int value) {
-                        finish();
-                    }
-                });
-        }
-
-        return elementos;
     }
 
     @Override
@@ -181,7 +122,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuRefere
     public void onItemClick(RecyclerView.ViewHolder item, int position, int id) {
         Intent intent = new Intent(this, IngresarReferenciaActivity.class);
         refeSelect = referencias.get(position);
-        intent.putExtra("nameTrx", transaccion.get_namet().trim());
+        intent.putExtra("nameTrx", transaccion.getNameTransaction().trim());
         intent.putExtra("referencia", refeSelect);
         startActivityForResult(intent, RTA_ELEMENTO);
     }
@@ -198,7 +139,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuRefere
         }
         if (camposOk) {
             spotDialog.show();
-            switch (transaccion.get_namet().trim()) {
+            switch (transaccion.getNameTransaction().trim()) {
                 case "RETIRO AHORROS":
                     retiroAhorros();
                     break;
@@ -216,7 +157,6 @@ public class TransaccionActivity extends AppCompatActivity implements MenuRefere
                 default:
                     spotDialog.dismiss();
                     Tools.showDialogError(this, "Transaccion no disponible");
-                    throw new IllegalStateException("Unexpected value: ");
             }
         }
 
@@ -370,7 +310,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuRefere
                 viewModel.addLogTransacciones(logTransacciones);
                 if (fieldsTrx.getResponse_code().equals("000")) {
                     spotDialog.dismiss();
-                    switch (transaccion.get_namet().trim()) {
+                    switch (transaccion.getNameTransaction().trim()) {
                         case "RETIRO AHORROS":
                             procesarRetiroAhorros(logTransacciones, tokenData);
                             break;

@@ -9,10 +9,10 @@ import kotlinx.parcelize.Parcelize
 @Entity()
 data class LogTransacciones(
         @PrimaryKey(autoGenerate = true)
-        var id: Int,
-        var comercio: Comercio,
-        var cooperativa: Cooperativa,
-        var transaction: Transaction,
-        var fieldsTrxSend : FieldsTrx,
-        var fieldsTrxResponse : FieldsTrx
+        var id: Int = 0,
+        var comercio: Comercio = Comercio(),
+        var cooperativa: Cooperativa = Cooperativa(),
+        var transaction: Transaction = Transaction(),
+        var fieldsTrxSend: FieldsTrx = FieldsTrx(),
+        var fieldsTrxResponse: FieldsTrx = FieldsTrx()
 ) : Parcelable {}

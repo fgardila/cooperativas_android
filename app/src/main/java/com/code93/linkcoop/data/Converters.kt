@@ -6,7 +6,6 @@ import com.code93.linkcoop.models.Cooperativa
 import com.code93.linkcoop.models.FieldsTrx
 import com.code93.linkcoop.models.Transaction
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
 class Converters {
 

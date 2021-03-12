@@ -34,6 +34,9 @@
 -keepclassmembers class com.code93.linkcoop.models.Cooperativa{
   *;
 }
+-keepclassmembers class com.code93.linkcoop.models.Instituciones{
+  *;
+}
 -keepclassmembers class com.code93.linkcoop.models.FieldsTrx{
   *;
 }

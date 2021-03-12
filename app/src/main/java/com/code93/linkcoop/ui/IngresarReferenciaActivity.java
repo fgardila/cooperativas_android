@@ -2,9 +2,6 @@ package com.code93.linkcoop.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.code93.linkcoop.DialogCallback;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.Tools;
-import com.code93.linkcoop.models.DataTransaccion;
 import com.code93.linkcoop.models.Referencias;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.material.textfield.TextInputEditText;

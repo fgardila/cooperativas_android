@@ -1,33 +1,30 @@
 package com.code93.linkcoop;
 
 import android.app.Activity;
-import android.os.Build;
-import android.os.Environment;
 import android.util.Log;
 import android.util.Xml;
 
 import com.code93.linkcoop.models.Cooperativa;
+import com.code93.linkcoop.models.Referencias;
 import com.code93.linkcoop.models.Transaction;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xmlpull.v1.XmlSerializer;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 public class ToolsXML extends Activity {
 
+    /**
+     * Transaccion Deposito
+     * @param transaction
+     * @param cooperativa
+     * @param numeroCuenta
+     * @param monto
+     * @param documento
+     * @return
+     */
     public static String requestDeposit(Transaction transaction, Cooperativa cooperativa, String numeroCuenta, String monto, String documento) {
         TokenData tokenData = new TokenData();
         String tokenX4 = tokenData.setToken("X4", documento);
@@ -35,10 +32,48 @@ public class ToolsXML extends Activity {
         ArrayList<DataElements> listFields = new ArrayList<>();
         listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "E210010810A050C0"));
         listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
-        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), transaction.get_code().trim()));
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), transaction.getCode().trim()));
         listFields.add(new DataElements(Tools.NameFields.reference.toString(), numeroCuenta));
         listFields.add(new DataElements(Tools.NameFields.transaction_amount.toString(), monto));
-        listFields.add(new DataElements(Tools.NameFields.commision_amount.toString(), transaction.get_cost().trim()));
+        listFields.add(new DataElements(Tools.NameFields.commision_amount.toString(), transaction.getCost().trim()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
+        listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), cooperativa.get_channel().trim()));
+        listFields.add(new DataElements(Tools.NameFields.service_code.toString(), cooperativa.get_service().trim()));
+        listFields.add(new DataElements(Tools.NameFields.source_names.toString(), "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"));
+        listFields.add(new DataElements(Tools.NameFields.phone_number.toString(), "0000000000"));
+        listFields.add(new DataElements(Tools.NameFields.token_data.toString(), tokenX4));
+        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), cooperativa.get_product().trim()));
+        return ToolsXML.createXML("request_deposit", listFields);
+    }
+
+    public static String requestTransaction(Transaction transaction, Cooperativa cooperativa, List<Referencias> referencias) {
+        TokenData tokenData = new TokenData();
+        //Corregir
+        String tokenX4 = tokenData.setToken("X4", "");
+
+        for (Referencias referencia : referencias) {
+            switch (referencia.getIdentificator()) {
+                case "reference":
+                    break;
+                case "transaction_amount":
+                    break;
+            }
+            /*if (referencia.getIdentificator().equals()) {
+
+            }*/
+        }
+
+        ArrayList<DataElements> listFields = new ArrayList<>();
+        listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), transaction.getBitmap()));
+        listFields.add(new DataElements(Tools.NameFields.message_code.toString(), transaction.getMessageCode()));
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), transaction.getCode().trim()));
+        //Corregir
+        listFields.add(new DataElements(Tools.NameFields.reference.toString(), "numeroCuenta"));
+        //Corregir
+        listFields.add(new DataElements(Tools.NameFields.transaction_amount.toString(), "monto"));
+        listFields.add(new DataElements(Tools.NameFields.commision_amount.toString(), transaction.getCost().trim()));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
         listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
         listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
@@ -60,10 +95,10 @@ public class ToolsXML extends Activity {
         ArrayList<DataElements> listFields = new ArrayList<>();
         listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "E210010810A050C0"));
         listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
-        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), transaction.get_code().trim()));
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), transaction.getCode().trim()));
         listFields.add(new DataElements(Tools.NameFields.reference.toString(), numeroCuenta));
         listFields.add(new DataElements(Tools.NameFields.transaction_amount.toString(), monto));
-        listFields.add(new DataElements(Tools.NameFields.commision_amount.toString(), transaction.get_cost().trim()));
+        listFields.add(new DataElements(Tools.NameFields.commision_amount.toString(), transaction.getCost().trim()));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
         listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
         listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
@@ -80,7 +115,7 @@ public class ToolsXML extends Activity {
         ArrayList<DataElements> listFields = new ArrayList<>();
         listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "E000010810A00040"));
         listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
-        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), transaction.get_code().trim()));
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), transaction.getCode().trim()));
         listFields.add(new DataElements(Tools.NameFields.reference.toString(), reference));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
         listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
@@ -99,7 +134,7 @@ public class ToolsXML extends Activity {
         ArrayList<DataElements> listFields = new ArrayList<>();
         listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "E200010810A050C0"));
         listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
-        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), transaction.get_code().trim()));
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), transaction.getCode().trim()));
         listFields.add(new DataElements(Tools.NameFields.reference.toString(), reference));
         listFields.add(new DataElements(Tools.NameFields.transaction_amount.toString(), "0"));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));

@@ -1,13 +1,22 @@
 package com.code93.linkcoop.models
 
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Transaction(
-        var _code: String = "",
-        var _namet: String = "",
-        var _cost: String = "",
-        var _subservice: String = "",
-        var referencias: List<Referencias>
+        @SerializedName("_bitmap")
+        var bitmap: String? = "",
+        @SerializedName("_message_code")
+        var messageCode: String? = "",
+        @SerializedName("_code")
+        var code: String? = "",
+        @SerializedName("_namet")
+        var nameTransaction: String? = "",
+        @SerializedName("_cost")
+        var cost: String? = "",
+        @SerializedName("_subservice")
+        var subService: String? = "",
+        var referencias: List<Referencias>? = ArrayList()
 ) : Parcelable { }

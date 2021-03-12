@@ -36,7 +36,7 @@ public class TransaccionesActivity extends AppCompatActivity implements MenuTran
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            instituciones = (Instituciones) getIntent().getParcelableExtra("inst");
+            instituciones = getIntent().getParcelableExtra("Institucion");
             tvNomCoop.setText(instituciones.get_namec().trim());
         }
 
@@ -47,12 +47,12 @@ public class TransaccionesActivity extends AppCompatActivity implements MenuTran
 
     @Override
     public void onItemClick(Transaction transaction) {
-        Log.d("onItemClick", transaction.get_namet());
+        Log.d("onItemClick", transaction.getNameTransaction());
 
-        if (transaction.get_cost() != null) {
+        if (transaction.getCost() != null) {
             MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(this);
             dialogBuilder.setTitle("Costo de la transaccion")
-                    .setMessage("Esta transaccion tiene un costo de " + transaction.get_cost());
+                    .setMessage("Esta transaccion tiene un costo de " + transaction.getCost());
             dialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
