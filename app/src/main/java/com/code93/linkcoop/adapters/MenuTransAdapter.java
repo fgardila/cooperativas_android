@@ -48,7 +48,7 @@ public class MenuTransAdapter extends RecyclerView.Adapter<MenuTransAdapter.Menu
     @Override
     public void onBindViewHolder(@NonNull MenuTransHolder holder, int position) {
         Transaction trans = transacciones.get(position);
-        holder.tvNameTrans.setText(trans.get_namet().trim());
+        holder.tvNameTrans.setText(trans.getNameTransaction().trim());
         holder.itemView.setOnClickListener(v -> listener.onItemClick(trans));
     }
 
