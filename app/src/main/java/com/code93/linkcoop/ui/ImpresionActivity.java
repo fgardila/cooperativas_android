@@ -89,7 +89,7 @@ public class ImpresionActivity extends AppCompatActivity {
                     format.setTextSize(30);
                     format.setStyle(PrnTextStyle.BOLD);
                     format.setAli(Layout.Alignment.ALIGN_CENTER);
-                    mPrinter.setPrintAppendString(logTransacciones.getCooperativa().get_namec().trim(), format);
+                    mPrinter.setPrintAppendString(logTransacciones.getInstituciones().get_namec().trim(), format);
                     switch (logTransacciones.getTransaction().getNameTransaction().trim()) {
                         case "RETIRO AHORROS":
                             impresionRetiro(logTransacciones, format);

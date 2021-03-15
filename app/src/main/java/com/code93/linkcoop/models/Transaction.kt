@@ -14,6 +14,10 @@ data class Transaction(
         var code: String? = "",
         @SerializedName("_namet")
         var nameTransaction: String? = "",
+        @SerializedName("_tag_request")
+        var tagRequest: String = "",
+        @SerializedName("_tag_reply")
+        var tagReply: String = "",
         @SerializedName("_cost")
         var cost: String? = "",
         @SerializedName("_subservice")

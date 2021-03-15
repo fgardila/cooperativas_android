@@ -1,10 +1,7 @@
 package com.code93.juliopaprika_menuvirtual.data
 
 import androidx.room.TypeConverter
-import com.code93.linkcoop.models.Comercio
-import com.code93.linkcoop.models.Cooperativa
-import com.code93.linkcoop.models.FieldsTrx
-import com.code93.linkcoop.models.Transaction
+import com.code93.linkcoop.models.*
 import com.google.gson.Gson
 
 class Converters {
@@ -28,10 +25,10 @@ class Converters {
     fun jsonToFieldsTrx(value: String) = Gson().fromJson(value, FieldsTrx::class.java)
 
     @TypeConverter
-    fun cooperativaToJson(value: Cooperativa?) = Gson().toJson(value)
+    fun institucionesToJson(value: Instituciones?) = Gson().toJson(value)
 
     @TypeConverter
-    fun jsonToCooperativa(value: String) = Gson().fromJson(value, Cooperativa::class.java)
+    fun jsonToInstituciones(value: String) = Gson().fromJson(value, Instituciones::class.java)
 
     @TypeConverter
     fun transactionToJson(value: Transaction?) = Gson().toJson(value)

@@ -11,7 +11,7 @@ data class LogTransacciones(
         @PrimaryKey(autoGenerate = true)
         var id: Int = 0,
         var comercio: Comercio = Comercio(),
-        var cooperativa: Cooperativa = Cooperativa(),
+        var instituciones: Instituciones = Instituciones(),
         var transaction: Transaction = Transaction(),
         var fieldsTrxSend: FieldsTrx = FieldsTrx(),
         var fieldsTrxResponse: FieldsTrx = FieldsTrx()

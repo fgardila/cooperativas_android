@@ -5,6 +5,7 @@ import android.util.Log;
 import android.util.Xml;
 
 import com.code93.linkcoop.models.Cooperativa;
+import com.code93.linkcoop.models.Instituciones;
 import com.code93.linkcoop.models.Referencias;
 import com.code93.linkcoop.models.Transaction;
 
@@ -201,4 +202,55 @@ public class ToolsXML extends Activity {
     }
 
 
+    public static String requestLinkCoop(Transaction transaction, Instituciones instituciones, List<Referencias> referencias) {
+        ArrayList<DataElements> listFields = new ArrayList<>();
+
+        StringBuilder strToken = new StringBuilder();
+        TokenData tokenData = new TokenData();
+
+        for (Referencias referencia : referencias) {
+            if (referencia.getIdentificator() != null && referencia.getBuss_type() != null && referencia.getValue() != null) {
+                if (referencia.getBuss_type().equals("token")) {
+                    strToken.append(tokenData.setToken(referencia.getIdentificator(), referencia.getValue()));
+                }
+            }
+        }
+
+
+        listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), transaction.getBitmap()));
+        listFields.add(new DataElements(Tools.NameFields.message_code.toString(), transaction.getMessageCode()));
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), transaction.getCode().trim()));
+        String reference = xmlElement(Tools.NameFields.reference.toString(), referencias);
+        if (reference != null) {
+            listFields.add(new DataElements(Tools.NameFields.reference.toString(), reference));
+        }
+        String transaction_amount = xmlElement(Tools.NameFields.transaction_amount.toString(), referencias);
+        if (reference != null) {
+            listFields.add(new DataElements(Tools.NameFields.transaction_amount.toString(), transaction_amount));
+        }
+        listFields.add(new DataElements(Tools.NameFields.commision_amount.toString(), transaction.getCost().trim()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
+        listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), instituciones.get_channel().trim()));
+        listFields.add(new DataElements(Tools.NameFields.service_code.toString(), instituciones.get_service().trim()));
+        listFields.add(new DataElements(Tools.NameFields.source_names.toString(), "XXXXX XXXXX XXXXX"));
+        listFields.add(new DataElements(Tools.NameFields.phone_number.toString(), "0000000000"));
+        listFields.add(new DataElements(Tools.NameFields.token_data.toString(), strToken.toString()));
+        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), instituciones.get_product().trim()));
+        return ToolsXML.createXML(transaction.getTagRequest(), listFields);
+    }
+
+    public static String xmlElement(String idetificator, List<Referencias> referencias) {
+        for (Referencias referencia : referencias) {
+            if (referencia.getIdentificator() != null && referencia.getBuss_type() != null && referencia.getValue() != null) {
+                if (referencia.getBuss_type().equals("xml_element")) {
+                    if (referencia.getIdentificator().equals(idetificator)) {
+                        return referencia.getValue();
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }

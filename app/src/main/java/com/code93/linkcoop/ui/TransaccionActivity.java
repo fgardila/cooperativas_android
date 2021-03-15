@@ -140,7 +140,10 @@ public class TransaccionActivity extends AppCompatActivity implements MenuRefere
         }
         if (camposOk) {
             spotDialog.show();
-            switch (transaccion.getNameTransaction().trim()) {
+
+            procesarTransaccion();
+
+            /*switch (transaccion.getNameTransaction().trim()) {
                 case "RETIRO AHORROS":
                     retiroAhorros();
                     break;
@@ -158,8 +161,32 @@ public class TransaccionActivity extends AppCompatActivity implements MenuRefere
                 default:
                     spotDialog.dismiss();
                     Tools.showDialogError(this, "Transaccion no disponible");
-            }
+            }*/
         }
+
+    }
+
+    private void procesarTransaccion() {
+
+        String xml = ToolsXML.requestLinkCoop(transaccion, instituciones, referencias);
+
+        Log.d("XML TRANSACCION: ", xml);
+
+        try {
+            fieldsTrxSend = XmlParser.parse(xml, transaccion.getTagRequest());
+        } catch (XmlPullParserException | IOException e) {
+            e.printStackTrace();
+        }
+
+        DownloadXmlTask task = new DownloadXmlTask(xml, response -> {
+            if (response.equals("Error de conexion"))
+                showErrorConexion();
+            else
+                procesarRespuesta(transaccion.getTagReply(), response);
+
+        });
+        task.execute(xml);
+
 
     }
 
@@ -306,7 +333,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuRefere
                 tokenData.getTokens(Objects.requireNonNull(fieldsTrx.getToken_data()));
 
                 LogTransacciones logTransacciones = new LogTransacciones(
-                        0, comercio, cooperativa, transaccion, fieldsTrxSend, fieldsTrx);
+                        0, comercio, instituciones, transaccion, fieldsTrxSend, fieldsTrx);
 
                 viewModel.addLogTransacciones(logTransacciones);
                 if (fieldsTrx.getResponse_code().equals("000")) {

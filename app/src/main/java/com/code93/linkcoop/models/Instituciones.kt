@@ -15,5 +15,5 @@ data class Instituciones(
         var _service: String? = "",
         var _channel: String? = "",
         var url_imagen: String? = "",
-        var _transaction : List<Transaction>
+        var _transaction : List<Transaction>? = mutableListOf()
 ) : Parcelable {}
