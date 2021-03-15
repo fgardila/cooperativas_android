@@ -104,13 +104,14 @@ public class TransaccionActivity extends AppCompatActivity implements MenuRefere
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == RTA_ELEMENTO) {
             int pos = referencias.indexOf(refeSelect);
-            String value = null;
+            Referencias value = null;
             if (data != null) {
-                value = data.getStringExtra("value");
+                value = data.getParcelableExtra("value");
+                referencias.set(pos, value);
+                adapter.setReferencias(referencias);
+                adapter.notifyDataSetChanged();
             }
-            //referencias.set(pos, new DataTransaccion(refeSelect, value));
-            adapter.setReferencias(referencias);
-            adapter.notifyDataSetChanged();
+
 
 
         } else {
