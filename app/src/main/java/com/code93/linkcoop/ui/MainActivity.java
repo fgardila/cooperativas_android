@@ -79,14 +79,14 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
                 MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
                 spotDialog.dismiss();
                 Tools.showDialogPositive(this, tokenData.getB1(), value -> {
-                    startActivity(new Intent(MainActivity.this, Login.class));
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
                 });
             } else {
                 spotDialog.dismiss();
                 Tools.showDialogErrorCallback(this, tokenData.getB1(), value -> {
                     MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
-                    startActivity(new Intent(MainActivity.this, Login.class));
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
                 });
             }
@@ -116,25 +116,7 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
 
     public void sobreAplicacion(View view) {
 
-        /*Comercio comercio = new Comercio();
-        comercio.setNombre(MyApp.sp2.getString(SP2.Companion.getComercio_nombre(), ""));
-        comercio.setRuc(MyApp.sp2.getString(SP2.Companion.getComercio_ruc(), ""));
-        comercio.setDireccion(MyApp.sp2.getString(SP2.Companion.getComercio_direccion(), ""));
 
-        Cooperativa cooperativa = new Cooperativa(
-                "0", "", "", "", "", "", new ArrayList<>()
-        );
-
-        Transaction transaction = new Transaction();
-
-        FieldsTrx fieldsTrxSend = new FieldsTrx();
-
-        LogTransacciones logTransacciones = new LogTransacciones(
-                0, comercio, cooperativa, transaction, fieldsTrxSend, fieldsTrxSend);
-
-        Intent intent = new Intent(this, ImpresionActivity.class);
-        intent.putExtra("logTransacciones", logTransacciones);
-        startActivity(intent);*/
     }
 
     public void configuracion(View view) {

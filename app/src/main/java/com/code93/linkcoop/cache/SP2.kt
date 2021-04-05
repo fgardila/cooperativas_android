@@ -5,9 +5,6 @@ import android.content.SharedPreferences
 import android.text.TextUtils
 import com.code93.linkcoop.StringTools
 
-/**
- * Created by wanglei on 2016/11/27.
- */
 class SP2 private constructor(context: Context) : ICache {
 
     override fun remove(key: String?) {

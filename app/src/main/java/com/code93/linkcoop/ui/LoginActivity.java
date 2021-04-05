@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -43,7 +41,7 @@ import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
 
-public class Login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText etEmail;
     private TextInputEditText etPassword;
@@ -88,10 +86,10 @@ public class Login extends AppCompatActivity {
             checkbox.setChecked(true);
         }
 
-        ImageView imgConnectCoop = findViewById(R.id.imgConnectCoop);
+        /*ImageView imgConnectCoop = findViewById(R.id.imgConnectCoop);
         imgConnectCoop.setOnClickListener(v -> {
             startActivity(new Intent(Login.this, MainActivity.class));
-        });
+        });*/
 
         TextView tvVersion = findViewById(R.id.tvVersion);
         String version = BuildConfig.VERSION_NAME;
@@ -113,6 +111,10 @@ public class Login extends AppCompatActivity {
      * Procesar respuesta
      */
     public void iniciarSesion(View view) {
+        realizarInicioDeSesion();
+    }
+
+    public void realizarInicioDeSesion() {
         spotDialog.show();
         boolean isCompleteData = true;
 
@@ -195,7 +197,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void run() {
                 spotDialog.dismiss();
-                Tools.showDialogError(Login.this, error);
+                Tools.showDialogError(LoginActivity.this, error);
             }
         });
     }
@@ -245,7 +247,7 @@ public class Login extends AppCompatActivity {
                             updateUI(newUser);
                         } else {
                             Log.w("TAG", "signInAnonymously:failure", task.getException());
-                            Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
                     });
         } else {
@@ -268,7 +270,7 @@ public class Login extends AppCompatActivity {
             if (fieldsTrx.getResponse_code().equals("00")) {
                 MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), true);
                 Gson gson = new Gson();
-                String jsson = "{\"comercio\":{\"nombre\":\"DESARROLLO FABIAN ARDILA\",\"ruc\":\"1306396456   \",\"direccion\":\"EL GUABO\"},\"instituciones\":[{\"_id\":1002,\"_namec\":\"COOPERATIVA MIFEX\",\"_product\":\"012001\",\"_service\":\"0030011001\",\"_channel\":2,\"url_imagen\":\"http://190.216.106.14:1992/Img/img_1002.png\",\"_transaction\":[{\"_bitmap\":\"E210010810A050C0\",\"_code\":\"301000\",\"_cost\":\"0.25\",\"_message_code\":\"0200\",\"_namet\":\"RETIRO AHORROS\",\"_tag_request\":\"request_withdrawal\",\"_tag_reply\":\"reply_withdrawal\",\"_subservice\":\"0\",\"referencias\":[{\"buss_type\":\"xml_element\",\"data_type\":\"amount\",\"description\":\"Monto\",\"identificator\":\"transaction_amount\",\"mode\":\"input\",\"value\":\"\"},{\"buss_type\":\"xml_element\",\"data_type\":\"numerico\",\"description\":\"Numero de Cuenta\",\"identificator\":\"reference\",\"mode\":\"input\",\"value\":\"\"},{\"buss_type\":\"token\",\"data_type\":\"numerico\",\"description\":\"OTP Generado\",\"identificator\":\"B8\",\"mode\":\"input\",\"value\":\"\"},{\"buss_type\":\"token\",\"data_type\":\"numerico\",\"description\":\"Documento de identidad\",\"identificator\":\"X4\",\"mode\":\"input\",\"value\":\"\"}]},{\"_bitmap\":\"E200010810A050C0\",\"_code\":\"306000\",\"_cost\":\"0.00\",\"_namet\":\"GENERACION OTP\",\"_message_code\":\"0200\",\"_subservice\":\"1\",\"referencias\":[{\"buss_type\":\"xml_element\",\"data_type\":\"numerico\",\"description\":\"Numero de Cuenta\",\"identificator\":\"referencia\",\"mode\":\"input\",\"value\":\"\"},{\"buss_type\":\"token\",\"data_type\":\"numerico\",\"description\":\"Nombre del Cliente\",\"identificator\":\"X4\",\"mode\":\"input\",\"value\":\"\"}]},{\"_bitmap\":\"E200010810A050C0\",\"_code\":\"306000\",\"_cost\":\"0.00\",\"_namet\":\"GENERACION OTP\",\"_message_code\":\"0200\",\"_subservice\":\"1\",\"referencias\":[{\"buss_type\":\"xml_element\",\"data_type\":\"numerico\",\"description\":\"Numero de Cuenta\",\"identificator\":\"referencia\",\"mode\":\"input\",\"value\":\"\"},{\"buss_type\":\"token\",\"data_type\":\"numerico\",\"description\":\"Nombre del Cliente\",\"identificator\":\"X4\",\"mode\":\"input\",\"value\":\"\"}]}]},{\"_id\":1007,\"_namec\":\"COOPERATIVA COOPROGRESO\",\"_product\":\"999999\",\"_service\":\"0030011001\",\"_channel\":2,\"url_imagen\":\"http://190.216.106.14:1992/Img/img_1007.png\",\"_transaction\":[{\"_bitmap\":\"E200010810A050C0\",\"_code\":\"306000\",\"_cost\":\"0.00\",\"_namet\":\"GENERACION OTP\",\"_message_code\":\"0200\",\"_subservice\":\"1\",\"referencias\":[{\"buss_type\":\"xml_element\",\"data_type\":\"numerico\",\"description\":\"Numero de Cuenta\",\"identificator\":\"referencia\",\"mode\":\"input\",\"value\":\"\"},{\"buss_type\":\"token\",\"data_type\":\"numerico\",\"description\":\"Nombre del Cliente\",\"identificator\":\"X4\",\"mode\":\"input\",\"value\":\"\"}]},{\"_bitmap\":\"E200010810A050C0\",\"_code\":\"306000\",\"_cost\":\"0.00\",\"_namet\":\"GENERACION OTP\",\"_message_code\":\"0200\",\"_subservice\":\"1\",\"referencias\":[{\"buss_type\":\"xml_element\",\"data_type\":\"numerico\",\"description\":\"Numero de Cuenta\",\"identificator\":\"referencia\",\"mode\":\"input\",\"value\":\"\"},{\"buss_type\":\"token\",\"data_type\":\"numerico\",\"description\":\"Nombre del Cliente\",\"identificator\":\"X4\",\"mode\":\"input\",\"value\":\"\"}]}]},{\"_id\":1008,\"_namec\":\"COOPERATIVA CASMEC\",\"_product\":\"999999\",\"_service\":\"0030011001\",\"_channel\":2,\"url_imagen\":\"http://190.216.106.14:1992/Img/img_1003.png\",\"_transaction\":[{\"_bitmap\":\"E200010810A050C0\",\"_code\":\"306000\",\"_cost\":\"0.00\",\"_namet\":\"GENERACION OTP\",\"_message_code\":\"0200\",\"_subservice\":\"1\",\"referencias\":[{\"buss_type\":\"xml_element\",\"data_type\":\"numerico\",\"description\":\"Numero de Cuenta\",\"identificator\":\"referencia\",\"mode\":\"input\",\"value\":\"\"},{\"buss_type\":\"token\",\"data_type\":\"numerico\",\"description\":\"Nombre del Cliente\",\"identificator\":\"X4\",\"mode\":\"input\",\"value\":\"\"}]}]}]}";
+                String jsson = "{\"comercio\":{\"nombre\":\"DESARROLLO LINK-COOP\",\"ruc\":\"1306396456   \",\"direccion\":\"EL GUABO\"},\"instituciones\":[{\"_id\":1002,\"_namec\":\"COOPERATIVA MIFEX\",\"_product\":\"012001\",\"_service\":\"0030011001\",\"_channel\":2,\"url_imagen\":\"http://190.216.106.14:1992/Img/img_1002.png\",\"_transaction\":[{\"_bitmap\":\"E200010810A050C0\",\"_message_code\":\"0200\",\"_code\":\"301000\",\"_namet\":\"CONSULTA DE SALDOS\",\"_cost\":0.25,\"_subservice\":0,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]},{\"_bitmap\":\"E000010810A00040\",\"_message_code\":\"0200\",\"_code\":\"306000\",\"_namet\":\"GENERACION OTP\",\"_cost\":0,\"_subservice\":1,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"},{\"description\":\"Nombre del Cliente\",\"data_type\":\"numerico\",\"buss_type\":\"token\",\"identificator\":\"X4\",\"mode\":\"input\"}]},{\"_bitmap\":\"E210010810A050C0\",\"_message_code\":\"0200\",\"_code\":\"501000\",\"_namet\":\"DEPOSITOS AHORROS\",\"_cost\":0.51,\"_subservice\":3,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]}]},{\"_id\":1007,\"_namec\":\"COOPERATIVA COOPROGRESO\",\"_product\":\"999999\",\"_service\":\"0030011001\",\"_channel\":2,\"url_imagen\":\"http://190.216.106.14:1992/Img/img_1007.png\",\"_transaction\":[{\"_bitmap\":\"E210010810A050C0\",\"_message_code\":\"0200\",\"_code\":\"101001\",\"_namet\":\"RETIRO DE AHORROS\",\"_cost\":0.51,\"_subservice\":4,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]},{\"_bitmap\":\"E210010810A050C0\",\"_message_code\":\"0200\",\"_code\":\"501000\",\"_namet\":\"DEPOSITOS AHORROS\",\"_cost\":0.25,\"_subservice\":2,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]}]},{\"_id\":1008,\"_namec\":\"COOPERATIVA CASMEC\",\"_product\":\"999999\",\"_service\":\"0030011001\",\"_channel\":2,\"url_imagen\":\"http://190.216.106.14:1992/Img/img_1006.png\",\"_transaction\":[{\"_bitmap\":\"E200010810A050C0\",\"_message_code\":\"0200\",\"_code\":\"301000\",\"_namet\":\"CONSULTA DE SALDOS\",\"_cost\":0.25,\"_subservice\":5,\"referencias\":[{\"description\":\"Numero de Cuenta\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]}]},{\"_id\":1009,\"_namec\":\"Pago Agil\",\"_product\":\"999999\",\"_service\":\"0030011001\",\"_channel\":2,\"url_imagen\":\"https://www.paymentez.com.ec/files/premios/logo-pagoagil.png\",\"_transaction\":[{\"_bitmap\":\"E200010810A050C0\",\"_message_code\":\"0200\",\"_code\":\"301000\",\"_namet\":\"RECARGAS CLARO\",\"_cost\":0,\"_subservice\":5,\"referencias\":[{\"description\":\"Numero movil\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]},{\"_bitmap\":\"E200010810A050C0\",\"_message_code\":\"0200\",\"_code\":\"301000\",\"_namet\":\"RECARGAS MOVISTAR\",\"_cost\":0,\"_subservice\":5,\"referencias\":[{\"description\":\"Numero movil\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]},{\"_bitmap\":\"E200010810A050C0\",\"_message_code\":\"0200\",\"_code\":\"301000\",\"_namet\":\"RECARGAS CNT\",\"_cost\":0,\"_subservice\":5,\"referencias\":[{\"description\":\"Numero movil\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]},{\"_bitmap\":\"E200010810A050C0\",\"_message_code\":\"0200\",\"_code\":\"301000\",\"_namet\":\"Pagos Movistar Hogar o empresas\",\"_cost\":0,\"_subservice\":5,\"referencias\":[{\"description\":\"Numero movil\",\"data_type\":\"numerico\",\"buss_type\":\"xml_element\",\"identificator\":\"referencia\",\"mode\":\"input\"}]}]}]}";
                 LoginCooperativas logCoop = gson.fromJson(jsson, LoginCooperativas.class);
                 MyApp.sp2.putString(SP2.Companion.getComercio_nombre(), logCoop.getComercio().getNombre().trim());
                 MyApp.sp2.putString(SP2.Companion.getComercio_ruc(), logCoop.getComercio().getRuc().trim());
@@ -280,10 +282,48 @@ public class Login extends AppCompatActivity {
 
                 spotDialog.dismiss();
                 Tools.showDialogPositive(this, tokenData.getB1(), value -> {
-                    startActivity(new Intent(Login.this, MainActivity.class));
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
                 });
 
+            } else {
+                if (fieldsTrx.getResponse_code().equals("12")) {
+                    cerrarSesion();
+                } else {
+                    spotDialog.dismiss();
+                    Tools.showDialogError(this, tokenData.getB1());
+                }
+            }
+        } catch (XmlPullParserException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cerrarSesion() {
+        String user_encript = MyApp.sp2.getString(SP2.Companion.getUser_encript(), "");
+        String xmlLogOff = ToolsXML.requestLogoff(user_encript);
+        DownloadXmlTask task = new DownloadXmlTask(xmlLogOff, response -> {
+            if (response.equals("Error de conexion")) {
+                showError("Error de conexion");
+            } else {
+                procesarRespuestaLogOff(response);
+            }
+        });
+        task.execute(xmlLogOff);
+    }
+
+    private void procesarRespuestaLogOff(String response) {
+        try {
+            FieldsTrx fieldsTrx = XmlParser.parse(response, "reply_logoff");
+            Log.d("FieldTRX", Objects.requireNonNull(fieldsTrx.getToken_data()));
+            TokenData tokenData = new TokenData();
+            tokenData.getTokens(Objects.requireNonNull(fieldsTrx.getToken_data()));
+            if (fieldsTrx.getResponse_code().equals("00")) {
+                MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
+                spotDialog.dismiss();
+                Tools.showDialogPositive(this, tokenData.getB1(), value -> {
+                    realizarInicioDeSesion();
+                });
             } else {
                 spotDialog.dismiss();
                 Tools.showDialogError(this, tokenData.getB1());

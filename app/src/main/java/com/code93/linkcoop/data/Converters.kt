@@ -1,4 +1,4 @@
-package com.code93.juliopaprika_menuvirtual.data
+package com.code93.linkcoop.data
 
 import androidx.room.TypeConverter
 import com.code93.linkcoop.models.*
