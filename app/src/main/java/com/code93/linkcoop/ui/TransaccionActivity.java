@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.code93.linkcoop.DialogCallback;
 import com.code93.linkcoop.cache.SP2;
 import com.code93.linkcoop.models.Comercio;
 import com.code93.linkcoop.models.FieldsTrx;
@@ -118,6 +119,8 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                         15, "Ingresa documento de identidad", R.drawable.ic_account));
                 break;
             case "CONSULTA DE SALDOS":
+            case "CONSULTA SALDOS CC":
+            case "CONSULTA SALDOS AH":
                 elementos.add(new DataTransaccion("Numero de cuenta",
                         InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
                         12, "Ingresa el numero de cuenta", R.drawable.ic_account_balance));
@@ -142,7 +145,12 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                         15, "Ingresa documento de identidad", R.drawable.ic_account));
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + nameTrx);
+                Tools.showDialogErrorCallback(this, "Transacción no disponible " + nameTrx, new DialogCallback() {
+                    @Override
+                    public void onDialogCallback(int value) {
+                        finish();
+                    }
+                });
         }
 
         return elementos;
@@ -192,6 +200,8 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                     retiroAhorros();
                     break;
                 case "CONSULTA DE SALDOS":
+                case "CONSULTA SALDOS CC":
+                case "CONSULTA SALDOS AH":
                     consultaSaldo();
                     break;
                 case "GENERACION OTP":
@@ -317,7 +327,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                 case "Numero de cuenta":
                     numeroDeCuenta = data.getValue();
                     break;
-                case "Documento de identidad":
+                case "Documento del depositante":
                     documento = data.getValue();
                     break;
                 default:
@@ -362,6 +372,8 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                             procesarRetiroAhorros(logTransacciones, tokenData);
                             break;
                         case "CONSULTA DE SALDOS":
+                        case "CONSULTA SALDOS CC":
+                        case "CONSULTA SALDOS AH":
                             procesarConsultaSaldo(logTransacciones, tokenData);
                             break;
                         case "GENERACION OTP":
