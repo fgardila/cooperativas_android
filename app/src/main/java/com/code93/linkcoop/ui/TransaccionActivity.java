@@ -213,7 +213,6 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                 default:
                     spotDialog.dismiss();
                     Tools.showDialogError(this, "Transaccion no disponible");
-                    throw new IllegalStateException("Unexpected value: ");
             }
         }
 
@@ -331,7 +330,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                     documento = data.getValue();
                     break;
                 default:
-                    throw new IllegalStateException("Unexpected value: " + data.getName());
+                    Tools.showDialogError(TransaccionActivity.this, "Referencia no disponible");
             }
         }
 
@@ -383,7 +382,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                             procesarDepositoAhorros(logTransacciones, tokenData);
                             break;
                         default:
-                            throw new IllegalStateException("Unexpected value: ");
+                            Tools.showDialogError(TransaccionActivity.this, "Transaccion no disponible");
                     }
                 } else {
                     spotDialog.dismiss();

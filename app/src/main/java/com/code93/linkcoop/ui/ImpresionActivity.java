@@ -7,15 +7,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Layout;
+import android.widget.TextView;
+
 import com.code93.linkcoop.DialogCallback;
 import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
-import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
-import com.code93.linkcoop.models.Cooperativa;
-import com.code93.linkcoop.models.FieldsTrx;
 import com.code93.linkcoop.models.LogTransacciones;
-import com.code93.linkcoop.models.Transaction;
 import com.zcs.sdk.DriverManager;
 import com.zcs.sdk.Printer;
 import com.zcs.sdk.SdkResult;
@@ -33,11 +31,13 @@ public class ImpresionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_impresion);
 
         if (Build.MODEL.contains("Z90")) {
+            setContentView(R.layout.activity_impresion_pos);
             mDriverManager = MyApp.sDriverManager;
             mPrinter = mDriverManager.getPrinter();
+        } else {
+            setContentView(R.layout.activity_impresion_telefono);
         }
 
         Bundle extras = getIntent().getExtras();
@@ -46,10 +46,11 @@ public class ImpresionActivity extends AppCompatActivity {
             if (Build.MODEL.contains("Z90")) {
                 printMatrixText(logTransacciones);
             } else {
+                mostrarTicket(logTransacciones);
                 final Handler handler = new Handler();
                 handler.postDelayed(() -> {
                     startActivity(new Intent(ImpresionActivity.this, FinishActivity.class));
-                }, 2000);
+                }, 10000);
             }
         } else {
             Tools.showDialogErrorCallback(this, "No llego informacion de impresion.", new DialogCallback() {
@@ -59,6 +60,78 @@ public class ImpresionActivity extends AppCompatActivity {
                 }
             });
         }
+
+    }
+
+    private void mostrarTicket(LogTransacciones logTransacciones) {
+        StringBuilder ticket = new StringBuilder();
+        ticket.append("Link COOP\n");
+        ticket.append("\n");
+        ticket.append(logTransacciones.getComercio().getNombre());
+        ticket.append("\n");
+        ticket.append(logTransacciones.getComercio().getRuc());
+        ticket.append("\n");
+        ticket.append(logTransacciones.getComercio().getDireccion());
+        ticket.append("\n");
+        ticket.append(logTransacciones.getFieldsTrxResponse().getSwitch_date_time());
+        ticket.append("\n");
+        ticket.append("Switch Sequence ").
+                append(logTransacciones.getFieldsTrxResponse().getSwitch_sequence()).
+                append(" Adquirer Sequence ").
+                append(logTransacciones.getFieldsTrxResponse().getAdquirer_sequence());
+        ticket.append("\n");
+        ticket.append(logTransacciones.getCooperativa().get_namec().trim());
+        ticket.append("\n");
+        ticket.append("\n");
+        ticket.append("\n");
+
+        switch (logTransacciones.getTransaction().get_namet().trim()) {
+            case "RETIRO AHORROS":
+                ticket.append(impresionRetiroTelefono(logTransacciones));
+                break;
+            case "CONSULTA DE SALDOS":
+            case "CONSULTA SALDOS CC":
+            case "CONSULTA SALDOS AH":
+                ticket.append(impresionSaldoTelefono(logTransacciones));
+                break;
+            case "DEPOSITO AHORROS":
+                ticket.append(impresionDepositoTelefono(logTransacciones));
+                break;
+            default:
+                Tools.showDialogError(ImpresionActivity.this, "Transaccion no disponible");
+        }
+
+        TextView textView = findViewById(R.id.textViewRecibo);
+        textView.setText(ticket.toString());
+
+    }
+
+    private String impresionDepositoTelefono(LogTransacciones logTransacciones) {
+        StringBuilder ticket = new StringBuilder();
+        ticket.append("\n");
+
+        return ticket.toString();
+    }
+
+    private String impresionSaldoTelefono(LogTransacciones logTransacciones) {
+        StringBuilder ticket = new StringBuilder();
+        ticket.append("Target Name: ").
+                append(logTransacciones.getFieldsTrxResponse().getTarget_names());
+        ticket.append("\n");
+        ticket.append("Available_balance :    $ ")
+                .append(logTransacciones.getFieldsTrxResponse().getAvailable_balance());
+        ticket.append("\n");
+        ticket.append("Ledger_balance :    $ ")
+                .append(logTransacciones.getFieldsTrxResponse().getLedger_balance());
+
+        return ticket.toString();
+    }
+
+    private String impresionRetiroTelefono(LogTransacciones logTransacciones) {
+        StringBuilder ticket = new StringBuilder();
+        ticket.append("\n");
+
+        return ticket.toString();
 
     }
 
@@ -99,6 +172,8 @@ public class ImpresionActivity extends AppCompatActivity {
                             impresionRetiro(logTransacciones, format);
                             break;
                         case "CONSULTA DE SALDOS":
+                        case "CONSULTA SALDOS CC":
+                        case "CONSULTA SALDOS AH":
                             impresionSaldo(logTransacciones, format);
                             break;
                         case "DEPOSITO AHORROS":
@@ -106,7 +181,6 @@ public class ImpresionActivity extends AppCompatActivity {
                             break;
                         default:
                             Tools.showDialogError(ImpresionActivity.this, "Transaccion no disponible");
-                            throw new IllegalStateException("Unexpected value: ");
                     }
                     printStatus = mPrinter.setPrintStart();
                     if (printStatus == SdkResult.SDK_PRN_STATUS_PAPEROUT) {

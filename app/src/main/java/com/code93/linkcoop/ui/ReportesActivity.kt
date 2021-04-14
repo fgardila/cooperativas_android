@@ -38,6 +38,8 @@ class ReportesActivity : AppCompatActivity() {
             when (trx.transaction._namet.trim { it <= ' ' }) {
                 "RETIRO AHORROS" -> retiroAhorros(trx)
                 "CONSULTA DE SALDOS" -> consultaSaldo(trx)
+                "CONSULTA SALDOS CC" -> consultaSaldo(trx)
+                "CONSULTA SALDOS AH" -> consultaSaldo(trx)
                 "GENERACION OTP" -> generacionOtp(trx)
                 "DEPOSITO AHORROS" -> depositoAhorros(trx)
                 else -> {

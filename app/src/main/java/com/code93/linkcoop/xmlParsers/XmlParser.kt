@@ -13,14 +13,26 @@ object XmlParser {
     @JvmStatic
     @Throws(XmlPullParserException::class, IOException::class)
     fun parse(response: String, replyTag: String): FieldsTrx {
-        val input: InputStream = ByteArrayInputStream(response.toByteArray())
-        input.use { inputStream ->
-            val parser: XmlPullParser = Xml.newPullParser()
-            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
-            parser.setInput(inputStream, null)
-            parser.nextTag()
-            return read(parser, replyTag)
+        if (response.contains(replyTag)) {
+            val input: InputStream = ByteArrayInputStream(response.toByteArray())
+            input.use { inputStream ->
+                val parser: XmlPullParser = Xml.newPullParser()
+                parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
+                parser.setInput(inputStream, null)
+                parser.nextTag()
+                return read(parser, replyTag)
+            }
+        } else {
+            val input: InputStream = ByteArrayInputStream(response.toByteArray())
+            input.use { inputStream ->
+                val parser: XmlPullParser = Xml.newPullParser()
+                parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
+                parser.setInput(inputStream, null)
+                parser.nextTag()
+                return read(parser, "default_reply_error")
+            }
         }
+
     }
 
     @Throws(XmlPullParserException::class, IOException::class)
