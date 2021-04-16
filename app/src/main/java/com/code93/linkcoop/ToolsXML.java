@@ -9,6 +9,7 @@ import android.util.Xml;
 import com.code93.linkcoop.models.Cooperativa;
 import com.code93.linkcoop.models.Transaction;
 
+import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -144,6 +145,21 @@ public class ToolsXML extends Activity {
         return createXML("request_logoff", listFields);
     }
 
+    public static String requestClose(@NotNull String jsonCierre) {
+        ArrayList<DataElements> listFields = new ArrayList<>();
+        listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "C000010810A00240"));
+        listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), "930007"));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
+        listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "0"));
+        listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
+        listFields.add(new DataElements(Tools.NameFields.buffer_data.toString(), jsonCierre));
+        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012001"));
+        return createXML("request_close", listFields);
+    }
+
     public static String createXML(String startTag, List<DataElements> listElements) {
         XmlSerializer serializer = Xml.newSerializer();
         StringWriter writer = new StringWriter();
@@ -164,6 +180,4 @@ public class ToolsXML extends Activity {
             throw new RuntimeException(e);
         }
     }
-
-
 }

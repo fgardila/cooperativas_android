@@ -36,6 +36,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +47,7 @@ import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
 
-public class Login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText etEmail;
     private TextInputEditText etPassword;
@@ -93,7 +94,7 @@ public class Login extends AppCompatActivity {
 
         ImageView imgConnectCoop = findViewById(R.id.imgConnectCoop);
         imgConnectCoop.setOnClickListener(v -> {
-            startActivity(new Intent(Login.this, MainActivity.class));
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
         });
 
         TextView tvVersion = findViewById(R.id.tvVersion);
@@ -109,6 +110,10 @@ public class Login extends AppCompatActivity {
      * Procesar respuesta
      */
     public void iniciarSesion(View view) {
+        realizarInicioDeSesion();
+    }
+
+    private void realizarInicioDeSesion() {
         spotDialog.show();
         boolean isCompleteData = true;
 
@@ -191,7 +196,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void run() {
                 spotDialog.dismiss();
-                Tools.showDialogError(Login.this, error);
+                Tools.showDialogError(LoginActivity.this, error);
             }
         });
     }
@@ -241,10 +246,11 @@ public class Login extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Log.d("TAG", "signInAnonymously:success");
                                 FirebaseUser newUser = auth.getCurrentUser();
+                                newUser.getDisplayName();
                                 updateUI(newUser);
                             } else {
                                 Log.w("TAG", "signInAnonymously:failure", task.getException());
-                                Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -279,10 +285,48 @@ public class Login extends AppCompatActivity {
 
                 spotDialog.dismiss();
                 Tools.showDialogPositive(this, tokenData.getB1(), value -> {
-                    startActivity(new Intent(Login.this, MainActivity.class));
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
                 });
 
+            } else {
+                if (fieldsTrx.getResponse_code().equals("00")) {
+                    cerrarSesion();
+                } else {
+                    spotDialog.dismiss();
+                    Tools.showDialogError(this, tokenData.getB1());
+                }
+            }
+        } catch (XmlPullParserException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cerrarSesion() {
+        String user_encript = MyApp.sp2.getString(SP2.Companion.getUser_encript(), "");
+        String xmlLogOff = ToolsXML.requestLogoff(user_encript);
+        DownloadXmlTask task = new DownloadXmlTask(xmlLogOff, response -> {
+            if (response.equals("Error de conexion")) {
+                showError("Error de conexion");
+            } else {
+                procesarRespuestaLogOff(response);
+            }
+        });
+        task.execute(xmlLogOff);
+    }
+
+    private void procesarRespuestaLogOff(String response) {
+        try {
+            FieldsTrx fieldsTrx = XmlParser.parse(response, "reply_logoff");
+            Log.d("FieldTRX", Objects.requireNonNull(fieldsTrx.getToken_data()));
+            TokenData tokenData = new TokenData();
+            tokenData.getTokens(Objects.requireNonNull(fieldsTrx.getToken_data()));
+            if (fieldsTrx.getResponse_code().equals("00")) {
+                MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
+                spotDialog.dismiss();
+                Tools.showDialogPositive(this, tokenData.getB1(), value -> {
+                    realizarInicioDeSesion();
+                });
             } else {
                 spotDialog.dismiss();
                 Tools.showDialogError(this, tokenData.getB1());

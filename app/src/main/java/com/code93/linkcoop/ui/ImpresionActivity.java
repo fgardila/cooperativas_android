@@ -115,13 +115,13 @@ public class ImpresionActivity extends AppCompatActivity {
 
     private String impresionSaldoTelefono(LogTransacciones logTransacciones) {
         StringBuilder ticket = new StringBuilder();
-        ticket.append("Target Name: ").
+        ticket.append("Titular : ").
                 append(logTransacciones.getFieldsTrxResponse().getTarget_names());
         ticket.append("\n");
-        ticket.append("Available_balance :    $ ")
+        ticket.append("Saldo disponible :    $ ")
                 .append(logTransacciones.getFieldsTrxResponse().getAvailable_balance());
         ticket.append("\n");
-        ticket.append("Ledger_balance :    $ ")
+        ticket.append("Saldo contable :    $ ")
                 .append(logTransacciones.getFieldsTrxResponse().getLedger_balance());
 
         return ticket.toString();
@@ -182,6 +182,9 @@ public class ImpresionActivity extends AppCompatActivity {
                         default:
                             Tools.showDialogError(ImpresionActivity.this, "Transaccion no disponible");
                     }
+                    mPrinter.setPrintLine(2);
+                    mPrinter.setPrintAppendString(" ", format);
+                    mPrinter.setPrintAppendString(" ", format);
                     printStatus = mPrinter.setPrintStart();
                     if (printStatus == SdkResult.SDK_PRN_STATUS_PAPEROUT) {
                         runOnUiThread(new Runnable() {
@@ -213,7 +216,9 @@ public class ImpresionActivity extends AppCompatActivity {
                 mPrinter.setPrintAppendString("  ", format);
                 mPrinter.setPrintAppendString(" Comision :    $ " + logTransacciones.getFieldsTrxSend().getCommision_amount(), format);
                 mPrinter.setPrintAppendString(" ", format);
-                mPrinter.setPrintAppendString(" Test ", format);
+                mPrinter.setPrintAppendString(" ", format);
+                mPrinter.setPrintAppendString(" ", format);
+                mPrinter.setPrintAppendString(" ", format);
                 mPrinter.setPrintAppendString(" ", format);
                 mPrinter.setPrintAppendString(" ", format);
             }
@@ -225,12 +230,17 @@ public class ImpresionActivity extends AppCompatActivity {
                 format.setStyle(PrnTextStyle.NORMAL);
                 format.setTextSize(25);
                 if (!logTransacciones.getFieldsTrxResponse().getTarget_names().isEmpty()) {
-                    mPrinter.setPrintAppendString("Target Name: " +
+                    mPrinter.setPrintAppendString("Titular : " +
                             logTransacciones.getFieldsTrxResponse().getTarget_names(), format);
                 }
-                mPrinter.setPrintAppendString(" available_balance :    $ " + logTransacciones.getFieldsTrxResponse().getAvailable_balance(), format);
+                mPrinter.setPrintAppendString(" Saldo disponible :    $ " + logTransacciones.getFieldsTrxResponse().getAvailable_balance(), format);
                 mPrinter.setPrintAppendString("  ", format);
-                mPrinter.setPrintAppendString(" ledger_balance :    $ " + logTransacciones.getFieldsTrxResponse().getLedger_balance(), format);
+                mPrinter.setPrintAppendString(" Saldo contable :    $ " + logTransacciones.getFieldsTrxResponse().getLedger_balance(), format);
+                mPrinter.setPrintAppendString(" ", format);
+                mPrinter.setPrintAppendString(" ", format);
+                mPrinter.setPrintAppendString(" ", format);
+                mPrinter.setPrintAppendString(" ", format);
+                mPrinter.setPrintAppendString(" ", format);
             }
 
             private void impresionRetiro(LogTransacciones logTransacciones, PrnStrFormat format) {
@@ -244,7 +254,6 @@ public class ImpresionActivity extends AppCompatActivity {
                 mPrinter.setPrintAppendString("  ", format);
                 mPrinter.setPrintAppendString(" Comision :    $ " + logTransacciones.getFieldsTrxSend().getCommision_amount(), format);
                 mPrinter.setPrintAppendString(" ", format);
-                mPrinter.setPrintAppendString(" Test ", format);
                 mPrinter.setPrintAppendString(" ", format);
                 mPrinter.setPrintAppendString(" ", format);
                 mPrinter.setPrintAppendString(" ", format);

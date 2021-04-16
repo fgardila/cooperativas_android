@@ -36,7 +36,7 @@
         <activity android:name=".ui.TransaccionActivity" />
         <activity android:name=".ui.IngresarDataActivity" />
         <activity android:name=".ui.TransaccionesActivity" />
-        <activity android:name=".ui.Login">
+        <activity android:name=".ui.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

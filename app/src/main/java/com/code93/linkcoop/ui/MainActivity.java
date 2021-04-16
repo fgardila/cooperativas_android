@@ -10,8 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.code93.linkcoop.models.Comercio;
-import com.code93.linkcoop.models.Cooperativa;
+import com.code93.linkcoop.DialogCallback;
 import com.code93.linkcoop.models.FieldsTrx;
 import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
@@ -19,8 +18,6 @@ import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.ToolsXML;
 import com.code93.linkcoop.cache.SP2;
-import com.code93.linkcoop.models.LogTransacciones;
-import com.code93.linkcoop.models.Transaction;
 import com.code93.linkcoop.network.DownloadCallback;
 import com.code93.linkcoop.network.DownloadXmlTask;
 import com.code93.linkcoop.viewmodel.CooperativaViewModel;
@@ -30,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
@@ -74,6 +70,16 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
         task.execute(xmlLogOff);
     }
 
+    @Override
+    public void onDownloadCallback(@NotNull String response) {
+        if (response.equals("Error de conexion")) {
+            showErrorConexion();
+        } else {
+            procesarRespuesta(response);
+        }
+
+    }
+
     public void procesarRespuesta(String response) {
         try {
             FieldsTrx fieldsTrx = XmlParser.parse(response, "reply_logoff");
@@ -84,14 +90,14 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
                 MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
                 spotDialog.dismiss();
                 Tools.showDialogPositive(this, tokenData.getB1(), value -> {
-                    startActivity(new Intent(MainActivity.this, Login.class));
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
                 });
             } else {
                 spotDialog.dismiss();
                 Tools.showDialogErrorCallback(this, tokenData.getB1(), value -> {
                     MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
-                    startActivity(new Intent(MainActivity.this, Login.class));
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
                 });
             }
@@ -100,19 +106,13 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
         }
     }
 
-    @Override
-    public void onDownloadCallback(@NotNull String response) {
-        if (response.equals("Error de conexion")) {
-            showErroConexion();
-        } else {
-            procesarRespuesta(response);
-        }
-
-    }
-
-    private void showErroConexion() {
+    private void showErrorConexion() {
         spotDialog.dismiss();
-        Tools.showDialogError(this, "Error de conexion");
+        Tools.showDialogErrorCallback(this, "Error de conexion", value -> {
+            MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+        });
     }
 
     public void visualizarCooperativas(View view) {
