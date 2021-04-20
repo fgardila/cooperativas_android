@@ -81,6 +81,15 @@
 -keepclassmembers class com.code93.linkcoop.models.Usuario{
   *;
 }
+-keepclassmembers class com.code93.linkcoop.models.CierreData{
+  *;
+}
+-keepclassmembers class com.code93.linkcoop.models.CierreTransaccion{
+  *;
+}
+-keepclassmembers class com.code93.linkcoop.models.Comercio{
+  *;
+}
 
 
 -keepattributes SourceFile,LineNumberTable        # Keep file names and line numbers.
