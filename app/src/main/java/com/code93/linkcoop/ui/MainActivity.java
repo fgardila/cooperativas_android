@@ -121,25 +121,6 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
 
     public void sobreAplicacion(View view) {
 
-        /*Comercio comercio = new Comercio();
-        comercio.setNombre(MyApp.sp2.getString(SP2.Companion.getComercio_nombre(), ""));
-        comercio.setRuc(MyApp.sp2.getString(SP2.Companion.getComercio_ruc(), ""));
-        comercio.setDireccion(MyApp.sp2.getString(SP2.Companion.getComercio_direccion(), ""));
-
-        Cooperativa cooperativa = new Cooperativa(
-                "0", "", "", "", "", "", new ArrayList<>()
-        );
-
-        Transaction transaction = new Transaction();
-
-        FieldsTrx fieldsTrxSend = new FieldsTrx();
-
-        LogTransacciones logTransacciones = new LogTransacciones(
-                0, comercio, cooperativa, transaction, fieldsTrxSend, fieldsTrxSend);
-
-        Intent intent = new Intent(this, ImpresionActivity.class);
-        intent.putExtra("logTransacciones", logTransacciones);
-        startActivity(intent);*/
     }
 
     public void configuracion(View view) {

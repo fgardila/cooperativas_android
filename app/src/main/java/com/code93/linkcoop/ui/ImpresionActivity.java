@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Layout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.code93.linkcoop.DialogCallback;
 import com.code93.linkcoop.MyApp;
@@ -50,7 +51,7 @@ public class ImpresionActivity extends AppCompatActivity {
                 final Handler handler = new Handler();
                 handler.postDelayed(() -> {
                     startActivity(new Intent(ImpresionActivity.this, FinishActivity.class));
-                }, 10000);
+                }, 8000);
             }
         } else {
             Tools.showDialogErrorCallback(this, "No llego informacion de impresion.", new DialogCallback() {
@@ -260,5 +261,10 @@ public class ImpresionActivity extends AppCompatActivity {
                 mPrinter.setPrintAppendString(" ", format);
             }
         }).start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "Espere unos segundos", Toast.LENGTH_SHORT).show();
     }
 }

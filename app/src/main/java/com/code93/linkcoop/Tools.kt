@@ -128,6 +128,30 @@ object Tools {
     }
 
     @JvmStatic
+    fun showDialogErrorCancelCallback(context: Context?, messaje: String?, dialogCallback: DialogCallback) {
+        val dialog = Dialog(context!!)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE) // before
+        dialog.setContentView(R.layout.dialog_warning_cancel)
+        dialog.setCancelable(false)
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window!!.attributes)
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+        val content = dialog.findViewById<TextView>(R.id.content)
+        content.text = messaje
+        (dialog.findViewById<View>(R.id.bt_close) as Button).setOnClickListener {
+            dialogCallback.onDialogCallback(0)
+            dialog.dismiss()
+        }
+        (dialog.findViewById<View>(R.id.bt_cancel) as Button).setOnClickListener {
+            dialogCallback.onDialogCallback(1)
+            dialog.dismiss()
+        }
+        dialog.show()
+        dialog.window!!.attributes = lp
+    }
+
+    @JvmStatic
     fun showDialogPositive(context: Context?, messaje: String?, dialogCallback: DialogCallback) {
         val dialog = Dialog(context!!)
         val timer = object: CountDownTimer(5000, 1000) {

@@ -2,6 +2,7 @@ package com.code93.linkcoop.ui;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.code93.linkcoop.AesBase64Wrapper;
 import com.code93.linkcoop.BuildConfig;
+import com.code93.linkcoop.ToolsZ90;
 import com.code93.linkcoop.models.FieldsTrx;
 import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
@@ -37,6 +39,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -63,6 +66,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private String userE;
     private String pwdE;
+
+    private TextView tvGoogle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +104,16 @@ public class LoginActivity extends AppCompatActivity {
 
         TextView tvVersion = findViewById(R.id.tvVersion);
         String version = BuildConfig.VERSION_NAME;
-        tvVersion.setText(version);
+        tvVersion.setText("Versión: " + version);
+
+        tvGoogle = findViewById(R.id.tvGoogle);
+
+        TextView tvSerial = findViewById(R.id.tvSerial);
+        if (Build.MODEL.contains("Z90")) {
+            tvSerial.setText("Serial: " + ToolsZ90.getSn(this));
+        } else {
+            tvSerial.setText("Serial: No soporta");
+        }
 
     }
 
@@ -240,21 +254,24 @@ public class LoginActivity extends AppCompatActivity {
         if (user == null) {
             // Sign Anonymously
             auth.signInAnonymously()
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("TAG", "signInAnonymously:success");
-                                FirebaseUser newUser = auth.getCurrentUser();
-                                newUser.getDisplayName();
-                                updateUI(newUser);
-                            } else {
-                                Log.w("TAG", "signInAnonymously:failure", task.getException());
-                                Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                            }
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            Log.d("TAG", "signInAnonymously:success");
+                            FirebaseUser newUser = auth.getCurrentUser();
+                            updateUI(newUser);
+                        } else {
+                            Log.w("TAG", "signInAnonymously:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
                     });
         } else {
+            String googleText = "Google UID: " + user.getUid();
+            tvGoogle.setText(googleText);
+            if (ToolsZ90.isZ90()) {
+                FirebaseCrashlytics.getInstance().setUserId(ToolsZ90.getSn(this));
+            } else {
+                FirebaseCrashlytics.getInstance().setUserId(user.getUid());
+            }
             Log.w("TAG", "LOGIN REALIZADO");
         }
     }
@@ -272,19 +289,20 @@ public class LoginActivity extends AppCompatActivity {
             TokenData tokenData = new TokenData();
             tokenData.getTokens(Objects.requireNonNull(fieldsTrx.getToken_data()));
             if (fieldsTrx.getResponse_code().equals("00")) {
+                viewModel.deleteAllCooperativas();
                 MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), true);
                 Gson gson = new Gson();
                 LoginCooperativas logCoop = gson.fromJson(fieldsTrx.getBuffer_data(), LoginCooperativas.class);
                 MyApp.sp2.putString(SP2.Companion.getComercio_nombre(), logCoop.getComercio().getNombre().trim());
                 MyApp.sp2.putString(SP2.Companion.getComercio_ruc(), logCoop.getComercio().getRuc().trim());
                 MyApp.sp2.putString(SP2.Companion.getComercio_direccion(), logCoop.getComercio().getDireccion().trim());
-                viewModel.deleteAllCooperativas();
                 for (Cooperativa coop : logCoop.getCooperativas()) {
                     viewModel.addCooperativa(coop);
                 }
 
                 spotDialog.dismiss();
                 Tools.showDialogPositive(this, tokenData.getB1(), value -> {
+                    FirebaseCrashlytics.getInstance().log("Inicio de sesion exitoso " + etEmail.getText().toString());
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
                 });
@@ -324,9 +342,7 @@ public class LoginActivity extends AppCompatActivity {
             if (fieldsTrx.getResponse_code().equals("00")) {
                 MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
                 spotDialog.dismiss();
-                Tools.showDialogPositive(this, tokenData.getB1(), value -> {
-                    realizarInicioDeSesion();
-                });
+                Tools.showDialogPositive(this, tokenData.getB1(), value -> realizarInicioDeSesion());
             } else {
                 spotDialog.dismiss();
                 Tools.showDialogError(this, tokenData.getB1());

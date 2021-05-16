@@ -201,7 +201,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-light"
-                        android:text="Reportes e historial"
+                        android:text="Cierre e historial de transacciones"
                         android:textStyle="bold"
                         android:textAppearance="?attr/textAppearanceSubtitle1"
                         />

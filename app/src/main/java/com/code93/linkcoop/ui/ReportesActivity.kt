@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.code93.linkcoop.*
 import com.code93.linkcoop.Tools.showDialogErrorCallback
+import com.code93.linkcoop.Tools.showDialogErrorCancelCallback
 import com.code93.linkcoop.Tools.showDialogPositive
 import com.code93.linkcoop.adapters.ReportesAdapter
 import com.code93.linkcoop.adapters.ReportesCallback
-import com.code93.linkcoop.cache.SP2.Companion.SP_LOGIN
 import com.code93.linkcoop.models.CierreData
 import com.code93.linkcoop.models.CierreTransaccion
 import com.code93.linkcoop.models.FieldsTrx
@@ -26,6 +26,7 @@ import com.code93.linkcoop.network.DownloadCallback
 import com.code93.linkcoop.network.DownloadXmlTask
 import com.code93.linkcoop.viewmodel.LogTransaccionesViewModel
 import com.code93.linkcoop.xmlParsers.XmlParser.parse
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import dmax.dialog.SpotsDialog
 import org.xmlpull.v1.XmlPullParserException
@@ -93,31 +94,18 @@ class ReportesActivity : AppCompatActivity() {
 
     }
 
-    private fun depositoAhorros(trx: LogTransacciones) {
-    }
-
-    private fun generacionOtp(trx: LogTransacciones) {
-
-    }
-
-    private fun consultaSaldo(trx: LogTransacciones) {
-
-    }
-
-    private fun retiroAhorros(trx: LogTransacciones) {
-
-
-    }
-
     fun realizarCierre(view: View) {
         dialog = SpotsDialog.Builder()
                 .setContext(this)
                 .setCancelable(false)
                 .setMessage("Realizando cierre")
                 .build()
-
         dialog.show()
+
+        val gson = Gson()
+
         val listTrxCode : MutableList<String> = ArrayList()
+        FirebaseCrashlytics.getInstance().log("ReportesActivity LOGDATA: " + gson.toJson(logsData))
         for (log in logsData) {
             listTrxCode.add(log.fieldsTrxSend.transaction_code)
         }
@@ -129,24 +117,31 @@ class ReportesActivity : AppCompatActivity() {
         val listCierreData : MutableList<CierreData> = ArrayList()
         for (code in listTrxCode) {
             val cierreData = CierreData()
+            var values : Double = 0.0
+            var commissions : Double = 0.0
             for (log in logsData) {
                 if (log.fieldsTrxSend.transaction_code == code) {
                     cierreData._count ++
-                    cierreData._value += parseInt(log.fieldsTrxSend.transaction_amount)
-                    cierreData._commission += parseInt(log.fieldsTrxSend.commision_amount)
+                    if (log.fieldsTrxSend.transaction_amount.isNotEmpty()){
+                        values += parseDouble(log.fieldsTrxSend.transaction_amount)
+                    }
+                    if (log.fieldsTrxSend.commision_amount.isNotEmpty()) {
+                        commissions += parseDouble(log.fieldsTrxSend.commision_amount)
+                    }
                 }
             }
             cierreData._code = code
+            cierreData._value = values.toString()
+            cierreData._commission = commissions.toString()
             listCierreData.add(cierreData)
         }
 
         for (cierre in listCierreData) {
-            Log.d("Cierre", cierre._code + cierre._count)
+            Log.d("Cierre: ", "Cierre ${cierre._code} monto total ${cierre._value}")
         }
 
         val cierreTransaccion = CierreTransaccion(listCierreData.toList())
 
-        val gson = Gson()
         val jsonCierre : String = gson.toJson(cierreTransaccion)
         realizarTransaccionCierre(jsonCierre)
     }
@@ -193,12 +188,25 @@ class ReportesActivity : AppCompatActivity() {
                 })
             } else {
                 dialog.dismiss()
-                showDialogErrorCallback(this, tokenData.B1, object : DialogCallback {
-                    override fun onDialogCallback(value: Int) {
-                        startActivity(Intent(this@ReportesActivity, LoginActivity::class.java))
-                        finish()
-                    }
-                })
+                if (fieldsTrx.response_code == "72") {
+                    showDialogErrorCancelCallback(this, "${tokenData.B1} ¿BORRAR REPORTE DE TRANSACCIONES?", object : DialogCallback {
+                        override fun onDialogCallback(value: Int) {
+                            if (value == 0) {
+                                logData.deleteAllLogTransaccioness()
+                            }
+                            startActivity(Intent(this@ReportesActivity, LoginActivity::class.java))
+                            finish()
+                        }
+                    })
+                } else {
+                    showDialogErrorCallback(this, tokenData.B1, object : DialogCallback {
+                        override fun onDialogCallback(value: Int) {
+                            startActivity(Intent(this@ReportesActivity, LoginActivity::class.java))
+                            finish()
+                        }
+                    })
+                }
+
             }
         } catch (e: XmlPullParserException) {
             e.printStackTrace()
@@ -207,11 +215,12 @@ class ReportesActivity : AppCompatActivity() {
         }
     }
 
-    fun parseInt(amount: String) : Int {
+    fun parseDouble(amount: String) : Double {
         return if (amount.equals(""))
-            0
-        else
-            Integer.parseInt(amount)
+            0.0
+        else {
+            amount.toDouble()
+        }
     }
 
 

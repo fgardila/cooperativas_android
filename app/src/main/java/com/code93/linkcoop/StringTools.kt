@@ -21,6 +21,7 @@ object StringTools {
         return d.toString()
     }
 
+    @JvmStatic
     fun padright(s: String, len: Int, c: Char): String {
         var data = s
         data = data.trim { it <= ' ' }

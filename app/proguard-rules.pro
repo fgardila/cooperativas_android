@@ -154,3 +154,8 @@
 
 -keep class com.zhy.http.okhttp.**{*;}
 -keep class com.wiwide.util.** {*;}
+
+-keepattributes SourceFile,LineNumberTable        # Keep file names and line numbers.
+-keep public class * extends java.lang.Exception  # Optional: Keep custom exceptions.
+-keep class com.google.firebase.crashlytics.* { *; }
+-dontwarn com.google.firebase.crashlytics.**

@@ -27,7 +27,7 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-public class ToolsXML extends Activity {
+public class ToolsXML {
 
     public static String requestDeposit(Transaction transaction, Cooperativa cooperativa, String numeroCuenta, String monto, String documento) {
         TokenData tokenData = new TokenData();
@@ -55,7 +55,7 @@ public class ToolsXML extends Activity {
     public static String requestWithdrawal(Transaction transaction, Cooperativa cooperativa, String numeroCuenta, String monto, String otp, String documento) {
         TokenData tokenData = new TokenData();
         String tokenX4 = tokenData.setToken("X4", documento);
-        String tokenB8 = tokenData.setToken("B8", StringTools.INSTANCE.padright(otp, 20, ' '));
+        String tokenB8 = tokenData.setToken("B8", StringTools.padright(otp, 20, ' '));
         String token = tokenX4 + tokenB8;
 
         ArrayList<DataElements> listFields = new ArrayList<>();
