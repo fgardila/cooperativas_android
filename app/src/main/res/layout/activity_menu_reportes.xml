@@ -6,30 +6,27 @@
     android:layout_height="match_parent"
     android:background="@color/activityBackground"
     android:orientation="vertical"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.MenuReportesActivity">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
-        >
+        android:scrollbars="none">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/imgConnectCoop"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
-                android:src="@drawable/logo_linkcoop"
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:clickable="true"
                 android:focusable="true"
-                />
+                android:src="@drawable/logo_linkcoop" />
 
             <TextView
                 android:id="@+id/mainImgBienvenido"
@@ -37,32 +34,23 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/imgConnectCoop"
                 android:layout_centerHorizontal="true"
-                android:text="Bienvenido"
+                android:padding="5dp"
+                android:text="Menu reportes"
                 android:textAppearance="?attr/textAppearanceHeadline5" />
-
-            <TextView
-                android:id="@+id/comercioName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/mainImgBienvenido"
-                android:layout_centerHorizontal="true"
-                android:text="Bienvenido"
-                android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/mainImgBienvenido"
                 android:background="@android:color/white"
                 android:orientation="vertical"
-                android:layout_below="@+id/comercioName"
                 android:paddingTop="@dimen/spacing_xmedium">
 
                 <LinearLayout
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    >
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -75,24 +63,22 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Estudiante"
-                            android:visibility="invisible"
                             android:textAppearance="?attr/textAppearanceHeadline5"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:visibility="invisible" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Selecciona la opcion"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                            />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
                     </LinearLayout>
 
                     <ImageView
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:src="@drawable/ic_account"
-                        />
+                        android:src="@drawable/ic_account" />
 
                 </LinearLayout>
 
@@ -105,9 +91,9 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
-                    android:onClick="visualizarCooperativas"
                     android:gravity="center_vertical"
                     android:minHeight="70dp"
+                    android:onClick="reimprimirUltimoTicket"
                     android:orientation="horizontal"
                     android:paddingLeft="@dimen/spacing_large"
                     android:paddingRight="@dimen/spacing_large">
@@ -117,7 +103,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-light"
-                        android:text="Visualizar cooperativas"
+                        android:text="Reimprimir último ticket"
                         android:textAppearance="?attr/textAppearanceSubtitle1"
                         android:textStyle="bold" />
 
@@ -129,8 +115,8 @@
                         android:layout_width="@dimen/spacing_mxlarge"
                         android:layout_height="@dimen/spacing_mxlarge"
                         android:background="@android:color/transparent"
-                        app:tint="@color/grey_60"
-                        app:srcCompat="@drawable/ic_account_balance" />
+                        app:srcCompat="@drawable/ic_navigate_next"
+                        app:tint="@color/grey_60" />
 
                 </LinearLayout>
 
@@ -139,11 +125,10 @@
                     android:layout_height="1dp"
                     android:layout_marginLeft="@dimen/spacing_large"
                     android:layout_marginRight="@dimen/spacing_large"
-                    android:visibility="gone"
-                    android:background="@color/grey_10" />
+                    android:background="@color/grey_10"
+                    android:visibility="gone" />
 
                 <LinearLayout
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
@@ -152,7 +137,8 @@
                     android:minHeight="70dp"
                     android:orientation="horizontal"
                     android:paddingLeft="@dimen/spacing_large"
-                    android:paddingRight="@dimen/spacing_large">
+                    android:paddingRight="@dimen/spacing_large"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="0dp"
@@ -160,9 +146,8 @@
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-light"
                         android:text="Mis reservas"
-                        android:textStyle="bold"
                         android:textAppearance="?attr/textAppearanceSubtitle1"
-                        />
+                        android:textStyle="bold" />
 
                     <View
                         android:layout_width="@dimen/spacing_large"
@@ -172,8 +157,8 @@
                         android:layout_width="@dimen/spacing_mxlarge"
                         android:layout_height="@dimen/spacing_mxlarge"
                         android:background="@android:color/transparent"
-                        app:tint="@color/grey_60"
-                        app:srcCompat="@drawable/ic_lock" />
+                        app:srcCompat="@drawable/ic_lock"
+                        app:tint="@color/grey_60" />
 
                 </LinearLayout>
 
@@ -189,9 +174,9 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
-                    android:onClick="reportes"
                     android:gravity="center_vertical"
                     android:minHeight="70dp"
+                    android:onClick="historialTransacciones"
                     android:orientation="horizontal"
                     android:paddingLeft="@dimen/spacing_large"
                     android:paddingRight="@dimen/spacing_large">
@@ -201,10 +186,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-light"
-                        android:text="Reporte y cierre"
-                        android:textStyle="bold"
+                        android:text="Visualizar historial de transacciones"
                         android:textAppearance="?attr/textAppearanceSubtitle1"
-                        />
+                        android:textStyle="bold" />
 
                     <View
                         android:layout_width="@dimen/spacing_large"
@@ -214,8 +198,8 @@
                         android:layout_width="@dimen/spacing_mxlarge"
                         android:layout_height="@dimen/spacing_mxlarge"
                         android:background="@android:color/transparent"
-                        app:tint="@color/grey_60"
-                        app:srcCompat="@drawable/ic_statistics" />
+                        app:srcCompat="@drawable/ic_navigate_next"
+                        app:tint="@color/grey_60" />
 
                 </LinearLayout>
 
@@ -231,9 +215,9 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
-                    android:onClick="configuracion"
                     android:gravity="center_vertical"
                     android:minHeight="70dp"
+                    android:onClick="realizarCierre"
                     android:orientation="horizontal"
                     android:paddingLeft="@dimen/spacing_large"
                     android:paddingRight="@dimen/spacing_large">
@@ -243,10 +227,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-light"
-                        android:text="Configuración"
-                        android:textStyle="bold"
+                        android:text="Realizar cierre"
                         android:textAppearance="?attr/textAppearanceSubtitle1"
-                        />
+                        android:textStyle="bold" />
 
                     <View
                         android:layout_width="@dimen/spacing_large"
@@ -256,92 +239,8 @@
                         android:layout_width="@dimen/spacing_mxlarge"
                         android:layout_height="@dimen/spacing_mxlarge"
                         android:background="@android:color/transparent"
-                        app:tint="@color/grey_60"
-                        app:srcCompat="@drawable/ic_settings" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="@dimen/spacing_large"
-                    android:layout_marginRight="@dimen/spacing_large"
-                    android:background="@color/grey_10" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:onClick="clickCerrarSesion"
-                    android:gravity="center_vertical"
-                    android:minHeight="70dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/spacing_large"
-                    android:paddingRight="@dimen/spacing_large">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="sans-serif-light"
-                        android:text="Cerrar sesion"
-                        android:textStyle="bold"
-                        android:textAppearance="?attr/textAppearanceSubtitle1"
-                        />
-
-                    <View
-                        android:layout_width="@dimen/spacing_large"
-                        android:layout_height="wrap_content" />
-
-                    <ImageView
-                        android:layout_width="@dimen/spacing_mxlarge"
-                        android:layout_height="@dimen/spacing_mxlarge"
-                        android:background="@android:color/transparent"
-                        app:tint="@color/grey_60"
-                        app:srcCompat="@drawable/ic_lock" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="@dimen/spacing_large"
-                    android:layout_marginRight="@dimen/spacing_large"
-                    android:background="@color/grey_10" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:onClick="sobreAplicacion"
-                    android:gravity="center_vertical"
-                    android:minHeight="70dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/spacing_large"
-                    android:paddingRight="@dimen/spacing_large">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="sans-serif-light"
-                        android:text="Sobre la aplicación"
-                        android:textStyle="bold"
-                        android:textAppearance="?attr/textAppearanceSubtitle1"
-                        />
-
-                    <View
-                        android:layout_width="@dimen/spacing_large"
-                        android:layout_height="wrap_content" />
-
-                    <ImageView
-                        android:layout_width="@dimen/spacing_mxlarge"
-                        android:layout_height="@dimen/spacing_mxlarge"
-                        android:background="@android:color/transparent"
-                        app:tint="@color/grey_60"
-                        app:srcCompat="@drawable/ic_info" />
+                        app:srcCompat="@drawable/ic_navigate_next"
+                        app:tint="@color/grey_60" />
 
                 </LinearLayout>
 
@@ -358,11 +257,11 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:visibility="gone"
                 android:id="@+id/rvCooperativas"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/spacing_large"/>
+                android:layout_margin="@dimen/spacing_large"
+                android:visibility="gone" />
 
         </RelativeLayout>
 

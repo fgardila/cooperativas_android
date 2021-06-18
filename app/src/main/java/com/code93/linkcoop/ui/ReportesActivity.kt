@@ -85,7 +85,8 @@ class ReportesActivity : AppCompatActivity() {
             val noItems = findViewById<RelativeLayout>(R.id.noItems)
             noItems.visibility = View.VISIBLE
         } else {
-            reportesAdapter.logs = logs
+            //reportesAdapter.logs = logs
+            reportesAdapter.setListLogs(logs)
             rvReportes.setHasFixedSize(true)
             rvReportes.layoutManager = LinearLayoutManager(this)
             rvReportes.adapter = reportesAdapter

@@ -16,6 +16,10 @@ class ReportesAdapter(val context: Context, val lister : ReportesCallback) : Rec
 
     var logs: List<LogTransacciones> = ArrayList()
 
+    fun setListLogs(listLogs : List<LogTransacciones>) {
+        logs = listLogs.reversed()
+    }
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imgInstitucion = itemView.findViewById<ImageView>(R.id.imgInstitucion)
         val tvTituloTrx = itemView.findViewById<TextView>(R.id.tvTituloTrx)

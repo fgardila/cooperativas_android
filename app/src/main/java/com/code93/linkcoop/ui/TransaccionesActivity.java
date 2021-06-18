@@ -49,29 +49,27 @@ public class TransaccionesActivity extends AppCompatActivity implements MenuTran
     public void onItemClick(Transaction transaction) {
         Log.d("onItemClick", transaction.get_namet());
 
-        if (transaction.get_cost() != null) {
-            MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(this);
-            dialogBuilder.setTitle("Costo de la transaccion")
-                    .setMessage("Esta transaccion tiene un costo de " + transaction.get_cost());
-            dialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    Intent intent = new Intent(TransaccionesActivity.this, TransaccionActivity.class);
-                    intent.putExtra("transaction", transaction);
-                    intent.putExtra("cooperativa", cooperativa);
-                    startActivity(intent);
-                    finish();
-                }
-            });
-            dialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            dialogBuilder.show();
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(this);
+        dialogBuilder.setTitle("Costo de la transaccion")
+                .setMessage("Esta transaccion tiene un costo de " + transaction.get_cost());
+        dialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Intent intent = new Intent(TransaccionesActivity.this, TransaccionActivity.class);
+                intent.putExtra("transaction", transaction);
+                intent.putExtra("cooperativa", cooperativa);
+                startActivity(intent);
+                finish();
+            }
+        });
+        dialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialogBuilder.show();
 
-        }
     }
 }

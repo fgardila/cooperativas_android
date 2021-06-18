@@ -208,8 +208,8 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                     generacionOtp();
                     break;
                 case depositoAhorros:
-                   depositoAhorros();
-                   break;
+                    depositoAhorros();
+                    break;
                 default:
                     spotDialog.dismiss();
                     Tools.showDialogError(this, "Transaccion no disponible");
@@ -359,26 +359,26 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                 Log.d("FieldTRX", Objects.requireNonNull(fieldsTrx.getToken_data()));
                 TokenData tokenData = new TokenData();
                 tokenData.getTokens(Objects.requireNonNull(fieldsTrx.getToken_data()));
-
-                LogTransacciones logTransacciones = new LogTransacciones(
-                        0, comercio, cooperativa, transaccion, fieldsTrxSend, fieldsTrx);
-
-                viewModel.addLogTransacciones(logTransacciones);
                 if (fieldsTrx.getResponse_code().equals("000")) {
+                    LogTransacciones logTransacciones = new LogTransacciones(
+                            0, comercio, cooperativa, transaccion, fieldsTrxSend, fieldsTrx);
                     spotDialog.dismiss();
                     switch (transaccion.get_namet().trim()) {
                         case "RETIRO AHORROS":
+                            viewModel.addLogTransacciones(logTransacciones);
                             procesarRetiroAhorros(logTransacciones, tokenData);
                             break;
                         case "CONSULTA DE SALDOS":
                         case "CONSULTA SALDOS CC":
                         case "CONSULTA SALDOS AH":
+                            viewModel.addLogTransacciones(logTransacciones);
                             procesarConsultaSaldo(logTransacciones, tokenData);
                             break;
                         case "GENERACION OTP":
                             procesarGeneracionOtp(logTransacciones, tokenData);
                             break;
                         case depositoAhorros:
+                            viewModel.addLogTransacciones(logTransacciones);
                             procesarDepositoAhorros(logTransacciones, tokenData);
                             break;
                         default:
@@ -444,6 +444,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
         Tools.showDialogPositive(this, tokenData.getB1(), value -> {
             Intent intent = new Intent(TransaccionActivity.this, ImpresionActivity.class);
             intent.putExtra("logTransacciones", logTransacciones);
+            startActivity(intent);
             finish();
         });
     }

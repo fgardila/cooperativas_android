@@ -110,7 +110,10 @@ public class ImpresionActivity extends AppCompatActivity {
     private String impresionDepositoTelefono(LogTransacciones logTransacciones) {
         StringBuilder ticket = new StringBuilder();
         ticket.append("\n");
-
+        ticket.append("\n");
+        ticket.append("Comision :    $ " + logTransacciones.getFieldsTrxSend().getCommision_amount());
+        ticket.append("\n");
+        ticket.append("Monto :    $ " + logTransacciones.getFieldsTrxSend().getTransaction_amount());
         return ticket.toString();
     }
 
@@ -131,7 +134,10 @@ public class ImpresionActivity extends AppCompatActivity {
     private String impresionRetiroTelefono(LogTransacciones logTransacciones) {
         StringBuilder ticket = new StringBuilder();
         ticket.append("\n");
-
+        ticket.append("\n");
+        ticket.append("Comision :    $ " + logTransacciones.getFieldsTrxSend().getCommision_amount());
+        ticket.append("\n");
+        ticket.append("Monto :    $ " + logTransacciones.getFieldsTrxSend().getTransaction_amount());
         return ticket.toString();
 
     }

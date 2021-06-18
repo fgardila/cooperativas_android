@@ -103,6 +103,7 @@ public class ToolsXML {
         listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), transaction.get_code().trim()));
         listFields.add(new DataElements(Tools.NameFields.reference.toString(), reference));
         listFields.add(new DataElements(Tools.NameFields.transaction_amount.toString(), "0"));
+        listFields.add(new DataElements(Tools.NameFields.commision_amount.toString(), transaction.get_cost().trim()));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
         listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
         listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
