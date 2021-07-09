@@ -27,7 +27,10 @@ import org.jetbrains.annotations.NotNull;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import dmax.dialog.SpotsDialog;
 
@@ -35,8 +38,8 @@ import dmax.dialog.SpotsDialog;
 public class MainActivity extends AppCompatActivity implements DownloadCallback {
 
     CooperativaViewModel viewModel;
-
     private AlertDialog spotDialog;
+    TextView tvUltimoLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,9 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
                 .setMessage("Procesando")
                 .build();
 
+        tvUltimoLogin = findViewById(R.id.tvUltimoLogin);
+        obtenerUltimoLogin();
+
         TextView userLogin = findViewById(R.id.userLogin);
         userLogin.setText(SP2.Companion.getInstance(this).getString("email", ""));
         TextView comercioName = findViewById(R.id.comercioName);
@@ -57,12 +63,32 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
 
     }
 
+    private void obtenerUltimoLogin() {
+        String fechaUltimoLogin = SP2.Companion.getInstance(this).getString(SP2.Companion.getFechaUltimoLogin(), "");
+
+        String formatUltimoLogin = fechaUltimoLogin;
+
+        tvUltimoLogin.setText(formatUltimoLogin);
+
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
+        verificarFechaUltimoLogin();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        verificarFechaUltimoLogin();
     }
 
     public void clickCerrarSesion(View view) {
+        cerrarSesion();
+    }
+
+    private void cerrarSesion(){
         spotDialog.show();
         String user_encript = MyApp.sp2.getString(SP2.Companion.getUser_encript(), "");
         String xmlLogOff = ToolsXML.requestLogoff(user_encript);
@@ -130,5 +156,55 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
     public void reportes(View view) {
         //startActivity(new Intent(this, ReportesActivity.class));
         startActivity(new Intent(this, MenuReportesActivity.class));
+    }
+
+    int cont = 0;
+
+    @Override
+    public void onBackPressed() {
+        if (cont == 0) {
+            cont += 1;
+        } else {
+            finishAffinity();
+        }
+    }
+
+    private void verificarFechaUltimoLogin() {
+        long day = 0;
+        long diff = 0;
+
+        String fechaUltimoLogin = SP2.Companion.getInstance(this).getString(SP2.Companion.getFechaUltimoLogin(), "NO");
+        if (!fechaUltimoLogin.equals("NO")) {
+            String fechaLogin = fechaUltimoLogin.substring(0, fechaUltimoLogin.indexOf(" "));
+            Log.d("FECHA ULTIMA", fechaLogin);
+            String outputPattern = "yyyy-MM-dd HH:mm:ss";
+            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+            try {
+                Date date1 = outputFormat.parse(fechaUltimoLogin);
+                Date date2 = outputFormat.parse(Tools.getLocalDateTime());
+                diff = date2.getTime() - date1.getTime();
+                day = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+                Log.d("DIAS DE ULTIMO LOGIN", ""+day);
+
+                if (day >= 2) {
+                    //cerrarSesion();
+                    solicitarCerrarSesion();
+                }
+            }catch (Exception e) {
+                //sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
+            }
+        } else {
+            //sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
+        }
+    }
+
+    private void solicitarCerrarSesion() {
+        Tools.showDialogErrorCallback(this, "Llevas dos dias sin iniciar sesión. Inicia sesión nuevamente.", new DialogCallback() {
+            @Override
+            public void onDialogCallback(int value) {
+                cerrarSesion();
+            }
+        });
     }
 }

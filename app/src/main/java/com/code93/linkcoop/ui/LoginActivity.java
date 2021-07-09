@@ -41,6 +41,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.zcs.sdk.SdkResult;
+import com.zcs.sdk.Sys;
 
 import org.jetbrains.annotations.NotNull;
 import org.xmlpull.v1.XmlPullParserException;
@@ -110,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
 
         TextView tvSerial = findViewById(R.id.tvSerial);
         if (Build.MODEL.contains("Z90")) {
-            tvSerial.setText("Serial: " + ToolsZ90.getSn(this));
+            tvSerial.setText("Serial: " + getSn());
         } else {
             tvSerial.setText("Serial: No soporta");
         }
@@ -291,6 +293,7 @@ public class LoginActivity extends AppCompatActivity {
             if (fieldsTrx.getResponse_code().equals("00")) {
                 viewModel.deleteAllCooperativas();
                 MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), true);
+                MyApp.sp2.putString(SP2.Companion.getFechaUltimoLogin(), Tools.getLocalDateTime());
                 Gson gson = new Gson();
                 LoginCooperativas logCoop = gson.fromJson(fieldsTrx.getBuffer_data(), LoginCooperativas.class);
                 MyApp.sp2.putString(SP2.Companion.getComercio_nombre(), logCoop.getComercio().getNombre().trim());
@@ -350,5 +353,24 @@ public class LoginActivity extends AppCompatActivity {
         } catch (XmlPullParserException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getSn() {
+        // Config the SDK base info
+        Sys sys = MyApp.sDriverManager.getBaseSysDevice();
+        String[] pid = new String[1];
+        int status = sys.getPid(pid);
+        int count = 0;
+        while (status != SdkResult.SDK_OK && count < 3) {
+            count++;
+            int sysPowerOn = sys.sysPowerOn();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            final int i = sys.sdkInit();
+        }
+        return pid[0];
     }
 }

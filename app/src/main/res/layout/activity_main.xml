@@ -50,6 +50,7 @@
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <LinearLayout
+                android:id="@+id/linearMenus"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/white"
@@ -357,12 +358,24 @@
                     android:layout_height="@dimen/spacing_large" />
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:visibility="gone"
-                android:id="@+id/rvCooperativas"
+            <TextView
+                android:id="@+id/tvTitleUltimoLogin"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/spacing_large"/>
+                android:layout_height="wrap_content"
+                android:text="Ultimo inicio de sesión: "
+                android:gravity="center"
+                android:layout_below="@id/linearMenus"
+                android:textAppearance="?attr/textAppearanceSubtitle2"/>
+
+            <TextView
+                android:id="@+id/tvUltimoLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ultimo inicio de sesión: "
+                android:gravity="center"
+                android:layout_below="@id/tvTitleUltimoLogin"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                />
 
         </RelativeLayout>
 

@@ -89,6 +89,7 @@ class SP2 private constructor(context: Context) : ICache {
         val user_encript = "user_encript"
         val pwd = "pwd"
         val saveLogin = "saveLogin"
+        val fechaUltimoLogin = "fechaUltimoLogin"
         val SP_LOGIN = "login"
         val SP_TRACE = "trace"
         val aes_iv = "aes_iv"

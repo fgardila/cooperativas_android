@@ -9,9 +9,11 @@ import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.code93.linkcoop.DialogCallback;
 import com.code93.linkcoop.R;
+import com.code93.linkcoop.StringTools;
 import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.models.DataTransaccion;
 import com.code93.linkcoop.models.Transaction;
@@ -24,6 +26,7 @@ public class IngresarDataActivity extends AppCompatActivity {
     TextInputEditText etData;
     TextInputLayout tilData;
     TextView tvNomTrans;
+    DataTransaccion transaccion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class IngresarDataActivity extends AppCompatActivity {
             if (nameTrx != null) {
                 tvNomTrans.setText(nameTrx);
             }
-            DataTransaccion transaccion = (DataTransaccion) getIntent().getSerializableExtra("elemento");
+            transaccion = (DataTransaccion) getIntent().getSerializableExtra("elemento");
             tilData.setHint(transaccion.getSubTitulo());
             tilData.setStartIconDrawable(transaccion.getDrawable());
             etData.setInputType(transaccion.getInputType());
@@ -126,10 +129,26 @@ public class IngresarDataActivity extends AppCompatActivity {
 
     public void enviarMonto(View view) {
         if (view != null) {
-            Intent data = new Intent();
-            data.putExtra("value", etData.getText().toString());
-            setResult(CommonStatusCodes.SUCCESS, data);
-            finish();
+            if (transaccion.getTipo() != null) {
+                if (transaccion.getTipo() == DataTransaccion.TipoDato.CEDULA) {
+                    boolean validated = StringTools.INSTANCE.ValidaCedulaRuc(etData.getText().toString());
+                    if (validated) {
+                        Intent data = new Intent();
+                        data.putExtra("value", etData.getText().toString());
+                        setResult(CommonStatusCodes.SUCCESS, data);
+                        finish();
+                    } else {
+                        etData.setError("Documento de identidad no valido");
+                        Toast.makeText(this, "Documento no valido", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Intent data = new Intent();
+                    data.putExtra("value", etData.getText().toString());
+                    setResult(CommonStatusCodes.SUCCESS, data);
+                    finish();
+                }
+            }
+
         }
     }
 }

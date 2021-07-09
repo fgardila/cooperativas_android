@@ -20,6 +20,7 @@ public class FinishActivity extends AppCompatActivity {
         handler.postDelayed(() -> {
             Intent intent = new Intent(FinishActivity.this, MainActivity.class);
             startActivity(intent);
+            finish();
         }, 2000);
     }
 

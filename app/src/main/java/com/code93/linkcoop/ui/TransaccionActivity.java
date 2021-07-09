@@ -107,42 +107,42 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
             case "RETIRO AHORROS":
                 elementos.add(new DataTransaccion("Monto",
                         InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        9, "Ingresa el monto", R.drawable.ic_money));
+                        9, "Ingresa el monto", DataTransaccion.TipoDato.OTRO, R.drawable.ic_money));
                 elementos.add(new DataTransaccion("Numero de cuenta",
                         InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        12, "Ingresa el numero de cuenta", R.drawable.ic_account_balance));
+                        12, "Ingresa el numero de cuenta", DataTransaccion.TipoDato.OTRO, R.drawable.ic_account_balance));
                 elementos.add(new DataTransaccion("OTP Generado",
                         InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        9, "Ingresa la OTP", R.drawable.ic_textsms));
+                        9, "Ingresa la OTP", DataTransaccion.TipoDato.OTRO, R.drawable.ic_textsms));
                 elementos.add(new DataTransaccion("Documento de identidad",
                         InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        15, "Ingresa documento de identidad", R.drawable.ic_account));
+                        15, "Ingresa documento de identidad", DataTransaccion.TipoDato.CEDULA, R.drawable.ic_account));
                 break;
             case "CONSULTA DE SALDOS":
             case "CONSULTA SALDOS CC":
             case "CONSULTA SALDOS AH":
                 elementos.add(new DataTransaccion("Numero de cuenta",
                         InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        12, "Ingresa el numero de cuenta", R.drawable.ic_account_balance));
+                        12, "Ingresa el numero de cuenta", DataTransaccion.TipoDato.OTRO, R.drawable.ic_account_balance));
                 elementos.add(new DataTransaccion("Documento de identidad",
                         InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        15, "Ingresa documento de identidad", R.drawable.ic_account));
+                        15, "Ingresa documento de identidad", DataTransaccion.TipoDato.CEDULA, R.drawable.ic_account));
                 break;
             case "GENERACION OTP":
                 elementos.add(new DataTransaccion("Numero de cuenta",
                         InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        12, "Ingresa el numero de la cuenta a consultar", R.drawable.ic_account_balance));
+                        12, "Ingresa el numero de la cuenta a consultar", DataTransaccion.TipoDato.OTRO, R.drawable.ic_account_balance));
                 break;
             case depositoAhorros:
                 elementos.add(new DataTransaccion("Monto",
                         InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        9, "Ingresa el monto", R.drawable.ic_money));
+                        9, "Ingresa el monto", DataTransaccion.TipoDato.OTRO, R.drawable.ic_money));
                 elementos.add(new DataTransaccion("Numero de cuenta",
                         InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        12, "Ingresa el numero de cuenta", R.drawable.ic_account_balance));
+                        12, "Ingresa el numero de cuenta", DataTransaccion.TipoDato.OTRO, R.drawable.ic_account_balance));
                 elementos.add(new DataTransaccion("Documento del depositante",
                         InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        15, "Ingresa documento de identidad", R.drawable.ic_account));
+                        15, "Ingresa documento de identidad", DataTransaccion.TipoDato.CEDULA, R.drawable.ic_account));
                 break;
             default:
                 Tools.showDialogErrorCallback(this, "Transacción no disponible " + nameTrx, new DialogCallback() {

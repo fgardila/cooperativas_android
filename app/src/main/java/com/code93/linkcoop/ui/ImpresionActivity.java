@@ -51,6 +51,7 @@ public class ImpresionActivity extends AppCompatActivity {
                 final Handler handler = new Handler();
                 handler.postDelayed(() -> {
                     startActivity(new Intent(ImpresionActivity.this, FinishActivity.class));
+                    finish();
                 }, 8000);
             }
         } else {
@@ -58,6 +59,7 @@ public class ImpresionActivity extends AppCompatActivity {
                 @Override
                 public void onDialogCallback(int value) {
                     startActivity(new Intent(ImpresionActivity.this, FinishActivity.class));
+                    finish();
                 }
             });
         }

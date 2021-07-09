@@ -9,6 +9,7 @@ public class DataTransaccion implements Serializable {
     int maxLength;
     String subTitulo;
     int drawable;
+    TipoDato tipo;
     String value;
 
     public DataTransaccion() {
@@ -23,12 +24,13 @@ public class DataTransaccion implements Serializable {
         this.value = value;
     }
 
-    public DataTransaccion(String name, int inputType, int maxLength, String subTitulo, int drawable) {
+    public DataTransaccion(String name, int inputType, int maxLength, String subTitulo, TipoDato tipo, int drawable) {
         this.name = name;
         this.inputType = inputType;
         this.maxLength = maxLength;
         this.subTitulo = subTitulo;
         this.drawable = drawable;
+        this.tipo = tipo;
     }
 
     public DataTransaccion (DataTransaccion dataTransaccion, String value) {
@@ -36,8 +38,10 @@ public class DataTransaccion implements Serializable {
         this.inputType = dataTransaccion.inputType;
         this.maxLength = dataTransaccion.maxLength;
         this.subTitulo = dataTransaccion.subTitulo;
+        this.tipo = dataTransaccion.tipo;
         this.value = value;
     }
+
     public String getName() {
         return name;
     }
@@ -84,5 +88,17 @@ public class DataTransaccion implements Serializable {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public TipoDato getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoDato tipo) {
+        this.tipo = tipo;
+    }
+
+    public enum TipoDato{
+        CEDULA, MONTO, OTP, OTRO
     }
 }
