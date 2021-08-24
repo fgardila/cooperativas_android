@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "44487716115",
+    "firebase_url": "https://connectcoop-ecuador.firebaseio.com",
+    "project_id": "connectcoop-ecuador",
+    "storage_bucket": "connectcoop-ecuador.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:44487716115:android:4d6fc9078a1f8b5414fee6",
+        "android_client_info": {
+          "package_name": "com.code93.linkcoop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "44487716115-dks3964680v3kpmgfaqeo7vvk12n5gbk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.code93.linkcoop",
+            "certificate_hash": "28bf1416c940bf0d5ee87c5fce6d9cbf1ebb6617"
+          }
+        },
+        {
+          "client_id": "44487716115-gog8hdgn5kbn5sgonh67vm76crqgepju.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtSLUmCrvIBCrPZRWfldQgmQglg92I9Yw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "44487716115-gog8hdgn5kbn5sgonh67vm76crqgepju.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
