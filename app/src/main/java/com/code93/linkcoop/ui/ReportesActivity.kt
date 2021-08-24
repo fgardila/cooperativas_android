@@ -24,6 +24,7 @@ import com.code93.linkcoop.persistence.models.FieldsTrx
 import com.code93.linkcoop.persistence.models.LogTransacciones
 import com.code93.linkcoop.network.DownloadCallback
 import com.code93.linkcoop.network.DownloadXmlTask
+import com.code93.linkcoop.view.HomeActivity
 import com.code93.linkcoop.viewmodel.LogTransaccionesViewModel
 import com.code93.linkcoop.xmlParsers.XmlParser.parse
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -166,7 +167,7 @@ class ReportesActivity : AppCompatActivity() {
         showDialogErrorCallback(this, "Error de conexion", object : DialogCallback {
             override fun onDialogCallback(value: Int) {
                 //logData.deleteAllLogTransaccioness()
-                startActivity(Intent(this@ReportesActivity, MainActivity::class.java))
+                startActivity(Intent(this@ReportesActivity, HomeActivity::class.java))
                 finish()
             }
         })

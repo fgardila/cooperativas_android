@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/cooperativasFragment"
-        android:name="com.code93.linkcoop.CooperativasFragment"
+        android:name="com.code93.linkcoop.view.cooperativas.CooperativasFragment"
         android:label="fragment_cooperativas"
         tools:layout="@layout/fragment_cooperativas" >
         <action
@@ -19,12 +19,12 @@
     </fragment>
     <fragment
         android:id="@+id/reporteCierreFragment"
-        android:name="com.code93.linkcoop.ReporteCierreFragment"
+        android:name="com.code93.linkcoop.view.reportes.ReporteCierreFragment"
         android:label="fragment_reporte_cierre"
         tools:layout="@layout/fragment_reporte_cierre" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.code93.linkcoop.SettingsFragment"
+        android:name="com.code93.linkcoop.view.settings.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

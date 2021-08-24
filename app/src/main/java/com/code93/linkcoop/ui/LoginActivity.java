@@ -307,7 +307,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
 
             } else {
-                if (fieldsTrx.getResponse_code().equals("00")) {
+                if (fieldsTrx.getResponse_code().equals("12")) {
                     cerrarSesion();
                 } else {
                     spotDialog.dismiss();

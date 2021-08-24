@@ -29,6 +29,7 @@ import com.code93.linkcoop.persistence.models.DataTransaccion;
 import com.code93.linkcoop.persistence.models.LogTransacciones;
 import com.code93.linkcoop.persistence.models.Transaction;
 import com.code93.linkcoop.network.DownloadXmlTask;
+import com.code93.linkcoop.view.HomeActivity;
 import com.code93.linkcoop.viewmodel.LogTransaccionesViewModel;
 import com.code93.linkcoop.xmlParsers.XmlParser;
 
@@ -433,7 +434,7 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
 
     private void procesarGeneracionOtp(LogTransacciones logTransacciones, TokenData tokenData) {
         Tools.showDialogPositive(this, tokenData.getB1(), value -> {
-            Intent intent = new Intent(TransaccionActivity.this, MainActivity.class);
+            Intent intent = new Intent(TransaccionActivity.this, HomeActivity.class);
             startActivity(intent);
             finish();
         });

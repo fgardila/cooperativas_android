@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import com.code93.linkcoop.R;
+import com.code93.linkcoop.view.HomeActivity;
 
 public class FinishActivity extends AppCompatActivity {
 
@@ -18,7 +19,7 @@ public class FinishActivity extends AppCompatActivity {
 
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
-            Intent intent = new Intent(FinishActivity.this, MainActivity.class);
+            Intent intent = new Intent(FinishActivity.this, HomeActivity.class);
             startActivity(intent);
             finish();
         }, 2000);

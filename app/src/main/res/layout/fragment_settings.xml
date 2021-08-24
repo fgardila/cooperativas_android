@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".SettingsFragment">
+    tools:context=".view.settings.SettingsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -71,11 +71,11 @@
                         android:background="@color/grey_10" />
 
                     <LinearLayout
+                        android:id="@+id/lyConfiguracion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
-                        android:onClick="configuracion"
                         android:gravity="center_vertical"
                         android:minHeight="70dp"
                         android:orientation="horizontal"
@@ -113,11 +113,11 @@
                         android:background="@color/grey_10" />
 
                     <LinearLayout
+                        android:id="@+id/lyCerrarSesion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
-                        android:onClick="clickCerrarSesion"
                         android:gravity="center_vertical"
                         android:minHeight="70dp"
                         android:orientation="horizontal"
@@ -155,11 +155,11 @@
                         android:background="@color/grey_10" />
 
                     <LinearLayout
+                        android:id="@+id/lyAbout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
-                        android:onClick="sobreAplicacion"
                         android:gravity="center_vertical"
                         android:minHeight="70dp"
                         android:orientation="horizontal"
