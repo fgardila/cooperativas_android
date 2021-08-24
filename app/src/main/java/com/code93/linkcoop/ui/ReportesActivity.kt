@@ -18,10 +18,10 @@ import com.code93.linkcoop.Tools.showDialogErrorCancelCallback
 import com.code93.linkcoop.Tools.showDialogPositive
 import com.code93.linkcoop.adapters.ReportesAdapter
 import com.code93.linkcoop.adapters.ReportesCallback
-import com.code93.linkcoop.models.CierreData
-import com.code93.linkcoop.models.CierreTransaccion
-import com.code93.linkcoop.models.FieldsTrx
-import com.code93.linkcoop.models.LogTransacciones
+import com.code93.linkcoop.persistence.models.CierreData
+import com.code93.linkcoop.persistence.models.CierreTransaccion
+import com.code93.linkcoop.persistence.models.FieldsTrx
+import com.code93.linkcoop.persistence.models.LogTransacciones
 import com.code93.linkcoop.network.DownloadCallback
 import com.code93.linkcoop.network.DownloadXmlTask
 import com.code93.linkcoop.viewmodel.LogTransaccionesViewModel

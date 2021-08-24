@@ -1,8 +1,8 @@
-package com.code93.linkcoop.repository
+package com.code93.linkcoop.persistence.repository
 
 import androidx.lifecycle.LiveData
-import com.code93.linkcoop.data.CooperativaDao
-import com.code93.linkcoop.models.Cooperativa
+import com.code93.linkcoop.persistence.data.CooperativaDao
+import com.code93.linkcoop.persistence.models.Cooperativa
 
 class CooperativaRepository(private val cooperativaDao: CooperativaDao) {
 

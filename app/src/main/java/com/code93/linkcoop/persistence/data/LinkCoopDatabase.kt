@@ -1,4 +1,4 @@
-package com.code93.linkcoop.data
+package com.code93.linkcoop.persistence.data
 
 import android.content.Context
 import androidx.room.Database
@@ -6,9 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.code93.juliopaprika_menuvirtual.data.Converters
-import com.code93.linkcoop.models.Cooperativa
-import com.code93.linkcoop.models.FieldsTrx
-import com.code93.linkcoop.models.LogTransacciones
+import com.code93.linkcoop.persistence.models.Cooperativa
+import com.code93.linkcoop.persistence.models.FieldsTrx
+import com.code93.linkcoop.persistence.models.LogTransacciones
 
 @Database(entities = [Cooperativa::class, FieldsTrx::class, LogTransacciones::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)

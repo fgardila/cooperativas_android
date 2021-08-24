@@ -1,4 +1,4 @@
-package com.code93.linkcoop.cache
+package com.code93.linkcoop.persistence.cache
 
 interface ICache {
     fun put(key: String?, value: Any?)

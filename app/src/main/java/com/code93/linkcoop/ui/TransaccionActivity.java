@@ -16,20 +16,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.code93.linkcoop.DialogCallback;
-import com.code93.linkcoop.cache.SP2;
-import com.code93.linkcoop.models.Comercio;
-import com.code93.linkcoop.models.FieldsTrx;
+import com.code93.linkcoop.persistence.cache.SP2;
+import com.code93.linkcoop.persistence.models.Comercio;
+import com.code93.linkcoop.persistence.models.FieldsTrx;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.ToolsXML;
 import com.code93.linkcoop.adapters.MenuElementosAdapter;
-import com.code93.linkcoop.models.Cooperativa;
-import com.code93.linkcoop.models.DataTransaccion;
-import com.code93.linkcoop.models.LogTransacciones;
-import com.code93.linkcoop.models.Transaction;
+import com.code93.linkcoop.persistence.models.Cooperativa;
+import com.code93.linkcoop.persistence.models.DataTransaccion;
+import com.code93.linkcoop.persistence.models.LogTransacciones;
+import com.code93.linkcoop.persistence.models.Transaction;
 import com.code93.linkcoop.network.DownloadXmlTask;
-import com.code93.linkcoop.viewmodel.FieldsTrxViewModel;
 import com.code93.linkcoop.viewmodel.LogTransaccionesViewModel;
 import com.code93.linkcoop.xmlParsers.XmlParser;
 

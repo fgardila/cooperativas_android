@@ -13,10 +13,10 @@ import com.code93.linkcoop.MyApp
 import com.code93.linkcoop.R
 import com.code93.linkcoop.Tools
 import com.code93.linkcoop.adapters.MenuElementosAdapter
-import com.code93.linkcoop.cache.SP2.Companion.aes_iv
-import com.code93.linkcoop.cache.SP2.Companion.aes_password
-import com.code93.linkcoop.cache.SP2.Companion.aes_salt
-import com.code93.linkcoop.models.DataTransaccion
+import com.code93.linkcoop.persistence.cache.SP2.Companion.aes_iv
+import com.code93.linkcoop.persistence.cache.SP2.Companion.aes_password
+import com.code93.linkcoop.persistence.cache.SP2.Companion.aes_salt
+import com.code93.linkcoop.persistence.models.DataTransaccion
 import java.util.*
 
 class LlavesDeCifradoActivity : AppCompatActivity(), MenuElementosAdapter.OnClickElemetos {

@@ -7,13 +7,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.code93.linkcoop.R
 import com.code93.linkcoop.adapters.MenuCoopAdapter
-import com.code93.linkcoop.models.Cooperativa
+import com.code93.linkcoop.persistence.models.Cooperativa
 import com.code93.linkcoop.viewmodel.CooperativaViewModel
-import com.google.android.gms.common.api.CommonStatusCodes
 
 
 class CooperativasActivity : FragmentActivity(), MenuCoopAdapter.OnClickCoop {

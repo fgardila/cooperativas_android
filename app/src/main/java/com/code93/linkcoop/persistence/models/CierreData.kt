@@ -1,4 +1,4 @@
-package com.code93.linkcoop.models
+package com.code93.linkcoop.persistence.models
 
 data class CierreData(
         var _code: String = "",

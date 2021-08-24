@@ -1,8 +1,8 @@
-package com.code93.linkcoop.data
+package com.code93.linkcoop.persistence.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.code93.linkcoop.models.Cooperativa
+import com.code93.linkcoop.persistence.models.Cooperativa
 
 @Dao
 interface CooperativaDao {

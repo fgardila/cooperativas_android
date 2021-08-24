@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/cooperativasFragment"
+        android:icon="@drawable/ic_account_balance"
+        android:title="Cooperativas" />
+    <item
+        android:id="@+id/reporteCierreFragment"
+        android:icon="@drawable/ic_statistics"
+        android:title="Reportes" />
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/ic_settings"
+        android:title="Configuración" />
+</menu>

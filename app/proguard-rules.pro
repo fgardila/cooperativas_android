@@ -27,35 +27,35 @@
 # Add this global rule
 -keepattributes Signature
 
--keepclassmembers class com.code93.linkcoop.models.**{
+-keepclassmembers class com.code93.linkcoop.persistence.models.**{
   *;
 }
 
--keepclassmembers class com.code93.linkcoop.models.Cooperativa{
+-keepclassmembers class com.code93.linkcoop.persistence.models.Cooperativa{
   *;
 }
--keepclassmembers class com.code93.linkcoop.models.FieldsTrx{
+-keepclassmembers class com.code93.linkcoop.persistence.models.FieldsTrx{
   *;
 }
--keepclassmembers class com.code93.linkcoop.models.DataTransaccion{
+-keepclassmembers class com.code93.linkcoop.persistence.models.DataTransaccion{
   *;
 }
--keepclassmembers class com.code93.linkcoop.models.Transaction{
+-keepclassmembers class com.code93.linkcoop.persistence.models.Transaction{
   *;
 }
--keepclassmembers class com.code93.linkcoop.models.LoginCooperativas{
+-keepclassmembers class com.code93.linkcoop.persistence.models.LoginCooperativas{
   *;
 }
--keepclassmembers class com.code93.linkcoop.models.Usuario{
+-keepclassmembers class com.code93.linkcoop.persistence.models.Usuario{
   *;
 }
--keepclassmembers class com.code93.linkcoop.models.CierreData{
+-keepclassmembers class com.code93.linkcoop.persistence.models.CierreData{
   *;
 }
--keepclassmembers class com.code93.linkcoop.models.CierreTransaccion{
+-keepclassmembers class com.code93.linkcoop.persistence.models.CierreTransaccion{
   *;
 }
--keepclassmembers class com.code93.linkcoop.models.Comercio{
+-keepclassmembers class com.code93.linkcoop.persistence.models.Comercio{
   *;
 }
 
@@ -85,7 +85,7 @@
 -keepattributes Signature
 -keepattributes *Annotation*
 -dontwarn sun.misc.**
--keep class com.code93.linkcoop.models.*
+-keep class com.code93.linkcoop.persistence.models.*
 
 -keep class dmax.dialog.* {
     *;

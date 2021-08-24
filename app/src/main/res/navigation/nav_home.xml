@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_home.xml"
+    app:startDestination="@id/cooperativasFragment">
+
+    <fragment
+        android:id="@+id/cooperativasFragment"
+        android:name="com.code93.linkcoop.CooperativasFragment"
+        android:label="fragment_cooperativas"
+        tools:layout="@layout/fragment_cooperativas" >
+        <action
+            android:id="@+id/action_cooperativasFragment_to_reporteCierreFragment"
+            app:destination="@id/reporteCierreFragment" />
+        <action
+            android:id="@+id/action_cooperativasFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reporteCierreFragment"
+        android:name="com.code93.linkcoop.ReporteCierreFragment"
+        android:label="fragment_reporte_cierre"
+        tools:layout="@layout/fragment_reporte_cierre" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.code93.linkcoop.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>

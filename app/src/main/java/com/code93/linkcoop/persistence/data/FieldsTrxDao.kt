@@ -1,8 +1,7 @@
-package com.code93.linkcoop.data
+package com.code93.linkcoop.persistence.data
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.code93.linkcoop.models.FieldsTrx
+import com.code93.linkcoop.persistence.models.FieldsTrx
 
 @Dao
 interface FieldsTrxDao {

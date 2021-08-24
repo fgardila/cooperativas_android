@@ -10,35 +10,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.code93.linkcoop.AesBase64Wrapper;
 import com.code93.linkcoop.BuildConfig;
 import com.code93.linkcoop.ToolsZ90;
-import com.code93.linkcoop.models.FieldsTrx;
+import com.code93.linkcoop.persistence.models.FieldsTrx;
 import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.ToolsXML;
-import com.code93.linkcoop.cache.SP2;
-import com.code93.linkcoop.models.Cooperativa;
-import com.code93.linkcoop.models.LoginCooperativas;
+import com.code93.linkcoop.persistence.cache.SP2;
+import com.code93.linkcoop.persistence.models.Cooperativa;
+import com.code93.linkcoop.persistence.models.LoginCooperativas;
 import com.code93.linkcoop.network.DownloadCallback;
 import com.code93.linkcoop.network.DownloadXmlTask;
+import com.code93.linkcoop.view.HomeActivity;
 import com.code93.linkcoop.viewmodel.CooperativaViewModel;
 import com.code93.linkcoop.xmlParsers.XmlParser;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.zcs.sdk.SdkResult;
@@ -101,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
         ImageView imgConnectCoop = findViewById(R.id.imgConnectCoop);
         imgConnectCoop.setOnClickListener(v -> {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
         });
 
         TextView tvVersion = findViewById(R.id.tvVersion);
@@ -247,7 +243,7 @@ public class LoginActivity extends AppCompatActivity {
 
         boolean loginStatus = sp2.getBoolean(SP2.Companion.getSP_LOGIN(), false);
         if (loginStatus) {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, HomeActivity.class));
             finish();
         }
     }
@@ -306,7 +302,7 @@ public class LoginActivity extends AppCompatActivity {
                 spotDialog.dismiss();
                 Tools.showDialogPositive(this, tokenData.getB1(), value -> {
                     FirebaseCrashlytics.getInstance().log("Inicio de sesion exitoso " + etEmail.getText().toString());
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                     finish();
                 });
 

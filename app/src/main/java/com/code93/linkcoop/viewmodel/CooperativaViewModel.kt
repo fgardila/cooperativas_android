@@ -4,9 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.code93.linkcoop.data.LinkCoopDatabase
-import com.code93.linkcoop.models.Cooperativa
-import com.code93.linkcoop.repository.CooperativaRepository
+import com.code93.linkcoop.persistence.data.LinkCoopDatabase
+import com.code93.linkcoop.persistence.models.Cooperativa
+import com.code93.linkcoop.persistence.repository.CooperativaRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

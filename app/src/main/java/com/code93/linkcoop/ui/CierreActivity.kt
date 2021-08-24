@@ -10,8 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.code93.linkcoop.*
-import com.code93.linkcoop.Tools.showDialogError
-import com.code93.linkcoop.models.*
+import com.code93.linkcoop.persistence.models.*
 import com.code93.linkcoop.network.DownloadCallback
 import com.code93.linkcoop.network.DownloadXmlTask
 import com.code93.linkcoop.viewmodel.LogTransaccionesViewModel

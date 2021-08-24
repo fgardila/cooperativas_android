@@ -4,7 +4,7 @@ import android.app.Application;
 import android.os.Build;
 import android.util.Log;
 
-import com.code93.linkcoop.cache.SP2;
+import com.code93.linkcoop.persistence.cache.SP2;
 import com.zcs.sdk.DriverManager;
 import com.zcs.sdk.card.CardInfoEntity;
 

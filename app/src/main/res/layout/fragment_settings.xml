@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".SettingsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/activityBackground"
+        android:orientation="vertical"
+        >
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <ImageView
+                    android:id="@+id/imgConnectCoop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:src="@drawable/logo_linkcoop"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    />
+
+                <TextView
+                    android:id="@+id/mainImgBienvenido"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgConnectCoop"
+                    android:layout_centerHorizontal="true"
+                    android:text="Bienvenido"
+                    android:textAppearance="?attr/textAppearanceHeadline5" />
+
+                <TextView
+                    android:id="@+id/comercioName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/mainImgBienvenido"
+                    android:layout_centerHorizontal="true"
+                    android:text="Bienvenido"
+                    android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                <LinearLayout
+                    android:id="@+id/linearMenus"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
+                    android:layout_below="@+id/comercioName"
+                    android:paddingTop="@dimen/spacing_xmedium">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="@dimen/spacing_large"
+                        android:layout_marginRight="@dimen/spacing_large"
+                        android:background="@color/grey_10" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:onClick="configuracion"
+                        android:gravity="center_vertical"
+                        android:minHeight="70dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/spacing_large"
+                        android:paddingRight="@dimen/spacing_large">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-light"
+                            android:text="Configuración"
+                            android:textStyle="bold"
+                            android:textAppearance="?attr/textAppearanceSubtitle1"
+                            />
+
+                        <View
+                            android:layout_width="@dimen/spacing_large"
+                            android:layout_height="wrap_content" />
+
+                        <ImageView
+                            android:layout_width="@dimen/spacing_mxlarge"
+                            android:layout_height="@dimen/spacing_mxlarge"
+                            android:background="@android:color/transparent"
+                            app:tint="@color/grey_60"
+                            app:srcCompat="@drawable/ic_settings" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="@dimen/spacing_large"
+                        android:layout_marginRight="@dimen/spacing_large"
+                        android:background="@color/grey_10" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:onClick="clickCerrarSesion"
+                        android:gravity="center_vertical"
+                        android:minHeight="70dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/spacing_large"
+                        android:paddingRight="@dimen/spacing_large">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-light"
+                            android:text="Cerrar sesion"
+                            android:textStyle="bold"
+                            android:textAppearance="?attr/textAppearanceSubtitle1"
+                            />
+
+                        <View
+                            android:layout_width="@dimen/spacing_large"
+                            android:layout_height="wrap_content" />
+
+                        <ImageView
+                            android:layout_width="@dimen/spacing_mxlarge"
+                            android:layout_height="@dimen/spacing_mxlarge"
+                            android:background="@android:color/transparent"
+                            app:tint="@color/grey_60"
+                            app:srcCompat="@drawable/ic_lock" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="@dimen/spacing_large"
+                        android:layout_marginRight="@dimen/spacing_large"
+                        android:background="@color/grey_10" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:onClick="sobreAplicacion"
+                        android:gravity="center_vertical"
+                        android:minHeight="70dp"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/spacing_large"
+                        android:paddingRight="@dimen/spacing_large">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-light"
+                            android:text="Sobre la aplicación"
+                            android:textStyle="bold"
+                            android:textAppearance="?attr/textAppearanceSubtitle1"
+                            />
+
+                        <View
+                            android:layout_width="@dimen/spacing_large"
+                            android:layout_height="wrap_content" />
+
+                        <ImageView
+                            android:layout_width="@dimen/spacing_mxlarge"
+                            android:layout_height="@dimen/spacing_mxlarge"
+                            android:background="@android:color/transparent"
+                            app:tint="@color/grey_60"
+                            app:srcCompat="@drawable/ic_info" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="@dimen/spacing_large"
+                        android:layout_marginRight="@dimen/spacing_large"
+                        android:background="@color/grey_10" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/spacing_large" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvTitleUltimoLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ultimo inicio de sesión: "
+                    android:gravity="center"
+                    android:layout_below="@id/linearMenus"
+                    android:textAppearance="?attr/textAppearanceSubtitle2"/>
+
+                <TextView
+                    android:id="@+id/tvUltimoLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ultimo inicio de sesión: "
+                    android:gravity="center"
+                    android:layout_below="@id/tvTitleUltimoLogin"
+                    android:textAppearance="?attr/textAppearanceSubtitle1"
+                    />
+
+            </RelativeLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+    </LinearLayout>
+
+</FrameLayout>

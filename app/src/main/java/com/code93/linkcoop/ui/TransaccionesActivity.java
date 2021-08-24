@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.adapters.MenuTransAdapter;
-import com.code93.linkcoop.models.Cooperativa;
-import com.code93.linkcoop.models.Transaction;
+import com.code93.linkcoop.persistence.models.Cooperativa;
+import com.code93.linkcoop.persistence.models.Transaction;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class TransaccionesActivity extends AppCompatActivity implements MenuTransAdapter.OnClickTrans {

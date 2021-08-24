@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.code93.linkcoop.R;
-import com.code93.linkcoop.models.DataTransaccion;
+import com.code93.linkcoop.persistence.models.DataTransaccion;
 
 import java.util.List;
 

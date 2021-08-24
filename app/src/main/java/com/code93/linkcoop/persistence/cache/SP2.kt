@@ -1,9 +1,8 @@
-package com.code93.linkcoop.cache
+package com.code93.linkcoop.persistence.cache
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.text.TextUtils
-import com.code93.linkcoop.StringTools
 
 /**
  * Created by wanglei on 2016/11/27.

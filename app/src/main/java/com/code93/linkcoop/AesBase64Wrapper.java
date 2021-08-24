@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
 
-import com.code93.linkcoop.cache.SP2;
+import com.code93.linkcoop.persistence.cache.SP2;
 import com.code93.linkcoop.network.DownloadCallback;
 
 import java.io.UnsupportedEncodingException;

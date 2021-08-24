@@ -11,13 +11,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.code93.linkcoop.DialogCallback;
-import com.code93.linkcoop.models.FieldsTrx;
+import com.code93.linkcoop.persistence.models.FieldsTrx;
 import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.Tools;
 import com.code93.linkcoop.ToolsXML;
-import com.code93.linkcoop.cache.SP2;
+import com.code93.linkcoop.persistence.cache.SP2;
 import com.code93.linkcoop.network.DownloadCallback;
 import com.code93.linkcoop.network.DownloadXmlTask;
 import com.code93.linkcoop.viewmodel.CooperativaViewModel;

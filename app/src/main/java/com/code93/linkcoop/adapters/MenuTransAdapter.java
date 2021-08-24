@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.code93.linkcoop.R;
-import com.code93.linkcoop.models.Transaction;
+import com.code93.linkcoop.persistence.models.Transaction;
 
 import java.util.List;
 

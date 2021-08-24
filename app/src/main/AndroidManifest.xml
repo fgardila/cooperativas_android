@@ -26,33 +26,50 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.MainActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.CierreActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MenuReportesActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.ConfigNetworkActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.LlavesDeCifradoActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.ConfiguracionActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.ReportesActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.CooperativasActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.FinishActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.ImpresionActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.TransaccionActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.IngresarDataActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.TransaccionesActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.LoginActivity"
+        <activity
+            android:name=".view.HomeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.CierreActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MenuReportesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ConfigNetworkActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.LlavesDeCifradoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ConfiguracionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ReportesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.CooperativasActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.FinishActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ImpresionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.TransaccionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.IngresarDataActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.TransaccionesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

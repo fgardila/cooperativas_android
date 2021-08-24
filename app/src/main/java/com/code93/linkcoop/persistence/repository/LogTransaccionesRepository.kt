@@ -1,8 +1,8 @@
-package com.code93.linkcoop.repository
+package com.code93.linkcoop.persistence.repository
 
 import androidx.lifecycle.LiveData
-import com.code93.linkcoop.data.LogTransaccionesDao
-import com.code93.linkcoop.models.LogTransacciones
+import com.code93.linkcoop.persistence.data.LogTransaccionesDao
+import com.code93.linkcoop.persistence.models.LogTransacciones
 
 class LogTransaccionesRepository(private val logTransaccionesDao: LogTransaccionesDao) {
 

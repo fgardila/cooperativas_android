@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.code93.linkcoop.R
-import com.code93.linkcoop.models.LogTransacciones
+import com.code93.linkcoop.persistence.models.LogTransacciones
 import java.util.*
 
 class ReportesAdapter(val context: Context, val lister : ReportesCallback) : RecyclerView.Adapter<ReportesAdapter.ViewHolder>() {

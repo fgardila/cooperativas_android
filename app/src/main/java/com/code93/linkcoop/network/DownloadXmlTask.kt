@@ -3,9 +3,8 @@ package com.code93.linkcoop.network
 import android.os.AsyncTask
 import android.util.Log
 import com.code93.linkcoop.MyApp
-import com.code93.linkcoop.cache.SP2.Companion.aes_iv
-import com.code93.linkcoop.cache.SP2.Companion.net_direccionip
-import com.code93.linkcoop.cache.SP2.Companion.net_puerto
+import com.code93.linkcoop.persistence.cache.SP2.Companion.net_direccionip
+import com.code93.linkcoop.persistence.cache.SP2.Companion.net_puerto
 import org.ksoap2.SoapEnvelope
 import org.ksoap2.serialization.SoapObject
 import org.ksoap2.serialization.SoapPrimitive

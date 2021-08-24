@@ -1,7 +1,6 @@
-package com.code93.linkcoop.models
+package com.code93.linkcoop.persistence.models
 
 import android.os.Parcelable
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
