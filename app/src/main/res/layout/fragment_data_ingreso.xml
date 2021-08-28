@@ -94,8 +94,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/view2"
             android:layout_centerHorizontal="true"
-            android:text="Toca el cuadro de texto."
             android:gravity="center"
+            android:text="Toca el cuadro de texto."
             android:textAppearance="?attr/textAppearanceSubtitle1" />
 
     </RelativeLayout>

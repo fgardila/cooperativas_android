@@ -100,17 +100,6 @@ public class IngresarDataActivity extends AppCompatActivity {
                                 + "." + cuttedStr.substring(cuttedStr.length() - 2);
 
                         etData.setText(cuttedStr);
-                /*numeroTotal = Double.valueOf(amountServiceCost);
-                numeroTotal = numeroTotal + Double.valueOf(cuttedStr);
-                String auxNum = String.valueOf(numeroTotal);
-
-                if (auxNum.length() >= 3) {
-                    String[] parts = auxNum.split("\\.");
-                    String p = parts[1];
-                    if (p.length() == 1)
-                        auxNum += "0";
-                }
-                tv_Total.setText(auxNum);*/
                         etData.setSelection(etData.length());
                         isChanged = false;
                     }

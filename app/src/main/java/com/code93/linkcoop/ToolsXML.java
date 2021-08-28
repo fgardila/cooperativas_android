@@ -147,6 +147,24 @@ public class ToolsXML {
         return createXML("request_close", listFields);
     }
 
+    public static String requestContinousDocument(String documento) {
+        TokenData tokenData = new TokenData();
+        String tokenX4 = tokenData.setToken("X4", documento);
+
+        ArrayList<DataElements> listFields = new ArrayList<>();
+        listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "C000010810A000C0"));
+        listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), "310095");
+        listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
+        listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "2"));
+        listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
+        listFields.add(new DataElements(Tools.NameFields.token_data.toString(), tokenX4));
+        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012001"));
+        return ToolsXML.createXML("request_continous", listFields);
+    }
+
     public static String createXML(String startTag, List<DataElements> listElements) {
         XmlSerializer serializer = Xml.newSerializer();
         StringWriter writer = new StringWriter();

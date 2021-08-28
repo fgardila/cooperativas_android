@@ -75,10 +75,10 @@
                 android:layout_height="@dimen/spacing_large" />
 
             <Button
+                android:id="@+id/btnContinuar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_mlarge"
-                android:onClick="analizarDatos"
                 android:text="Continuar" />
         </LinearLayout>
 
