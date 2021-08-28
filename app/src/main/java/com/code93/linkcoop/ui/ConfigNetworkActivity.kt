@@ -42,8 +42,8 @@ class ConfigNetworkActivity : AppCompatActivity(), MenuElementosAdapter.OnClickE
 
     private fun getData(): Array<DataTransaccion?> {
 
-        val net_direccionip = MyApp.sp2.getString(SP2.net_direccionip, "")
-        val net_puerto = MyApp.sp2.getString(SP2.net_puerto, "")
+        val net_direccionip = MyApp.sp2!!.getString(SP2.net_direccionip, "")
+        val net_puerto = MyApp.sp2!!.getString(SP2.net_puerto, "")
 
         val elementos: MutableList<DataTransaccion> = ArrayList()
         elementos.add(DataTransaccion(
@@ -94,11 +94,11 @@ class ConfigNetworkActivity : AppCompatActivity(), MenuElementosAdapter.OnClickE
             for (data in elementos) {
                 when (data!!.name) {
                     getString(R.string.url_o_direccion_ip) -> {
-                        MyApp.sp2.putString(SP2.net_direccionip, data.value)
+                        MyApp.sp2!!.putString(SP2.net_direccionip, data.value)
                         continue
                     }
                     getString(R.string.puerto) -> {
-                        MyApp.sp2.putString(SP2.net_puerto, data.value)
+                        MyApp.sp2!!.putString(SP2.net_puerto, data.value)
                     }
                 }
             }

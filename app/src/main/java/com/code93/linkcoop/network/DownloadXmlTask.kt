@@ -31,10 +31,10 @@ class DownloadXmlTask(var xmlSend: String, var callback: DownloadCallback) : Asy
 
     @Throws(IOException::class)
     private fun sendRequest(xmlSend: String) : String {
-        MyApp.sp2.incTraceNo()
+        MyApp.sp2!!.incTraceNo()
 
-        val direccionip = MyApp.sp2.getString(net_direccionip, "0.0.0.0")
-        val puerto = MyApp.sp2.getString(net_puerto, "9999")
+        val direccionip = MyApp.sp2!!.getString(net_direccionip, "0.0.0.0")
+        val puerto = MyApp.sp2!!.getString(net_puerto, "9999")
 
         val SOAP_ACTION = "http://tempuri.org/iServiceAsynchronous/Invoque_Async_Service"
         val METHOD_NAME = "Invoque_Async_Service"

@@ -33,7 +33,7 @@ class CooperativasFragment : Fragment(), MenuCoopAdapter.OnClickCoop {
         _binding = FragmentCooperativasBinding.inflate(inflater, container, false)
         cooperativaViewModel = ViewModelProvider(this).get(CooperativaViewModel::class.java)
 
-        mBinding.tvNegocio.text = MyApp.sp2.getString(SP2.comercio_nombre, "")
+        mBinding.tvNegocio.text = MyApp.sp2!!.getString(SP2.comercio_nombre, "")
 
         val adapter = MenuCoopAdapter(requireContext(), this)
         mBinding.rvCooperativas.adapter = adapter

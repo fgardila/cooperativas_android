@@ -51,7 +51,7 @@ class SettingsFragment : Fragment(), DownloadCallback {
             .setMessage("Procesando")
             .build()
 
-        mBinding.comercioName.text = MyApp.sp2.getString(comercio_nombre, "")
+        mBinding.comercioName.text = MyApp.sp2!!.getString(comercio_nombre, "")
         obtenerUltimoLogin()
 
         mBinding.lyConfiguracion.setOnClickListener { configuracion() }
@@ -67,7 +67,7 @@ class SettingsFragment : Fragment(), DownloadCallback {
 
     private fun cerrarSesion() {
         dialog.show()
-        val user_encript = MyApp.sp2.getString(user_encript, "")
+        val user_encript = MyApp.sp2!!.getString(user_encript, "")
         val xmlLogOff = ToolsXML.requestLogoff(user_encript)
         val task = DownloadXmlTask(xmlLogOff, this)
         task.execute(xmlLogOff)
@@ -78,7 +78,7 @@ class SettingsFragment : Fragment(), DownloadCallback {
     }
 
     private fun obtenerUltimoLogin() {
-        val fechaUltimoLogin = MyApp.sp2.getString(fechaUltimoLogin, "")
+        val fechaUltimoLogin = MyApp.sp2!!.getString(fechaUltimoLogin, "")
         val formatUltimoLogin = fechaUltimoLogin
         mBinding.tvUltimoLogin.text = (formatUltimoLogin)
     }
@@ -101,7 +101,7 @@ class SettingsFragment : Fragment(), DownloadCallback {
             val tokenData = TokenData()
             tokenData.getTokens(Objects.requireNonNull(token_data))
             if (response_code == "00") {
-                MyApp.sp2.putBoolean(SP_LOGIN, false)
+                MyApp.sp2!!.putBoolean(SP_LOGIN, false)
                 dialog.dismiss()
                 showDialogPositive(requireContext(), tokenData.B1, object : DialogCallback {
                     override fun onDialogCallback(value: Int) {
@@ -113,7 +113,7 @@ class SettingsFragment : Fragment(), DownloadCallback {
                 dialog.dismiss()
                 showDialogErrorCallback(requireContext(), tokenData.B1, object : DialogCallback {
                     override fun onDialogCallback(value: Int) {
-                        MyApp.sp2.putBoolean(SP_LOGIN, false)
+                        MyApp.sp2!!.putBoolean(SP_LOGIN, false)
                         startActivity(Intent(requireContext(), LoginActivity::class.java))
                         requireActivity().finish()
                     }

@@ -27,6 +27,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.cliente.ClienteActivity"
+            android:exported="true" />
+        <activity
             android:name=".view.HomeActivity"
             android:exported="true" />
         <activity

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_cliente_register"
+    app:startDestination="@id/solicitarDocumentoFragment">
+
+    <fragment
+        android:id="@+id/solicitarDocumentoFragment"
+        android:name="com.code93.linkcoop.view.cliente.SolicitarDocumentoFragment"
+        android:label="fragment_solicitar_documento_list"
+        tools:layout="@layout/fragment_solicitar_documento_list" />
+</navigation>

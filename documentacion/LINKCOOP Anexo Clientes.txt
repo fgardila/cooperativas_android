@@ -1,0 +1,95 @@
+------------------------------------------------------------------------------------------------------------------------------------
+VALIDACION DE CLIENTE
+------------------------------------------------------------------------------------------------------------------------------------
+REQUERIMIENTO
+
+<?xml version="1.0" encoding="utf-8"?>
+<request_continous>
+	<bitmap>C000010810A000C0</bitmap>
+	<message_code>0200</message_code>
+	<transaction_code>310095</transaction_code>
+	<adquirer_date_time>2021-08-26 11:38:14</adquirer_date_time>
+	<adquirer_sequence>1</adquirer_sequence>
+	<terminal_id>TPOS-1002-000070</terminal_id>
+	<channel_id>2</channel_id>
+	<service_code>0030011001</service_code>
+    <token_data>X40109999999999</token_data>	
+	<product_id>012001</product_id>
+</request_continous>
+
+
+RESPUESTA
+
+<?xml version="1.0" encoding="utf-8"?>
+<reply_continous>
+     <bitmap>C0000318008800C0</bitmap>
+     <message_code>0210</message_code>
+     <transaction_code>310095</transaction_code>
+     <switch_date_time>2020/10/27 16:35:17.260</switch_date_time>
+     <adquirer_date_time>2020/10/27 12:13:14.000</adquirer_date_time>
+     <switch_sequence>13</switch_sequence>
+     <adquirer_sequence>1</adquirer_sequence>
+     <channel_id>2</channel_id>
+     <response_code>00</response_code>
+     <token_data>X2015LIDER NAVARRETEB1019TRANSACCION EXITOSA</token_data>
+     <product_id>012001</product_id>
+</reply_continous>
+
+
+
+<<<  CONDICION DE ERROR APLICADO >>>
+
+<response_code>23</response_code>
+<token_data>B1028REGISTRO DE CUENTA NO EXISTE</token_data>
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+REGISTRO DE CLIENTE
+------------------------------------------------------------------------------------------------------------------------------------
+REQUERIMIENTO
+
+<?xml version="1.0" encoding="utf-8"?>
+<request_continous>
+	<bitmap>C000010810A090E0</bitmap>
+	<message_code>0200</message_code>
+	<transaction_code>930093</transaction_code>
+	<adquirer_date_time>2020-10-27 12:13:14</adquirer_date_time>
+	<adquirer_sequence>1</adquirer_sequence>
+	<terminal_id>TPOS-1002-000070</terminal_id>
+	<channel_id>2</channel_id>
+	<service_code>0030011001</service_code>
+	<record_names>LIDER|NAVARRETE</record_names>     (nombre y apellido Separado por | )
+	<phone_number>0985411029</phone_number>	
+        <token_data>X40109999999999</token_data>	
+	<product_id>012001</product_id>
+	<email_address>lnavarrete@hotmail.com</email_address>
+</request_continous>
+
+
+RESPUESTA
+
+<?xml version="1.0" encoding="utf-8"?>
+<reply_continous>
+     <bitmap>C0000318008800C0</bitmap>
+     <message_code>0210</message_code>
+     <transaction_code>930093/transaction_code>
+     <switch_date_time>2020/10/27 16:35:17.260</switch_date_time>
+     <adquirer_date_time>2020/10/27 12:13:14.000</adquirer_date_time>
+     <switch_sequence>13</switch_sequence>
+     <adquirer_sequence>1</adquirer_sequence>
+     <channel_id>2</channel_id>
+     <response_code>00</response_code>
+     <token_data>B1019TRANSACCION EXITOSA</token_data>
+     <product_id>012001</product_id>
+</reply_continous>
+
+
+
+<<<  CONDICION DE ERROR APLICADO >>>
+
+<response_code>16</response_code>
+<token_data>B1024ERROR INTERNO DE PROCESO</token_data>
+
+<response_code>10</response_code>
+<token_data>B1018REGISTRO YA EXISTE</token_data>

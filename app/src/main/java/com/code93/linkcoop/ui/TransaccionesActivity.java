@@ -15,6 +15,7 @@ import com.code93.linkcoop.R;
 import com.code93.linkcoop.adapters.MenuTransAdapter;
 import com.code93.linkcoop.persistence.models.Cooperativa;
 import com.code93.linkcoop.persistence.models.Transaction;
+import com.code93.linkcoop.view.cliente.ClienteActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class TransaccionesActivity extends AppCompatActivity implements MenuTransAdapter.OnClickTrans {
@@ -56,7 +57,8 @@ public class TransaccionesActivity extends AppCompatActivity implements MenuTran
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                Intent intent = new Intent(TransaccionesActivity.this, TransaccionActivity.class);
+                //Intent intent = new Intent(TransaccionesActivity.this, TransaccionActivity.class);
+                Intent intent = new Intent(TransaccionesActivity.this, ClienteActivity.class);
                 intent.putExtra("transaction", transaction);
                 intent.putExtra("cooperativa", cooperativa);
                 startActivity(intent);

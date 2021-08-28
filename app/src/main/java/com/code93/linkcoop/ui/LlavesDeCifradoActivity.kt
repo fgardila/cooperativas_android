@@ -45,9 +45,9 @@ class LlavesDeCifradoActivity : AppCompatActivity(), MenuElementosAdapter.OnClic
 
     private fun getData(): Array<DataTransaccion?> {
 
-        val aes_iv = MyApp.sp2.getString(aes_iv, "")
-        val aes_password = MyApp.sp2.getString(aes_password, "")
-        val aes_salt = MyApp.sp2.getString(aes_salt, "")
+        val aes_iv = MyApp.sp2!!.getString(aes_iv, "")
+        val aes_password = MyApp.sp2!!.getString(aes_password, "")
+        val aes_salt = MyApp.sp2!!.getString(aes_salt, "")
 
         val elementos: MutableList<DataTransaccion> = ArrayList()
         elementos.add(DataTransaccion(
@@ -92,15 +92,15 @@ class LlavesDeCifradoActivity : AppCompatActivity(), MenuElementosAdapter.OnClic
             for (data in elementos) {
                 when (data!!.name) {
                     "AES IV" -> {
-                        MyApp.sp2.putString(aes_iv, data.value)
+                        MyApp.sp2!!.putString(aes_iv, data.value)
                         continue
                     }
                     "AES Password" -> {
-                        MyApp.sp2.putString(aes_password, data.value)
+                        MyApp.sp2!!.putString(aes_password, data.value)
                         continue
                     }
                     "AES Salt" -> {
-                        MyApp.sp2.putString(aes_salt, data.value)
+                        MyApp.sp2!!.putString(aes_salt, data.value)
                     }
                 }
             }
