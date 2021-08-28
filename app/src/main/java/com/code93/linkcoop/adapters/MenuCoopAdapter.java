@@ -74,7 +74,7 @@ public class MenuCoopAdapter extends RecyclerView.Adapter<MenuCoopAdapter.MenuCo
 
     @Override
     public int getItemCount() {
-        Log.d("SIZE LIST", "" + cooperativas.size());
+        //Log.d("SIZE LIST", "" + cooperativas.size());
         return cooperativas.size();
     }
 

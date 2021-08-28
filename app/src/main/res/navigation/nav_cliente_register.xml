@@ -9,5 +9,20 @@
         android:id="@+id/solicitarDocumentoFragment"
         android:name="com.code93.linkcoop.view.cliente.SolicitarDocumentoFragment"
         android:label="fragment_solicitar_documento_list"
-        tools:layout="@layout/fragment_solicitar_documento_list" />
+        tools:layout="@layout/fragment_solicitar_documento_list" >
+        <action
+            android:id="@+id/action_solicitarDocumentoFragment_to_dataIngresoFragment"
+            app:destination="@id/dataIngresoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dataIngresoFragment"
+        android:name="com.code93.linkcoop.view.cliente.DataIngresoFragment"
+        android:label="fragment_data_ingreso"
+        tools:layout="@layout/fragment_data_ingreso" >
+        <argument
+            android:name="dataTransaccion"
+            app:argType="com.code93.linkcoop.persistence.models.DataTransaccion"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>
