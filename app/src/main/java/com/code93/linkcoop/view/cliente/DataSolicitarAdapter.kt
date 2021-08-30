@@ -5,10 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import com.code93.linkcoop.databinding.FragmentSolicitarDocumentoBinding
 import com.code93.linkcoop.persistence.models.DataTransaccion
-import com.google.android.material.snackbar.Snackbar
 
 class DataSolicitarAdapter(
     private val values: List<DataTransaccion>,
@@ -35,7 +33,7 @@ class DataSolicitarAdapter(
             holder.tvValue.text = item.value
         }
         holder.lyNombre.setOnClickListener {
-            callbackData.onClickData(item)
+            callbackData.onClickData(item, position)
         }
     }
 

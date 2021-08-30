@@ -27,7 +27,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".view.cliente.ClienteActivity"
+            android:name=".view.cliente.SolicitarDatosClienteActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.cliente.SolicitarDocumentoActivity"
             android:exported="true" />
         <activity
             android:name=".view.HomeActivity"

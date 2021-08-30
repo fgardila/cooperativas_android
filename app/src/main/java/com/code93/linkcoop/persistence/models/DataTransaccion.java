@@ -99,6 +99,6 @@ public class DataTransaccion implements Serializable {
     }
 
     public enum TipoDato{
-        CEDULA, MONTO, OTP, OTRO
+        CEDULA, MONTO, OTP, EMAIL, OTRO
     }
 }

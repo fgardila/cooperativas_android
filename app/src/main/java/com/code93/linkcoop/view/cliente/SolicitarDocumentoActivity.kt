@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.code93.linkcoop.R
 import com.code93.linkcoop.databinding.ActivityClienteBinding
 
-class ClienteActivity : AppCompatActivity() {
+class SolicitarDocumentoActivity : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityClienteBinding
 

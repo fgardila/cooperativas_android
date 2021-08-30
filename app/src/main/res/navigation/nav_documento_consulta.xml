@@ -21,9 +21,9 @@
     </fragment>
     <fragment
         android:id="@+id/dataIngresoFragment"
-        android:name="com.code93.linkcoop.view.cliente.DataIngresoFragment"
+        android:name="com.code93.linkcoop.view.cliente.SolicitarDocumentoIngresoFragment"
         android:label="fragment_data_ingreso"
-        tools:layout="@layout/fragment_data_ingreso" >
+        tools:layout="@layout/fragment_solicitar_documento_ingreso" >
         <argument
             android:name="dataTransaccion"
             app:argType="com.code93.linkcoop.persistence.models.DataTransaccion"

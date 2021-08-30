@@ -13,22 +13,22 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.code93.linkcoop.StringTools
 import com.code93.linkcoop.StringTools.ValidaCedulaRuc
-import com.code93.linkcoop.databinding.FragmentDataIngresoBinding
+import com.code93.linkcoop.databinding.FragmentSolicitarDocumentoIngresoBinding
 import com.code93.linkcoop.persistence.models.DataTransaccion
 
 
-class DataIngresoFragment : Fragment() {
+class SolicitarDocumentoIngresoFragment : Fragment() {
 
-    private var _binding: FragmentDataIngresoBinding? = null
+    private var _binding: FragmentSolicitarDocumentoIngresoBinding? = null
     private val mBinding get() = _binding!!
 
-    val args: DataIngresoFragmentArgs by navArgs()
+    val args: SolicitarDocumentoIngresoFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentDataIngresoBinding.inflate(inflater, container, false)
+        _binding = FragmentSolicitarDocumentoIngresoBinding.inflate(inflater, container, false)
 
         val data = args.dataTransaccion
 
@@ -60,7 +60,7 @@ class DataIngresoFragment : Fragment() {
                 val validated = ValidaCedulaRuc(mBinding.etData.text.toString())
                 if (validated) {
                     data.value = mBinding.etData.text.toString()
-                    val action = DataIngresoFragmentDirections.actionDataIngresoFragmentToSolicitarDocumentoFragment(data)
+                    val action = SolicitarDocumentoIngresoFragmentDirections.actionDataIngresoFragmentToSolicitarDocumentoFragment(data)
                     Navigation.findNavController(mBinding.root).navigate(action)
                 } else {
                     mBinding.etData.error = "Documento de identidad no valido"
@@ -68,7 +68,7 @@ class DataIngresoFragment : Fragment() {
                 }
             } else {
                 data.value = mBinding.etData.text.toString()
-                val action = DataIngresoFragmentDirections.actionDataIngresoFragmentToSolicitarDocumentoFragment(data)
+                val action = SolicitarDocumentoIngresoFragmentDirections.actionDataIngresoFragmentToSolicitarDocumentoFragment(data)
                 Navigation.findNavController(mBinding.root).navigate(action)
             }
         }

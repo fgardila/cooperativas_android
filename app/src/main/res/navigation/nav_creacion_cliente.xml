@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_creacion_cliente"
+    app:startDestination="@id/solicitarDatosClienteFragment">
+
+    <fragment
+        android:id="@+id/solicitarDatosClienteFragment"
+        android:name="com.code93.linkcoop.view.cliente.SolicitarDatosClienteFragment"
+        android:label="fragment_solicitar_datos_cliente"
+        tools:layout="@layout/fragment_solicitar_datos_cliente" >
+        <action
+            android:id="@+id/action_solicitarDatosClienteFragment_to_solicitarDatosClienteIngresoFragment"
+            app:destination="@id/solicitarDatosClienteIngresoFragment"
+            app:popUpTo="@id/solicitarDatosClienteFragment" />
+        <argument
+            android:name="position"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="value"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/solicitarDatosClienteIngresoFragment"
+        android:name="com.code93.linkcoop.view.cliente.SolicitarDatosClienteIngresoFragment"
+        android:label="fragment_solicitar_datos_cliente_ingreso"
+        tools:layout="@layout/fragment_solicitar_datos_cliente_ingreso" >
+        <action
+            android:id="@+id/action_solicitarDatosClienteIngresoFragment_to_solicitarDatosClienteFragment"
+            app:destination="@id/solicitarDatosClienteFragment"
+            app:popUpTo="@id/nav_creacion_cliente" />
+        <argument
+            android:name="position"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="dataTransaccion"
+            app:argType="com.code93.linkcoop.persistence.models.DataTransaccion"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+</navigation>

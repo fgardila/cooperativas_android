@@ -3,6 +3,7 @@ package com.code93.linkcoop;
 import android.util.Log;
 import android.util.Xml;
 
+import com.code93.linkcoop.persistence.models.ClienteData;
 import com.code93.linkcoop.persistence.models.Cooperativa;
 import com.code93.linkcoop.persistence.models.Transaction;
 
@@ -154,7 +155,7 @@ public class ToolsXML {
         ArrayList<DataElements> listFields = new ArrayList<>();
         listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "C000010810A000C0"));
         listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
-        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), "310095");
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), "310095"));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
         listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
         listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
@@ -162,6 +163,27 @@ public class ToolsXML {
         listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
         listFields.add(new DataElements(Tools.NameFields.token_data.toString(), tokenX4));
         listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012001"));
+        return ToolsXML.createXML("request_continous", listFields);
+    }
+
+    public static String requestCrearCliente(ClienteData clienteData) {
+        TokenData tokenData = new TokenData();
+        String tokenX4 = tokenData.setToken("X4", clienteData.getDocument());
+
+        ArrayList<DataElements> listFields = new ArrayList<>();
+        listFields.add(new DataElements(Tools.NameFields.bitmap.toString(), "C000010810A090E0"));
+        listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
+        listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), "930093"));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
+        listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "2"));
+        listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
+        listFields.add(new DataElements(Tools.NameFields.record_names.toString(), clienteData.getFirtName() + "|" + clienteData.getLastName()));
+        listFields.add(new DataElements(Tools.NameFields.phone_number.toString(), clienteData.getPhoneNumber()));
+        listFields.add(new DataElements(Tools.NameFields.token_data.toString(), tokenX4));
+        listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012001"));
+        listFields.add(new DataElements(Tools.NameFields.email_address.toString(), clienteData.getEmailAddress()));
         return ToolsXML.createXML("request_continous", listFields);
     }
 
