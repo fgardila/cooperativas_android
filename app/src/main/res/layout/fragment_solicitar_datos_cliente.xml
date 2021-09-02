@@ -80,6 +80,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_mlarge"
                 android:text="Continuar" />
+
+            <Button
+                android:id="@+id/btnLimpiar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_mlarge"
+                android:text="Limpiar todos los campos"
+                android:backgroundTint="@color/grey_90"/>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

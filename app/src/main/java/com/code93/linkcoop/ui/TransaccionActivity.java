@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.code93.linkcoop.DialogCallback;
+import com.code93.linkcoop.persistence.cache.DataTrans;
 import com.code93.linkcoop.persistence.cache.SP2;
 import com.code93.linkcoop.persistence.models.Comercio;
 import com.code93.linkcoop.persistence.models.FieldsTrx;
@@ -88,7 +89,14 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
             elementos = getElementos(transaccion.get_namet().trim());
             tvTransaccion.setText(transaccion.get_namet().trim());
         } else {
-
+            comercio = new Comercio();
+            comercio.setNombre(sp2.getString(SP2.Companion.getComercio_nombre(), ""));
+            comercio.setRuc(sp2.getString(SP2.Companion.getComercio_ruc(), ""));
+            comercio.setDireccion(sp2.getString(SP2.Companion.getComercio_direccion(), ""));
+            transaccion = DataTrans.INSTANCE.getTransaction();
+            cooperativa = DataTrans.INSTANCE.getCooperativa();
+            elementos = getElementos(transaccion.get_namet().trim());
+            tvTransaccion.setText(transaccion.get_namet().trim());
         }
 
         rvElementos = findViewById(R.id.rvElementos);
@@ -114,9 +122,17 @@ public class TransaccionActivity extends AppCompatActivity implements MenuElemen
                 elementos.add(new DataTransaccion("OTP Generado",
                         InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
                         9, "Ingresa la OTP", DataTransaccion.TipoDato.OTRO, R.drawable.ic_textsms));
-                elementos.add(new DataTransaccion("Documento de identidad",
-                        InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                        15, "Ingresa documento de identidad", DataTransaccion.TipoDato.CEDULA, R.drawable.ic_account));
+                if (DataTrans.INSTANCE.getClienteData().getDocument().isEmpty()) {
+                    elementos.add(new DataTransaccion("Documento de identidad",
+                            InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
+                            15, "Ingresa documento de identidad", DataTransaccion.TipoDato.CEDULA, R.drawable.ic_account));
+                } else {
+                    DataTransaccion document = new DataTransaccion("Documento de identidad",
+                            InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL,
+                            15, "Ingresa documento de identidad",
+                            DataTransaccion.TipoDato.CEDULA, R.drawable.ic_account);
+                    elementos.add(new DataTransaccion(document, DataTrans.INSTANCE.getClienteData().getDocument()));
+                }
                 break;
             case "CONSULTA DE SALDOS":
             case "CONSULTA SALDOS CC":

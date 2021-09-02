@@ -1,6 +1,7 @@
 package com.code93.linkcoop.view.cliente
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -23,6 +24,7 @@ import com.code93.linkcoop.persistence.cache.DataTrans
 import com.code93.linkcoop.persistence.models.ClienteData
 import com.code93.linkcoop.persistence.models.DataTransaccion
 import com.code93.linkcoop.persistence.models.FieldsTrx
+import com.code93.linkcoop.ui.TransaccionActivity
 import com.code93.linkcoop.xmlParsers.XmlParser.parse
 import dmax.dialog.SpotsDialog
 import org.xmlpull.v1.XmlPullParserException
@@ -111,7 +113,7 @@ class SolicitarDocumentoFragment : Fragment(), CallbackData {
         val xml = ToolsXML.requestContinousDocument(DataTrans.clienteData.document)
 
         try {
-            fieldsTrxSend = parse(xml, "request_inquiry")
+            fieldsTrxSend = parse(xml, "request_continous")
         } catch (e: XmlPullParserException) {
             e.printStackTrace()
         } catch (e: IOException) {
@@ -122,7 +124,7 @@ class SolicitarDocumentoFragment : Fragment(), CallbackData {
             object : DownloadCallback {
                 override fun onDownloadCallback(response: String) {
                     if (response == "Error de conexion") showErrorConexion() else procesarRespuesta(
-                        "reply_inquiry",
+                        "reply_continous",
                         response
                     )
                 }
@@ -141,8 +143,11 @@ class SolicitarDocumentoFragment : Fragment(), CallbackData {
                 Log.d("FieldTRX", Objects.requireNonNull(token_data))
                 val tokenData = TokenData()
                 tokenData.getTokens(Objects.requireNonNull(token_data))
-                if (response_code == "000") {
+                if (response_code == "00") {
                     //
+                    val intent = Intent(requireContext(), TransaccionActivity::class.java)
+                    requireActivity().startActivity(intent)
+                    finish()
                 } else {
                     spotDialog.dismiss()
                     showDialogErrorCallback(

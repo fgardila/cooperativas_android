@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.adapters.MenuTransAdapter;
+import com.code93.linkcoop.persistence.cache.DataTrans;
 import com.code93.linkcoop.persistence.models.Cooperativa;
 import com.code93.linkcoop.persistence.models.Transaction;
 import com.code93.linkcoop.view.cliente.SolicitarDatosClienteActivity;
@@ -59,9 +60,11 @@ public class TransaccionesActivity extends AppCompatActivity implements MenuTran
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 //Intent intent = new Intent(TransaccionesActivity.this, TransaccionActivity.class);
-                Intent intent = new Intent(TransaccionesActivity.this, SolicitarDatosClienteActivity.class);
+                Intent intent = new Intent(TransaccionesActivity.this, SolicitarDocumentoActivity.class);
                 intent.putExtra("transaction", transaction);
                 intent.putExtra("cooperativa", cooperativa);
+                DataTrans.INSTANCE.setTransaction(transaction);
+                DataTrans.INSTANCE.setCooperativa(cooperativa);
                 startActivity(intent);
                 finish();
             }

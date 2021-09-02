@@ -9,7 +9,7 @@ import com.code93.linkcoop.databinding.FragmentSolicitarDocumentoBinding
 import com.code93.linkcoop.persistence.models.DataTransaccion
 
 class DataSolicitarAdapter(
-    private val values: List<DataTransaccion>,
+    var values: List<DataTransaccion>,
     private val callbackData: CallbackData
 ) : RecyclerView.Adapter<DataSolicitarAdapter.ViewHolder>() {
 

@@ -31,6 +31,7 @@ import java.lang.Exception
 class SolicitarDatosClienteFragment : Fragment(), CallbackData {
 
     private lateinit var spotDialog: AlertDialog
+    private lateinit var mAdapter: DataSolicitarAdapter
 
     private var columnCount = 1
     private var listDataTransaccion = ArrayDatosIngreso.listDataTransaccion
@@ -61,19 +62,31 @@ class SolicitarDatosClienteFragment : Fragment(), CallbackData {
             Log.e("ERROR", "No llegan args")
         }
 
+        mAdapter = DataSolicitarAdapter(listDataTransaccion, this@SolicitarDatosClienteFragment)
+
         with(mBinding.rvElementos) {
             layoutManager = when {
                 columnCount <= 1 -> LinearLayoutManager(context)
                 else -> GridLayoutManager(context, columnCount)
             }
-            adapter = DataSolicitarAdapter(listDataTransaccion, this@SolicitarDatosClienteFragment)
+            adapter = mAdapter
         }
 
         mBinding.btnContinuar.setOnClickListener {
             analizarDatos()
         }
 
+        mBinding.btnLimpiar.setOnClickListener {
+            limpiarCampos()
+        }
+
         return mBinding.root
+    }
+
+    private fun limpiarCampos() {
+        listDataTransaccion = ArrayDatosIngreso.listDataTransaccion
+        mAdapter.values = listDataTransaccion
+        mAdapter.notifyDataSetChanged()
     }
 
     private fun analizarDatos() {
