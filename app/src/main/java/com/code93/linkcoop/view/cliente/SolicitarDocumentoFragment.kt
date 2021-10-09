@@ -144,8 +144,11 @@ class SolicitarDocumentoFragment : Fragment(), CallbackData {
                 val tokenData = TokenData()
                 tokenData.getTokens(Objects.requireNonNull(token_data))
                 if (response_code == "00") {
-                    //
                     val intent = Intent(requireContext(), TransaccionActivity::class.java)
+                    requireActivity().startActivity(intent)
+                    finish()
+                } else if (response_code == "23") {
+                    val intent = Intent(requireContext(), SolicitarDatosClienteActivity::class.java)
                     requireActivity().startActivity(intent)
                     finish()
                 } else {

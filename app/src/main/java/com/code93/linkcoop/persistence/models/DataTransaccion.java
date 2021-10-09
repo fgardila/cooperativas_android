@@ -15,7 +15,7 @@ public class DataTransaccion implements Serializable {
     public DataTransaccion() {
     }
 
-    public DataTransaccion(String name, int inputType, int maxLength, String subTitulo, int drawable, String value) {
+    public DataTransaccion(String name, int inputType, int maxLength, String subTitulo, int drawable, String value, TipoDato tipo) {
         this.name = name;
         this.inputType = inputType;
         this.maxLength = maxLength;
@@ -99,6 +99,6 @@ public class DataTransaccion implements Serializable {
     }
 
     public enum TipoDato{
-        CEDULA, MONTO, OTP, EMAIL, OTRO
+        CEDULA, MONTO, OTP, EMAIL, OTRO, IP, KEY
     }
 }

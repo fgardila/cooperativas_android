@@ -136,7 +136,6 @@ public class IngresarDataActivity extends AppCompatActivity {
                     finish();
                 }
             }
-
         }
     }
 }

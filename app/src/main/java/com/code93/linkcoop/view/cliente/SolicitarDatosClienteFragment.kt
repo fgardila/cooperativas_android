@@ -1,6 +1,7 @@
 package com.code93.linkcoop.view.cliente
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -13,19 +14,21 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.code93.linkcoop.R
-import com.code93.linkcoop.ToolsXML
+import com.code93.linkcoop.*
 import com.code93.linkcoop.databinding.FragmentSolicitarDatosClienteBinding
 import com.code93.linkcoop.network.DownloadCallback
 import com.code93.linkcoop.network.DownloadXmlTask
 import com.code93.linkcoop.persistence.cache.DataTrans
+import com.code93.linkcoop.persistence.models.ClienteData
 import com.code93.linkcoop.persistence.models.DataTransaccion
 import com.code93.linkcoop.persistence.models.FieldsTrx
+import com.code93.linkcoop.ui.TransaccionActivity
 import com.code93.linkcoop.xmlParsers.XmlParser
 import dmax.dialog.SpotsDialog
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
 import java.lang.Exception
+import java.util.*
 
 
 class SolicitarDatosClienteFragment : Fragment(), CallbackData {
@@ -102,6 +105,15 @@ class SolicitarDatosClienteFragment : Fragment(), CallbackData {
             }
         }
         if (camposOk) {
+            val data = ClienteData()
+            data.firtName = listDataTransaccion[0].value
+            data.lastName = listDataTransaccion[1].value
+            data.phoneNumber = listDataTransaccion[2].value
+            data.document = listDataTransaccion[3].value
+            data.emailAddress = listDataTransaccion[4].value
+
+            DataTrans.clienteData = data
+
             spotDialog.show()
             transaccionCrearCliente()
         }
@@ -110,10 +122,10 @@ class SolicitarDatosClienteFragment : Fragment(), CallbackData {
     var fieldsTrxSend: FieldsTrx = FieldsTrx()
 
     private fun transaccionCrearCliente() {
-        val xml = ToolsXML.requestContinousDocument(DataTrans.clienteData.document)
+        val xml = ToolsXML.requestCrearCliente(DataTrans.clienteData)
 
         try {
-            fieldsTrxSend = XmlParser.parse(xml, "request_inquiry")
+            fieldsTrxSend = XmlParser.parse(xml, "request_continous")
         } catch (e: XmlPullParserException) {
             e.printStackTrace()
         } catch (e: IOException) {
@@ -124,7 +136,7 @@ class SolicitarDatosClienteFragment : Fragment(), CallbackData {
             object : DownloadCallback {
                 override fun onDownloadCallback(response: String) {
                     if (response == "Error de conexion") showErrorConexion() else procesarRespuesta(
-                        "reply_inquiry",
+                        "reply_continous",
                         response
                     )
                 }
@@ -133,7 +145,113 @@ class SolicitarDatosClienteFragment : Fragment(), CallbackData {
     }
 
     private fun procesarRespuesta(replyTag: String, response: String) {
+        try {
+            val (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, response_code, _, _, _, _, _, _, _, _, _, _, _, token_data) = XmlParser.parse(
+                response,
+                replyTag
+            )
+            if (token_data != "") {
+                Log.d("FieldTRX", Objects.requireNonNull(token_data))
+                val tokenData = TokenData()
+                tokenData.getTokens(Objects.requireNonNull(token_data))
+                if (response_code == "00") {
+                    val intent = Intent(requireContext(), TransaccionActivity::class.java)
+                    requireActivity().startActivity(intent)
+                    finish()
+                } else {
+                    spotDialog.dismiss()
+                    Tools.showDialogErrorCallback(
+                        requireContext(),
+                        tokenData.B1,
+                        object : DialogCallback {
+                            override fun onDialogCallback(value: Int) {
+                                finish()
+                            }
+                        })
+                }
+            } else {
+                spotDialog.dismiss()
+                Tools.showDialogError(requireContext(), "No llegaron Tokens")
+            }
+        } catch (e: XmlPullParserException) {
+            e.printStackTrace()
+            try {
+                val (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, token_data) = XmlParser.parse(
+                    response,
+                    "default_reply_error"
+                )
+                if (token_data != "") {
+                    spotDialog.dismiss()
+                    Log.d(
+                        "FieldTRX", Objects.requireNonNull(
+                            token_data
+                        )
+                    )
+                    val tokenData = TokenData()
+                    tokenData.getTokens(Objects.requireNonNull(token_data))
+                    Tools.showDialogErrorCallback(
+                        requireContext(),
+                        tokenData.B1,
+                        object : DialogCallback {
+                            override fun onDialogCallback(value: Int) {
+                                finish()
+                            }
+                        })
+                } else {
+                    spotDialog.dismiss()
+                    Tools.showDialogError(requireContext(), "No llegaron Tokens")
+                }
+            } catch (o: XmlPullParserException) {
+                o.printStackTrace()
+                spotDialog.dismiss()
+                Tools.showDialogError(requireContext(), "Error al procesar la respuesta.")
+            } catch (o: IOException) {
+                o.printStackTrace()
+                spotDialog.dismiss()
+                Tools.showDialogError(requireContext(), "Error al procesar la respuesta.")
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            try {
+                val (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, token_data) = XmlParser.parse(
+                    response,
+                    "default_reply_error"
+                )
+                if (token_data != "") {
+                    spotDialog.dismiss()
+                    Log.d(
+                        "FieldTRX", Objects.requireNonNull(
+                            token_data
+                        )
+                    )
+                    val tokenData = TokenData()
+                    tokenData.getTokens(Objects.requireNonNull(token_data))
+                    Tools.showDialogErrorCallback(
+                        requireContext(),
+                        tokenData.B1,
+                        object : DialogCallback {
+                            override fun onDialogCallback(value: Int) {
+                                finish()
+                            }
+                        })
+                } else {
+                    spotDialog.dismiss()
+                    Tools.showDialogError(requireContext(), "No llegaron Tokens")
+                }
+            } catch (o: XmlPullParserException) {
+                o.printStackTrace()
+                spotDialog.dismiss()
+                Tools.showDialogError(requireContext(), "Error al procesar la respuesta.")
+            } catch (o: IOException) {
+                o.printStackTrace()
+                spotDialog.dismiss()
+                Tools.showDialogError(requireContext(), "Error al procesar la respuesta.")
+            }
+        }
+    }
 
+    private fun finish() {
+        requireActivity().finish()
     }
 
     private fun showErrorConexion() {

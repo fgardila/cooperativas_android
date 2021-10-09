@@ -47,13 +47,23 @@ class ConfigNetworkActivity : AppCompatActivity(), MenuElementosAdapter.OnClickE
 
         val elementos: MutableList<DataTransaccion> = ArrayList()
         elementos.add(DataTransaccion(
-                getString(R.string.url_o_direccion_ip),
-                InputType.TYPE_CLASS_TEXT,
-                32, "URL o dirección IP", R.drawable.ic_network_check, net_direccionip))
+            getString(R.string.url_o_direccion_ip),
+            InputType.TYPE_CLASS_TEXT,
+            32,
+            "URL o dirección IP",
+            R.drawable.ic_network_check,
+            net_direccionip,
+            DataTransaccion.TipoDato.IP
+        ))
         elementos.add(DataTransaccion(
-                getString(R.string.puerto),
-                InputType.TYPE_CLASS_NUMBER,
-                5, "Puerto", R.drawable.ic_network_check, net_puerto))
+            getString(R.string.puerto),
+            InputType.TYPE_CLASS_NUMBER,
+            5,
+            "Puerto",
+            R.drawable.ic_network_check,
+            net_puerto,
+            DataTransaccion.TipoDato.IP
+        ))
         return elementos.toTypedArray()
     }
 
@@ -103,7 +113,7 @@ class ConfigNetworkActivity : AppCompatActivity(), MenuElementosAdapter.OnClickE
                 }
             }
 
-            Tools.showDialogPositive(this, "Cambio de llaves realizado exitosamente", object : DialogCallback {
+            Tools.showDialogPositive(this, "Cambio de dirección IP realizado exitosamente", object : DialogCallback {
                 override fun onDialogCallback(value: Int) {
                     finish()
                 }
