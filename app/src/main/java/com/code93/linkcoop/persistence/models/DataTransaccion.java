@@ -22,6 +22,7 @@ public class DataTransaccion implements Serializable {
         this.subTitulo = subTitulo;
         this.drawable = drawable;
         this.value = value;
+        this.tipo = tipo;
     }
 
     public DataTransaccion(String name, int inputType, int maxLength, String subTitulo, TipoDato tipo, int drawable) {
