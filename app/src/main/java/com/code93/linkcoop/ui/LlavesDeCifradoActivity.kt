@@ -51,15 +51,32 @@ class LlavesDeCifradoActivity : AppCompatActivity(), MenuElementosAdapter.OnClic
 
         val elementos: MutableList<DataTransaccion> = ArrayList()
         elementos.add(DataTransaccion(
-                "AES IV",
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS,
-                32, "Ingresa llave", R.drawable.ic_lock, aes_iv))
-        elementos.add(DataTransaccion("AES Password",
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS,
-                32, "Ingresa llave", R.drawable.ic_lock, aes_password))
-        elementos.add(DataTransaccion("AES Salt",
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS,
-                32, "Ingresa llave", R.drawable.ic_lock, aes_salt))
+            "AES IV",
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS,
+            32,
+            "Ingresa llave",
+            R.drawable.ic_lock,
+            aes_iv,
+            DataTransaccion.TipoDato.OTRO
+        ))
+        elementos.add(DataTransaccion(
+            "AES Password",
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS,
+            32,
+            "Ingresa llave",
+            R.drawable.ic_lock,
+            aes_password,
+            DataTransaccion.TipoDato.OTRO
+        ))
+        elementos.add(DataTransaccion(
+            "AES Salt",
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS,
+            32,
+            "Ingresa llave",
+            R.drawable.ic_lock,
+            aes_salt,
+            DataTransaccion.TipoDato.OTRO
+        ))
         return elementos.toTypedArray()
     }
 

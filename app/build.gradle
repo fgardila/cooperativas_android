@@ -8,7 +8,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 android {
     signingConfigs {
         code93 {
-            storeFile file('C:\\AndroidProjects\\Code93\\KeyCode93\\KeyCode93.jks')
+            storeFile file('..Code93\\KeyCode93.jks')
             storePassword 'Code93qa12pl09*'
             keyAlias 'key0'
             keyPassword 'Code93qa12pl09*'
