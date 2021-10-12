@@ -1,24 +1,21 @@
-package com.code93.linkcoop
+package com.code93.linkcoop.core
 
-import android.content.Context
 import android.os.Build
 
 object ToolsZ90 {
 
     @JvmStatic
-    fun getSn(ctx: Context?): String {
-        if (Build.MODEL.contains("Z90")) {
-            var serial: String? = null
+    fun getSn(): String {
+        return if (Build.MODEL.contains("Z90")) {
             try {
                 val c = Class.forName("android.os.SystemProperties")
                 val get = c.getMethod("get", String::class.java)
-                serial = get.invoke(c, "ro.serialno") as String
+                get.invoke(c, "ro.serialno") as String
             } catch (ignored: Exception) {
-                return "";
+                ""
             }
-            return serial
         } else {
-            return ""
+            ""
         }
     }
 

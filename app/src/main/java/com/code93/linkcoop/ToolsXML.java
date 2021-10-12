@@ -3,6 +3,8 @@ package com.code93.linkcoop;
 import android.util.Log;
 import android.util.Xml;
 
+import com.code93.linkcoop.core.StringTools;
+import com.code93.linkcoop.core.Tools;
 import com.code93.linkcoop.persistence.models.ClienteData;
 import com.code93.linkcoop.persistence.models.Cooperativa;
 import com.code93.linkcoop.persistence.models.Transaction;

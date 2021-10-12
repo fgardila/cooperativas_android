@@ -2,7 +2,6 @@ package com.code93.linkcoop.view.cliente
 
 import android.os.Bundle
 import android.text.InputFilter
-import android.text.InputFilter.LengthFilter
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import com.code93.linkcoop.StringTools
-import com.code93.linkcoop.StringTools.ValidaCedulaRuc
+import com.code93.linkcoop.core.StringTools.ValidaCedulaRuc
 import com.code93.linkcoop.databinding.FragmentSolicitarDocumentoIngresoBinding
 import com.code93.linkcoop.persistence.models.DataTransaccion
 
@@ -37,7 +35,7 @@ class SolicitarDocumentoIngresoFragment : Fragment() {
             mBinding.tilData.hint = subTitulo
             mBinding.tilData.startIconDrawable = AppCompatResources.getDrawable(requireContext(), drawable)
             mBinding.etData.inputType = inputType
-            mBinding.etData.filters = arrayOf<InputFilter>(LengthFilter(maxLength))
+            mBinding.etData.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(maxLength))
             if (value != null) {
                 mBinding.etData.setText(value)
             }

@@ -29,6 +29,8 @@ class DownloadXmlTask(var xmlSend: String, var callback: DownloadCallback) : Asy
         callback.onDownloadCallback(result)
     }
 
+
+
     @Throws(IOException::class)
     private fun sendRequest(xmlSend: String) : String {
         MyApp.sp2!!.incTraceNo()

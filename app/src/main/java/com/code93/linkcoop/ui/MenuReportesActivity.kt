@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.code93.linkcoop.R
-import com.code93.linkcoop.Tools
+import com.code93.linkcoop.core.Tools
 import com.code93.linkcoop.persistence.models.LogTransacciones
 import com.code93.linkcoop.viewmodel.LogTransaccionesViewModel
 import dmax.dialog.SpotsDialog

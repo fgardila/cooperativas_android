@@ -1,6 +1,7 @@
 package com.code93.linkcoop
 
 import android.os.Parcelable
+import com.code93.linkcoop.core.StringTools
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 

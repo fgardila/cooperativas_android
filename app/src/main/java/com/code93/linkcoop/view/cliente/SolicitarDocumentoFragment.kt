@@ -15,8 +15,9 @@ import android.widget.Toast
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.code93.linkcoop.*
-import com.code93.linkcoop.Tools.showDialogError
-import com.code93.linkcoop.Tools.showDialogErrorCallback
+import com.code93.linkcoop.core.DialogCallback
+import com.code93.linkcoop.core.Tools.showDialogError
+import com.code93.linkcoop.core.Tools.showDialogErrorCallback
 import com.code93.linkcoop.databinding.FragmentSolicitarDocumentoListBinding
 import com.code93.linkcoop.network.DownloadCallback
 import com.code93.linkcoop.network.DownloadXmlTask

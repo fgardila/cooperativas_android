@@ -13,17 +13,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.code93.linkcoop.*
-import com.code93.linkcoop.Tools.showDialogErrorCallback
-import com.code93.linkcoop.Tools.showDialogErrorCancelCallback
-import com.code93.linkcoop.Tools.showDialogPositive
+import com.code93.linkcoop.core.Tools.showDialogErrorCallback
+import com.code93.linkcoop.core.Tools.showDialogErrorCancelCallback
+import com.code93.linkcoop.core.Tools.showDialogPositive
 import com.code93.linkcoop.adapters.ReportesAdapter
 import com.code93.linkcoop.adapters.ReportesCallback
+import com.code93.linkcoop.core.DialogCallback
 import com.code93.linkcoop.persistence.models.CierreData
 import com.code93.linkcoop.persistence.models.CierreTransaccion
 import com.code93.linkcoop.persistence.models.FieldsTrx
 import com.code93.linkcoop.persistence.models.LogTransacciones
 import com.code93.linkcoop.network.DownloadCallback
 import com.code93.linkcoop.network.DownloadXmlTask
+import com.code93.linkcoop.ui.login.LoginActivity
 import com.code93.linkcoop.view.HomeActivity
 import com.code93.linkcoop.viewmodel.LogTransaccionesViewModel
 import com.code93.linkcoop.xmlParsers.XmlParser.parse
@@ -191,7 +193,8 @@ class ReportesActivity : AppCompatActivity() {
             } else {
                 dialog.dismiss()
                 if (fieldsTrx.response_code == "72") {
-                    showDialogErrorCancelCallback(this, "${tokenData.B1} ¿BORRAR REPORTE DE TRANSACCIONES?", object : DialogCallback {
+                    showDialogErrorCancelCallback(this, "${tokenData.B1} ¿BORRAR REPORTE DE TRANSACCIONES?", object :
+                        DialogCallback {
                         override fun onDialogCallback(value: Int) {
                             if (value == 0) {
                                 logData.deleteAllLogTransaccioness()

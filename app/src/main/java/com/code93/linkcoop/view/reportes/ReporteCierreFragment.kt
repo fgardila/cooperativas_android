@@ -10,10 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.code93.linkcoop.R
-import com.code93.linkcoop.Tools
+import com.code93.linkcoop.core.Tools
 import com.code93.linkcoop.databinding.FragmentReporteCierreBinding
-import com.code93.linkcoop.databinding.FragmentSettingsBinding
 import com.code93.linkcoop.persistence.models.LogTransacciones
 import com.code93.linkcoop.ui.CierreActivity
 import com.code93.linkcoop.ui.ImpresionActivity

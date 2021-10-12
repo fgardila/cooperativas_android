@@ -8,10 +8,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.code93.linkcoop.DialogCallback
+import com.code93.linkcoop.core.DialogCallback
 import com.code93.linkcoop.MyApp
 import com.code93.linkcoop.R
-import com.code93.linkcoop.Tools
+import com.code93.linkcoop.core.Tools
 import com.code93.linkcoop.adapters.MenuElementosAdapter
 import com.code93.linkcoop.persistence.cache.SP2
 import com.code93.linkcoop.persistence.models.DataTransaccion
@@ -113,7 +113,8 @@ class ConfigNetworkActivity : AppCompatActivity(), MenuElementosAdapter.OnClickE
                 }
             }
 
-            Tools.showDialogPositive(this, "Cambio de dirección IP realizado exitosamente", object : DialogCallback {
+            Tools.showDialogPositive(this, "Cambio de dirección IP realizado exitosamente", object :
+                DialogCallback {
                 override fun onDialogCallback(value: Int) {
                     finish()
                 }

@@ -1,4 +1,4 @@
-package com.code93.linkcoop.ui;
+package com.code93.linkcoop.ui.login;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -15,12 +15,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.code93.linkcoop.AesBase64Wrapper;
 import com.code93.linkcoop.BuildConfig;
-import com.code93.linkcoop.ToolsZ90;
+import com.code93.linkcoop.core.ToolsZ90;
 import com.code93.linkcoop.persistence.models.FieldsTrx;
 import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.TokenData;
-import com.code93.linkcoop.Tools;
+import com.code93.linkcoop.core.Tools;
 import com.code93.linkcoop.ToolsXML;
 import com.code93.linkcoop.persistence.cache.SP2;
 import com.code93.linkcoop.persistence.models.Cooperativa;
@@ -266,7 +266,7 @@ public class LoginActivity extends AppCompatActivity {
             String googleText = "Google UID: " + user.getUid();
             tvGoogle.setText(googleText);
             if (ToolsZ90.isZ90()) {
-                FirebaseCrashlytics.getInstance().setUserId(ToolsZ90.getSn(this));
+                FirebaseCrashlytics.getInstance().setUserId(ToolsZ90.getSn());
             } else {
                 FirebaseCrashlytics.getInstance().setUserId(user.getUid());
             }

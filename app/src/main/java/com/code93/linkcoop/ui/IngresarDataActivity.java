@@ -11,10 +11,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.code93.linkcoop.DialogCallback;
+import com.code93.linkcoop.core.DialogCallback;
 import com.code93.linkcoop.R;
-import com.code93.linkcoop.StringTools;
-import com.code93.linkcoop.Tools;
+import com.code93.linkcoop.core.StringTools;
+import com.code93.linkcoop.core.Tools;
 import com.code93.linkcoop.persistence.models.DataTransaccion;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.material.textfield.TextInputEditText;

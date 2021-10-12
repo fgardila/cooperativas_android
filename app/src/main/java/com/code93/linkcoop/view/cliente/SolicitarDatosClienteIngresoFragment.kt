@@ -10,8 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import com.code93.linkcoop.R
-import com.code93.linkcoop.StringTools
+import com.code93.linkcoop.core.StringTools
 import com.code93.linkcoop.databinding.FragmentSolicitarDatosClienteIngresoBinding
 import com.code93.linkcoop.persistence.models.DataTransaccion
 

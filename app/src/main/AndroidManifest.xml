@@ -27,6 +27,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.login.LoginActivity"
+            android:exported="true" />
+        <activity
             android:name=".view.cliente.SolicitarDatosClienteActivity"
             android:exported="true" />
         <activity
@@ -75,7 +78,7 @@
             android:name=".ui.TransaccionesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.LoginActivity"
+            android:name=".ui.login.LoginKotlinActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

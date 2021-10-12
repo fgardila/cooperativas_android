@@ -1,4 +1,4 @@
-package com.code93.linkcoop
+package com.code93.linkcoop.core
 
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols

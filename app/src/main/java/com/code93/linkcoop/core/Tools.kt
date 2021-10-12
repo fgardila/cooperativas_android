@@ -1,4 +1,4 @@
-package com.code93.linkcoop
+package com.code93.linkcoop.core
 
 import android.app.Dialog
 import android.content.Context
@@ -11,6 +11,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
+import com.code93.linkcoop.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -77,11 +78,6 @@ object Tools {
         password,
         emv_data,
         validator_data
-    }
-
-    enum class Casos{
-        prueba,
-        prueba2,
     }
 
     fun checkEmailAdress(email: String): Boolean {

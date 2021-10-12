@@ -10,10 +10,10 @@ import android.text.Layout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.code93.linkcoop.DialogCallback;
+import com.code93.linkcoop.core.DialogCallback;
 import com.code93.linkcoop.MyApp;
 import com.code93.linkcoop.R;
-import com.code93.linkcoop.Tools;
+import com.code93.linkcoop.core.Tools;
 import com.code93.linkcoop.persistence.models.LogTransacciones;
 import com.zcs.sdk.DriverManager;
 import com.zcs.sdk.Printer;
