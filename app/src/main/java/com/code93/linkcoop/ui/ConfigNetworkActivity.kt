@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.code93.linkcoop.core.DialogCallback
-import com.code93.linkcoop.MyApp
+import com.code93.linkcoop.LinkCoopApp
 import com.code93.linkcoop.R
 import com.code93.linkcoop.core.Tools
 import com.code93.linkcoop.adapters.MenuElementosAdapter
@@ -42,8 +42,8 @@ class ConfigNetworkActivity : AppCompatActivity(), MenuElementosAdapter.OnClickE
 
     private fun getData(): Array<DataTransaccion?> {
 
-        val net_direccionip = MyApp.sp2!!.getString(SP2.net_direccionip, "")
-        val net_puerto = MyApp.sp2!!.getString(SP2.net_puerto, "")
+        val net_direccionip = LinkCoopApp.sp2!!.getString(SP2.net_direccionip, "")
+        val net_puerto = LinkCoopApp.sp2!!.getString(SP2.net_puerto, "")
 
         val elementos: MutableList<DataTransaccion> = ArrayList()
         elementos.add(DataTransaccion(
@@ -104,11 +104,11 @@ class ConfigNetworkActivity : AppCompatActivity(), MenuElementosAdapter.OnClickE
             for (data in elementos) {
                 when (data!!.name) {
                     getString(R.string.url_o_direccion_ip) -> {
-                        MyApp.sp2!!.putString(SP2.net_direccionip, data.value)
+                        LinkCoopApp.sp2!!.putString(SP2.net_direccionip, data.value)
                         continue
                     }
                     getString(R.string.puerto) -> {
-                        MyApp.sp2!!.putString(SP2.net_puerto, data.value)
+                        LinkCoopApp.sp2!!.putString(SP2.net_puerto, data.value)
                     }
                 }
             }

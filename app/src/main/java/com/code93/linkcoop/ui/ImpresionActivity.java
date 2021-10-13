@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.code93.linkcoop.core.DialogCallback;
-import com.code93.linkcoop.MyApp;
+import com.code93.linkcoop.LinkCoopApp;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.core.Tools;
 import com.code93.linkcoop.persistence.models.LogTransacciones;
@@ -25,7 +25,7 @@ import com.zcs.sdk.print.PrnTextStyle;
 public class ImpresionActivity extends AppCompatActivity {
 
     private Printer mPrinter;
-    private DriverManager mDriverManager = MyApp.sDriverManager;
+    private DriverManager mDriverManager = LinkCoopApp.sDriverManager;
 
     LogTransacciones logTransacciones;
 
@@ -35,7 +35,7 @@ public class ImpresionActivity extends AppCompatActivity {
 
         if (Build.MODEL.contains("Z90")) {
             setContentView(R.layout.activity_impresion_pos);
-            mDriverManager = MyApp.sDriverManager;
+            mDriverManager = LinkCoopApp.sDriverManager;
             mPrinter = mDriverManager.getPrinter();
         } else {
             setContentView(R.layout.activity_impresion_telefono);

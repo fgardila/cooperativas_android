@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.code93.linkcoop.core.DialogCallback;
 import com.code93.linkcoop.persistence.models.FieldsTrx;
-import com.code93.linkcoop.MyApp;
+import com.code93.linkcoop.LinkCoopApp;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.core.Tools;
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
         TextView userLogin = findViewById(R.id.userLogin);
         userLogin.setText(SP2.Companion.getInstance(this).getString("email", ""));
         TextView comercioName = findViewById(R.id.comercioName);
-        comercioName.setText(MyApp.sp2.getString(SP2.Companion.getComercio_nombre(), ""));
+        comercioName.setText(LinkCoopApp.sp2.getString(SP2.Companion.getComercio_nombre(), ""));
 
     }
 
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
 
     private void cerrarSesion(){
         spotDialog.show();
-        String user_encript = MyApp.sp2.getString(SP2.Companion.getUser_encript(), "");
+        String user_encript = LinkCoopApp.sp2.getString(SP2.Companion.getUser_encript(), "");
         String xmlLogOff = ToolsXML.requestLogoff(user_encript);
         DownloadXmlTask task = new DownloadXmlTask(xmlLogOff, this);
         task.execute(xmlLogOff);
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
             TokenData tokenData = new TokenData();
             tokenData.getTokens(Objects.requireNonNull(fieldsTrx.getToken_data()));
             if (fieldsTrx.getResponse_code().equals("00")) {
-                MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
+                LinkCoopApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
                 spotDialog.dismiss();
                 Tools.showDialogPositive(this, tokenData.getB1(), value -> {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
             } else {
                 spotDialog.dismiss();
                 Tools.showDialogErrorCallback(this, tokenData.getB1(), value -> {
-                    MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
+                    LinkCoopApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
                 });
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements DownloadCallback 
     private void showErrorConexion() {
         spotDialog.dismiss();
         Tools.showDialogErrorCallback(this, "Error de conexion", value -> {
-            MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
+            LinkCoopApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         });

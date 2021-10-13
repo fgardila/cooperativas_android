@@ -6,14 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.code93.linkcoop.MyApp
+import com.code93.linkcoop.LinkCoopApp
 import com.code93.linkcoop.adapters.MenuCoopAdapter
 import com.code93.linkcoop.databinding.FragmentCooperativasBinding
-import com.code93.linkcoop.databinding.FragmentReporteCierreBinding
 import com.code93.linkcoop.persistence.cache.SP2
 import com.code93.linkcoop.persistence.models.Cooperativa
 import com.code93.linkcoop.ui.TransaccionesActivity
@@ -33,7 +31,7 @@ class CooperativasFragment : Fragment(), MenuCoopAdapter.OnClickCoop {
         _binding = FragmentCooperativasBinding.inflate(inflater, container, false)
         cooperativaViewModel = ViewModelProvider(this).get(CooperativaViewModel::class.java)
 
-        mBinding.tvNegocio.text = MyApp.sp2!!.getString(SP2.comercio_nombre, "")
+        mBinding.tvNegocio.text = LinkCoopApp.sp2!!.getString(SP2.comercio_nombre, "")
 
         val adapter = MenuCoopAdapter(requireContext(), this)
         mBinding.rvCooperativas.adapter = adapter

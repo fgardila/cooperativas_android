@@ -30,7 +30,7 @@ public class ToolsXML {
         listFields.add(new DataElements(Tools.NameFields.transaction_amount.toString(), monto));
         listFields.add(new DataElements(Tools.NameFields.commision_amount.toString(), transaction.get_cost().trim()));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
-        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), LinkCoopApp.sp2.getTraceNo()));
         listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
         listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), cooperativa.get_channel().trim()));
         listFields.add(new DataElements(Tools.NameFields.service_code.toString(), cooperativa.get_service().trim()));
@@ -55,7 +55,7 @@ public class ToolsXML {
         listFields.add(new DataElements(Tools.NameFields.transaction_amount.toString(), monto));
         listFields.add(new DataElements(Tools.NameFields.commision_amount.toString(), transaction.get_cost().trim()));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
-        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), LinkCoopApp.sp2.getTraceNo()));
         listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
         listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), cooperativa.get_channel().trim()));
         listFields.add(new DataElements(Tools.NameFields.service_code.toString(), cooperativa.get_service().trim()));
@@ -73,7 +73,7 @@ public class ToolsXML {
         listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), transaction.get_code().trim()));
         listFields.add(new DataElements(Tools.NameFields.reference.toString(), reference));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
-        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), LinkCoopApp.sp2.getTraceNo()));
         listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
         listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), cooperativa.get_channel().trim()));
         listFields.add(new DataElements(Tools.NameFields.service_code.toString(), cooperativa.get_service().trim()));
@@ -94,7 +94,7 @@ public class ToolsXML {
         listFields.add(new DataElements(Tools.NameFields.transaction_amount.toString(), "0"));
         listFields.add(new DataElements(Tools.NameFields.commision_amount.toString(), transaction.get_cost().trim()));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
-        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), LinkCoopApp.sp2.getTraceNo()));
         listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
         listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), cooperativa.get_channel().trim()));
         listFields.add(new DataElements(Tools.NameFields.service_code.toString(), cooperativa.get_service().trim()));
@@ -111,7 +111,7 @@ public class ToolsXML {
         listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0800"));
         listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), "930002"));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
-        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), LinkCoopApp.sp2.getTraceNo()));
         listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
         listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "2"));
         listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
@@ -127,7 +127,7 @@ public class ToolsXML {
         listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0800"));
         listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), "930003"));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
-        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), LinkCoopApp.sp2.getTraceNo()));
         listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "2"));
         listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
         listFields.add(new DataElements(Tools.NameFields.product_id.toString(), "012000"));
@@ -141,7 +141,7 @@ public class ToolsXML {
         listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
         listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), "930007"));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
-        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), LinkCoopApp.sp2.getTraceNo()));
         listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
         listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "0"));
         listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
@@ -159,7 +159,7 @@ public class ToolsXML {
         listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
         listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), "310095"));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
-        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), LinkCoopApp.sp2.getTraceNo()));
         listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
         listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "2"));
         listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));
@@ -177,7 +177,7 @@ public class ToolsXML {
         listFields.add(new DataElements(Tools.NameFields.message_code.toString(), "0200"));
         listFields.add(new DataElements(Tools.NameFields.transaction_code.toString(), "930093"));
         listFields.add(new DataElements(Tools.NameFields.adquirer_date_time.toString(), Tools.getLocalDateTime()));
-        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), MyApp.sp2.getTraceNo()));
+        listFields.add(new DataElements(Tools.NameFields.adquirer_sequence.toString(), LinkCoopApp.sp2.getTraceNo()));
         listFields.add(new DataElements(Tools.NameFields.terminal_id.toString(), "TPOS-1002-000070"));
         listFields.add(new DataElements(Tools.NameFields.channel_id.toString(), "2"));
         listFields.add(new DataElements(Tools.NameFields.service_code.toString(), "0030011001"));

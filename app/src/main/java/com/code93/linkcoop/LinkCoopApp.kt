@@ -8,17 +8,21 @@ import com.code93.linkcoop.persistence.cache.SP2.Companion.aes_iv
 import com.code93.linkcoop.persistence.cache.SP2.Companion.aes_password
 import com.code93.linkcoop.persistence.cache.SP2.Companion.aes_salt
 import android.os.Build
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.zcs.sdk.card.CardInfoEntity
 import com.code93.linkcoop.persistence.cache.SP2
 import com.zcs.sdk.DriverManager
 
-class MyApp : Application() {
+class LinkCoopApp : Application() {
 
     companion object {
         @JvmField
         var sDriverManager: DriverManager? = null
         @JvmField
         var sp2: SP2? = null
+
+
     }
 
     override fun onCreate() {
@@ -49,6 +53,15 @@ class MyApp : Application() {
             if (aes_salt == null) {
                 sp2!!.putString(SP2.aes_salt, getString(R.string.aes_salt))
             }
+        }
+    }
+
+    fun migrationDatabase1to2(): Migration {
+        return object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("")
+            }
+
         }
     }
 }

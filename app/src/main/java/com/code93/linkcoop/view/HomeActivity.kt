@@ -103,7 +103,7 @@ class HomeActivity : AppCompatActivity(), DownloadCallback {
 
     private fun cerrarSesion() {
         spotDialog.show()
-        val user_encript = MyApp.sp2!!.getString(user_encript, "")
+        val user_encript = LinkCoopApp.sp2!!.getString(user_encript, "")
         val xmlLogOff = ToolsXML.requestLogoff(user_encript)
         val task = DownloadXmlTask(xmlLogOff, this)
         task.execute(xmlLogOff)
@@ -131,7 +131,7 @@ class HomeActivity : AppCompatActivity(), DownloadCallback {
             val tokenData = TokenData()
             tokenData.getTokens(Objects.requireNonNull(token_data))
             if (response_code == "00") {
-                MyApp.sp2!!.putBoolean(SP_LOGIN, false)
+                LinkCoopApp.sp2!!.putBoolean(SP_LOGIN, false)
                 spotDialog.dismiss()
                 showDialogPositive(this, tokenData.B1, object : DialogCallback {
                     override fun onDialogCallback(value: Int) {
@@ -143,7 +143,7 @@ class HomeActivity : AppCompatActivity(), DownloadCallback {
                 spotDialog.dismiss()
                 showDialogErrorCallback(this, tokenData.B1, object : DialogCallback {
                     override fun onDialogCallback(value: Int) {
-                        MyApp.sp2!!.putBoolean(SP_LOGIN, false)
+                        LinkCoopApp.sp2!!.putBoolean(SP_LOGIN, false)
                         startActivity(Intent(this@HomeActivity, LoginActivity::class.java))
                         finish()
                     }
@@ -160,7 +160,7 @@ class HomeActivity : AppCompatActivity(), DownloadCallback {
         spotDialog.dismiss()
         showDialogErrorCallback(this, "Error de conexion", object : DialogCallback {
             override fun onDialogCallback(value: Int) {
-                MyApp.sp2!!.putBoolean(SP_LOGIN, false)
+                LinkCoopApp.sp2!!.putBoolean(SP_LOGIN, false)
                 startActivity(Intent(this@HomeActivity, LoginActivity::class.java))
                 finish()
             }

@@ -24,7 +24,7 @@
         tools:layout="@layout/fragment_reporte_cierre" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.code93.linkcoop.view.settings.SettingsFragment"
+        android:name="com.code93.linkcoop.ui.settings.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

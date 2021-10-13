@@ -17,7 +17,7 @@ import com.code93.linkcoop.AesBase64Wrapper;
 import com.code93.linkcoop.BuildConfig;
 import com.code93.linkcoop.core.ToolsZ90;
 import com.code93.linkcoop.persistence.models.FieldsTrx;
-import com.code93.linkcoop.MyApp;
+import com.code93.linkcoop.LinkCoopApp;
 import com.code93.linkcoop.R;
 import com.code93.linkcoop.TokenData;
 import com.code93.linkcoop.core.Tools;
@@ -185,7 +185,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onDownloadCallback(@NotNull String response) {
                 pwdE = response;
                 Log.d("pwdE: ", response);
-                MyApp.sp2.putString(SP2.Companion.getUser_encript(), userE);
+                LinkCoopApp.sp2.putString(SP2.Companion.getUser_encript(), userE);
                 sendLogin(userE, pwdE);
             }
         });
@@ -288,13 +288,13 @@ public class LoginActivity extends AppCompatActivity {
             tokenData.getTokens(Objects.requireNonNull(fieldsTrx.getToken_data()));
             if (fieldsTrx.getResponse_code().equals("00")) {
                 viewModel.deleteAllCooperativas();
-                MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), true);
-                MyApp.sp2.putString(SP2.Companion.getFechaUltimoLogin(), Tools.getLocalDateTime());
+                LinkCoopApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), true);
+                LinkCoopApp.sp2.putString(SP2.Companion.getFechaUltimoLogin(), Tools.getLocalDateTime());
                 Gson gson = new Gson();
                 LoginCooperativas logCoop = gson.fromJson(fieldsTrx.getBuffer_data(), LoginCooperativas.class);
-                MyApp.sp2.putString(SP2.Companion.getComercio_nombre(), logCoop.getComercio().getNombre().trim());
-                MyApp.sp2.putString(SP2.Companion.getComercio_ruc(), logCoop.getComercio().getRuc().trim());
-                MyApp.sp2.putString(SP2.Companion.getComercio_direccion(), logCoop.getComercio().getDireccion().trim());
+                LinkCoopApp.sp2.putString(SP2.Companion.getComercio_nombre(), logCoop.getComercio().getNombre().trim());
+                LinkCoopApp.sp2.putString(SP2.Companion.getComercio_ruc(), logCoop.getComercio().getRuc().trim());
+                LinkCoopApp.sp2.putString(SP2.Companion.getComercio_direccion(), logCoop.getComercio().getDireccion().trim());
                 for (Cooperativa coop : logCoop.getCooperativas()) {
                     viewModel.addCooperativa(coop);
                 }
@@ -320,7 +320,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void cerrarSesion() {
-        String user_encript = MyApp.sp2.getString(SP2.Companion.getUser_encript(), "");
+        String user_encript = LinkCoopApp.sp2.getString(SP2.Companion.getUser_encript(), "");
         String xmlLogOff = ToolsXML.requestLogoff(user_encript);
         DownloadXmlTask task = new DownloadXmlTask(xmlLogOff, response -> {
             if (response.equals("Error de conexion")) {
@@ -339,7 +339,7 @@ public class LoginActivity extends AppCompatActivity {
             TokenData tokenData = new TokenData();
             tokenData.getTokens(Objects.requireNonNull(fieldsTrx.getToken_data()));
             if (fieldsTrx.getResponse_code().equals("00")) {
-                MyApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
+                LinkCoopApp.sp2.putBoolean(SP2.Companion.getSP_LOGIN(), false);
                 spotDialog.dismiss();
                 Tools.showDialogPositive(this, tokenData.getB1(), value -> realizarInicioDeSesion());
             } else {
@@ -353,7 +353,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private String getSn() {
         // Config the SDK base info
-        Sys sys = MyApp.sDriverManager.getBaseSysDevice();
+        Sys sys = LinkCoopApp.sDriverManager.getBaseSysDevice();
         String[] pid = new String[1];
         int status = sys.getPid(pid);
         int count = 0;

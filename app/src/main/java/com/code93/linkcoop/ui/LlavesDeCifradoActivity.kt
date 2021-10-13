@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.code93.linkcoop.core.DialogCallback
-import com.code93.linkcoop.MyApp
+import com.code93.linkcoop.LinkCoopApp
 import com.code93.linkcoop.R
 import com.code93.linkcoop.core.Tools
 import com.code93.linkcoop.adapters.MenuElementosAdapter
@@ -45,9 +45,9 @@ class LlavesDeCifradoActivity : AppCompatActivity(), MenuElementosAdapter.OnClic
 
     private fun getData(): Array<DataTransaccion?> {
 
-        val aes_iv = MyApp.sp2!!.getString(aes_iv, "")
-        val aes_password = MyApp.sp2!!.getString(aes_password, "")
-        val aes_salt = MyApp.sp2!!.getString(aes_salt, "")
+        val aes_iv = LinkCoopApp.sp2!!.getString(aes_iv, "")
+        val aes_password = LinkCoopApp.sp2!!.getString(aes_password, "")
+        val aes_salt = LinkCoopApp.sp2!!.getString(aes_salt, "")
 
         val elementos: MutableList<DataTransaccion> = ArrayList()
         elementos.add(DataTransaccion(
@@ -109,15 +109,15 @@ class LlavesDeCifradoActivity : AppCompatActivity(), MenuElementosAdapter.OnClic
             for (data in elementos) {
                 when (data!!.name) {
                     "AES IV" -> {
-                        MyApp.sp2!!.putString(aes_iv, data.value)
+                        LinkCoopApp.sp2!!.putString(aes_iv, data.value)
                         continue
                     }
                     "AES Password" -> {
-                        MyApp.sp2!!.putString(aes_password, data.value)
+                        LinkCoopApp.sp2!!.putString(aes_password, data.value)
                         continue
                     }
                     "AES Salt" -> {
-                        MyApp.sp2!!.putString(aes_salt, data.value)
+                        LinkCoopApp.sp2!!.putString(aes_salt, data.value)
                     }
                 }
             }
